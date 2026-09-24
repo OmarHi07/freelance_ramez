@@ -50,3 +50,25 @@ logs/
 *.backup
 *.orig
 *~
+
+# Local email backends (filemail / console dumps written during manual testing)
+flowmail/
+mailbox/
+sent_emails/
+*.eml
+
+# Browser-driven walkthrough artifacts (Playwright)
+.playwright/
+playwright-report/
+test-results/
+flowshots/
+shots/
+screenshots/
+
+# Windows filemail:// URLs lose the drive letter and create a stray tree here
+/Users/
+
+# Docker database data, when bind-mounted instead of a named volume
+pgdata/
+postgres-data/
+docker/data/
