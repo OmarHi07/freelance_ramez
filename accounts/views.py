@@ -11,6 +11,7 @@ from django.views.decorators.http import require_http_methods
 
 from accounts.forms import AddressForm, EmailAuthenticationForm, ProfileForm, RegistrationForm
 from accounts.models import Address
+from core.constants import BUSINESS_NAME
 from core.security import safe_next_url
 from orders.models import Order
 
@@ -25,7 +26,10 @@ def register(request):
         user = form.save()
         # Logging in fires user_logged_in, which merges the anonymous cart.
         login(request, user, backend="accounts.backends.EmailBackend")
-        messages.success(request, _("Welcome to Rawnaq Accessories, %(name)s!") % {"name": user.get_short_name()})
+        messages.success(
+            request,
+            _("Welcome to %(store)s, %(name)s!") % {"store": BUSINESS_NAME, "name": user.get_short_name()},
+        )
         return redirect(next_url)
     return render(request, "accounts/register.html", {"form": form, "next": next_url})
 

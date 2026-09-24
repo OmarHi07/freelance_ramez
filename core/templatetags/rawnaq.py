@@ -6,7 +6,7 @@ from django import template
 from django.templatetags.static import static
 from django.utils.html import format_html
 
-from core import colors
+from core import colors, constants
 from core.formatting import format_money
 from core.i18n import localized_value
 
@@ -34,6 +34,12 @@ def safe_hex(value, fallback: str = colors.FALLBACK_PRIMARY) -> str:
 def text_on(value) -> str:
     """Readable text colour (dark or white) for a background colour."""
     return colors.readable_text_color(value)
+
+
+@register.simple_tag
+def business_name() -> str:
+    """The official business name, never translated or reformatted."""
+    return constants.BUSINESS_NAME
 
 
 @register.simple_tag

@@ -1,0 +1,17 @@
+{% load i18n rawnaq %}{% with attrs=field.field.widget.attrs %}
+{% with shape=attrs|get_item:"data-crop-shape" ratio=attrs|get_item:"data-crop-ratio" %}
+<div class="field image-field form-grid__wide">
+  {% include "includes/form_field.html" %}
+  {% if field.value and field.value.url %}
+    <div class="image-field__current">
+      <div class="crop-preview__frame crop-preview--{{ shape|default:"square" }}" style="--crop-ratio: {{ ratio|default:"1/1" }}">
+        <img src="{{ field.value.url }}" alt="{% translate 'Current picture' %}" loading="lazy">
+      </div>
+      <button class="button button--ghost button--small" type="button" hidden
+              data-crop-adjust-for="{{ field.auto_id }}" data-crop-adjust="{{ field.value.url }}">
+        {% translate "Adjust crop" %}
+      </button>
+    </div>
+  {% endif %}
+</div>
+{% endwith %}{% endwith %}

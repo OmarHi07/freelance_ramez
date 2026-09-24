@@ -14,6 +14,7 @@ import environ
 from django.utils.translation import gettext_lazy as _
 
 from config.storage import CLOUDINARY, build_media_storage, media_backend_name
+from core.constants import BUSINESS_NAME
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -214,7 +215,7 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 # Email (password reset). Configure a real SMTP URL in production.
 # ---------------------------------------------------------------------------
 vars().update(env.email_url("EMAIL_URL", default="consolemail://"))
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Rawnaq Accessories <no-reply@localhost>")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=f"{BUSINESS_NAME} <no-reply@localhost>")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # ---------------------------------------------------------------------------

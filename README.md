@@ -1,6 +1,8 @@
-# Rawnaq Accessories
+# rawnaq_accessories1
 
-A bilingual online store for **Rawnaq Accessories** (Instagram: [@rawnaq_accessories1](https://www.instagram.com/rawnaq_accessories1/)), a girls' accessories shop.
+A bilingual online store for **`rawnaq_accessories1`** (Instagram: [@rawnaq_accessories1](https://www.instagram.com/rawnaq_accessories1/)), a girls' accessories shop.
+
+> The official business name is written exactly as `rawnaq_accessories1` — same spelling in Arabic and English, never translated or capitalised. It lives in one place, `core.constants.BUSINESS_NAME`, and templates read it through the `{% business_name %}` tag.
 
 - **Arabic** is the default language (right-to-left), at `/ar/`. **English** is the second language (left-to-right), at `/en/`.
 - Shoppers browse **by brand**, add items to a cart without an account, and sign in only at checkout.
@@ -23,16 +25,17 @@ A bilingual online store for **Rawnaq Accessories** (Instagram: [@rawnaq_accesso
 7. [PostgreSQL configuration](#postgresql-configuration)
 8. [Environment variables (`.env`)](#environment-variables-env)
 9. [Everyday commands](#everyday-commands): migrations, demo data, owner account, server, tests, Ruff, static files, translations
-10. [Production image storage](#production-image-storage)
-11. [Deployment: Render or Railway](#deployment--render-or-railway)
-12. [Custom domain and HTTPS checklist](#custom-domain-and-https-checklist)
-13. [Database backup checklist](#database-backup-checklist)
-14. [Orders, stock and discounts](#orders-stock-and-discounts)
-15. [WhatsApp: behavior and limits](#whatsapp--behavior-and-limitations)
-16. [Future: official WhatsApp Business Platform](#future-official-whatsapp-business-platform-integration)
-17. [Security notes](#security-notes)
-18. [Privacy checklist for addresses and coordinates](#privacy-checklist-addresses-and-coordinates)
-19. [Launch checklist](#launch-checklist), including the logo spelling issue and the Arabic business name
+10. [Product codes, options and image cropping](#product-codes-options-and-image-cropping)
+11. [Production image storage](#production-image-storage)
+12. [Deployment: Render or Railway](#deployment--render-or-railway)
+13. [Custom domain and HTTPS checklist](#custom-domain-and-https-checklist)
+14. [Database backup checklist](#database-backup-checklist)
+15. [Orders, stock and discounts](#orders-stock-and-discounts)
+16. [WhatsApp: behavior and limits](#whatsapp--behavior-and-limitations)
+17. [Future: official WhatsApp Business Platform](#future-official-whatsapp-business-platform-integration)
+18. [Security notes](#security-notes)
+19. [Privacy checklist for addresses and coordinates](#privacy-checklist-addresses-and-coordinates)
+20. [Launch checklist](#launch-checklist), including the logo spelling issue
 
 ---
 
@@ -59,7 +62,9 @@ A bilingual online store for **Rawnaq Accessories** (Instagram: [@rawnaq_accesso
 **Owner dashboard (`/owner/`)**
 - Overview cards: new orders, active products, low-stock variants, customers, and sales for the last 7 and 30 days. A list of recent orders follows.
 - Orders: search and filters (live with HTMX), order detail, status updates, internal notes, a Google Maps link when the customer shared a location, and a button to message the customer on WhatsApp.
-- Products, with variants and stock, and multiple images with preview, ordering, primary image and delete.
+- Products, with **automatic product and option codes (SKUs)** — the owner never types one — and multiple images with preview, ordering, main picture and delete.
+- **Variants & stock** offers two option types per row: *Standard / قياسي* (the server fills both localized names, so only the stock quantity is needed) or *Custom option / خيار مخصص* (Arabic and English names, optional colour name and swatch).
+- An **Instagram-style crop editor** for every picture: drag, zoom, rotate, reset and apply, with the exact frame the storefront will use. It works with touch, keyboard, RTL and reduced motion, and existing pictures can be reframed with **Adjust crop**.
 - Brands, categories and promotions (create, edit, delete, with delete confirmations).
 - A stock page (low stock, out of stock, all), customer list and detail, and store settings.
 - Arabic and English labels, helpful empty states, and a responsive layout for phones.
@@ -107,8 +112,9 @@ Business rules live in services, not in templates or views.
 
 ### Data model (summary)
 
-- `SiteSettings` (single row): Arabic/English store names, WhatsApp numbers, Instagram URL, delivery fee, free-delivery threshold, delivery notice, sale banner.
+- `SiteSettings` (single row): store names (fixed to the official business name and not editable by the owner), WhatsApp numbers, Instagram URL, delivery fee, free-delivery threshold, delivery notice, sale banner.
 - `Brand`, `Category`, `Product` (`brand` foreign key, `categories` many-to-many), `ProductVariant` (stock, optional price override, color), `ProductImage`, `Promotion`.
+- `Product.sku` and `ProductVariant.sku` are generated by `catalog/skus.py` (`RAW-P-…` / `RAW-V-…`, random UUID hex). They are `editable=False`, so no form — not even a forged POST — can set or change them, and they stay unique and stable for the life of the row. Order items keep their own SKU snapshot.
 - `Cart`, `CartItem`.
 - `Order` (UUID primary key and a readable `RNQ-YYYYMMDD-XXXX` number), `OrderItem` (price and name snapshots), `OrderStatusHistory`.
 - Money is always `DecimalField` / `Decimal`, never a float.
@@ -124,12 +130,12 @@ Business rules live in services, not in templates or views.
 ├── config/                  # settings (base / development / production / test), urls, wsgi, storage helper
 ├── core/                    # site settings, health check, middleware, validators, images, template tags
 ├── accounts/                # custom user, addresses, auth views
-├── catalog/                 # catalogue models, pricing service, storefront views, seed_demo, demo_assets/
+├── catalog/                 # catalogue models, skus.py, pricing service, storefront views, seed_demo, demo_assets/
 ├── cart/                    # cart models/services/views, cleanup_carts command
 ├── orders/                  # checkout, order services (creation, status, whatsapp, notifications)
 ├── dashboard/               # /owner/ views, forms, staff permissions
 ├── templates/               # all HTML templates (storefront, account, dashboard, errors)
-├── static/                  # css/, js/, img/, fonts/ (OFL), vendor/htmx/ (0BSD)
+├── static/                  # css/, js/, img/, fonts/ (OFL), vendor/htmx/ (0BSD), vendor/cropperjs/ (MIT)
 ├── locale/                  # ar + en .po/.mo translation files
 ├── design/reference/        # original logo location + notes
 ├── scripts/                 # generate_demo_assets.py (original placeholder artwork)
@@ -331,6 +337,69 @@ python manage.py prepare_logo_mark …                 # see design/reference/RE
 
 ---
 
+## Product codes, options and image cropping
+
+### Product codes (SKUs) are generated, never typed
+
+`catalog/skus.py` produces `RAW-P-A1B2C3D4E5F6` for a product and `RAW-V-A1B2C3D4E5F6` for an
+option, from random UUID hex. The generators are field defaults, and both fields are
+`editable=False`, so:
+
+- the owner form has no SKU input at all, and a forged `sku` in a POST is ignored;
+- a code is created once and never changes when names, brands, slugs or options are edited;
+- codes are unique (enforced by the database) and safe to create concurrently — no `MAX(id) + 1`;
+- codes assigned by hand before this change are kept exactly as they are.
+
+Generated codes stay visible, read-only, in the product list, the product page ("Product code"),
+the stock page, order details and the Django admin (where they are also searchable).
+
+### Standard and custom options
+
+Each row of **Variants & stock** picks an option type:
+
+| Option type | What the owner fills in | What the server stores |
+| --- | --- | --- |
+| **Standard / قياسي** | stock, optional price override, order, active | `name_ar = "قياسي"`, `name_en = "Standard"` |
+| **Custom option / خيار مخصص** | Arabic and English names, optional colour name and swatch, stock, … | exactly what was entered |
+
+The mode is a **form-only** field (`dashboard.forms.OptionMode`): nothing was added to the database,
+because a variant is "standard" precisely when it carries those two names. JavaScript only shows and
+hides the name fields; the server fills them in, requires both names in custom mode, and falls back
+to custom for a missing or unknown mode, so a forged POST cannot skip validation. Every product
+still needs at least one active option.
+
+### The crop editor
+
+Every owner image field opens a crop modal with a locked aspect ratio, drag-to-move, a zoom slider
+and buttons, rotate left/right, reset, cancel and apply. `static/js/image-cropper.js` is one
+component shared by all of them; [Cropper.js](https://github.com/fengyuanchen/cropperjs) 1.6.2 (MIT)
+is **vendored** under `static/vendor/cropperjs/`, never loaded from a CDN, so the dashboard stays
+inside `script-src 'self'`.
+
+| Image | Ratio | Stored at most | Preview |
+| --- | --- | --- | --- |
+| Brand logo | 1:1 | 800 × 800 | circular mask, square file |
+| Brand banner (the brand page background) | 16:5 | 1920 × 600 | wide hero |
+| Category image | 1:1 | 800 × 800 | square |
+| Product image | 1:1 | 1600 × 1600 | square |
+
+Brand **cards** are drawn from the brand colours; the banner is the background of that brand's own page.
+
+The cropped picture is submitted as an ordinary multipart file (a `Blob`, never base64 in a hidden
+field), and object URLs are revoked as they are replaced. **The browser is never trusted:** the
+server re-validates the file type and decoded content, rejects SVG, animated GIF, broken and
+oversized files, applies EXIF rotation, strips all metadata including GPS, gives the file a random
+name, converts to WebP, and **centre-crops anything that arrives with the wrong aspect ratio** — so a
+plain upload with JavaScript off ends up the same shape. A crop that is already correct (within 1%)
+is left untouched. Small pictures are never upscaled; the owner gets a warning that the result may
+look soft.
+
+**Adjust crop** reframes a picture that is already stored: the current same-origin file is loaded
+back into the cropper and submitted as a replacement. Replacing a product image regenerates its
+thumbnail, and the old files are deleted only **after the database transaction commits**.
+
+---
+
 ## Production image storage
 
 Images are stored as files in a storage backend, **never in PostgreSQL**. Every upload is checked (real JPEG/PNG/WebP content, ≤ 5 MB, ≤ 6000 px, SVG rejected), then re-encoded to WebP with metadata removed.
@@ -383,7 +452,7 @@ SITE_URL=https://rawnaq.example
 DATABASE_URL=<from the platform>
 TRUSTED_PROXY_COUNT=1
 EMAIL_URL=smtp+tls://…
-DEFAULT_FROM_EMAIL=Rawnaq Accessories <no-reply@rawnaq.example>
+DEFAULT_FROM_EMAIL=rawnaq_accessories1 <no-reply@rawnaq.example>
 MEDIA_STORAGE_BACKEND=s3   (+ S3_* variables)
 ```
 
@@ -466,7 +535,7 @@ PENDING ──► RECEIVED ──► CONFIRMED ──► PREPARING ──► OUT
 After checkout:
 1. The order is saved in PostgreSQL. **The database is the authoritative record.**
 2. The confirmation page shows the order number, total and status, and a **"Send order via WhatsApp"** button.
-3. The button opens `https://wa.me/972553003327?text=…` with a short message in the customer's language. The message includes a "New Rawnaq order" heading, the order number, the customer's name, the total, and a link to the order in the owner dashboard (`https://<site>/owner/orders/<uuid>/`).
+3. The button opens `https://wa.me/972553003327?text=…` with a short message in the customer's language. The message includes a "New rawnaq_accessories1 order" heading, the order number, the customer's name, the total, and a link to the order in the owner dashboard (`https://<site>/owner/orders/<uuid>/`).
 4. The owner link **requires a logged-in staff account**. Knowing the URL is not enough: anonymous visitors are sent to the login page, and customers get "403 Forbidden".
 
 Limitations, which the site states clearly to customers:
@@ -522,9 +591,9 @@ To send owner alerts automatically later:
 
 ## Launch checklist
 
-- [ ] **Logo spelling:** the supplied logo image appears to read **`Rawnaq_accessoris1`**, but the confirmed Instagram handle is **`rawnaq_accessories1`**. Ask the owner whether to correct the logo artwork. The website itself renders the name as HTML text, so it is spelled correctly on the site.
+- [ ] **Logo spelling:** the supplied logo image appears to read **`Rawnaq_accessoris1`**, but the official business name is **`rawnaq_accessories1`**. Ask the owner whether to correct the logo artwork. The website itself renders the name as HTML text, so it is spelled correctly on the site.
 - [ ] **Logo file:** the original logo was not included in this version. Save it unmodified in `design/reference/`, then run `python manage.py prepare_logo_mark` to create the cropped face mark for the header (see `design/reference/README.md`). The current header mark is a neutral placeholder.
-- [ ] **Arabic business name:** `رونق للإكسسوارات` is **editable demo text**. Confirm the official Arabic name with the owner and update it in **Owner → Store settings**. Some Arabic interface strings also say "رونق" (for example the WhatsApp message heading "طلب جديد من رونق"). Review them in `locale/ar/LC_MESSAGES/django.po` if the name changes.
+- [x] **Business name:** settled as `rawnaq_accessories1`, used unchanged on Arabic and English pages, in the owner dashboard, in emails and in WhatsApp messages. To change it later, edit `core.constants.BUSINESS_NAME`, add a data migration for the `SiteSettings` row, and re-translate the few strings that interpolate `%(store)s` in `locale/ar/LC_MESSAGES/django.po`.
 - [ ] Confirm the delivery fee (demo: ₪20.00), the free-delivery threshold, and the delivery notice text.
 - [ ] Replace or delete the demo brands, products, images and promotions (all created by `seed_demo`). Turn off the demo sale banner.
 - [ ] Confirm the brand-verification status of every product with the owner.

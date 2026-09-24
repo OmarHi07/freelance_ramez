@@ -1,4 +1,7 @@
-/* Owner dashboard helpers: mobile menu, colour pickers, image previews, formsets, promotion scope. */
+/* Owner dashboard helpers: mobile menu, colour pickers, image previews, formsets,
+   promotion scope and the Standard/Custom option switch.
+   Everything here is progressive enhancement: the server validates and saves the
+   same result when JavaScript is unavailable. */
 (function () {
   "use strict";
 
@@ -36,8 +39,12 @@
     });
   }
 
-  function initImagePreviews() {
-    document.querySelectorAll("input[type=file]").forEach(function (input) {
+  /* Plain previews for file inputs the cropper does not handle. Object URLs are
+     revoked once the browser has decoded them, so repeated picks do not leak. */
+  function initImagePreviews(root) {
+    (root || document).querySelectorAll("input[type=file]:not([data-crop])").forEach(function (input) {
+      if (input.dataset.previewBound) return;
+      input.dataset.previewBound = "1";
       input.addEventListener("change", function () {
         var list = document.querySelector('[data-preview-list="' + input.id + '"]');
         var single = document.querySelector('[data-preview-for="' + input.id + '"]');
@@ -49,6 +56,7 @@
             var img = document.createElement("img");
             img.alt = "";
             img.src = URL.createObjectURL(file);
+            img.addEventListener("load", function () { URL.revokeObjectURL(img.src); });
             var name = document.createElement("span");
             name.textContent = file.name;
             item.appendChild(img);
@@ -57,7 +65,9 @@
           });
         }
         if (single && input.files && input.files[0]) {
-          single.src = URL.createObjectURL(input.files[0]);
+          var url = URL.createObjectURL(input.files[0]);
+          single.addEventListener("load", function () { URL.revokeObjectURL(url); }, { once: true });
+          single.src = url;
           single.hidden = false;
         }
       });
@@ -81,9 +91,48 @@
         container.insertBefore(node, template);
         total.value = String(index + 1);
         initColorInputs(node);
+        initOptionModes(node);
+        initImagePreviews(node);
+        if (window.RawnaqCropper) window.RawnaqCropper.bind(node);
         var first = node.querySelector("input:not([type=hidden])");
         if (first) first.focus();
       });
+    });
+  }
+
+  /* Variant rows: "Standard" hides the option-name and colour fields, because the
+     server fills both localized names itself. The inputs stay in the DOM (so an
+     existing colour is preserved) but are cleared when switching to Standard, so
+     what the owner sees is exactly what gets saved. */
+  function initOptionModes(root) {
+    (root || document).querySelectorAll("[data-variant-row]").forEach(function (row) {
+      if (row.dataset.optionModeBound) return;
+      row.dataset.optionModeBound = "1";
+      var radios = row.querySelectorAll("input[type=radio][data-option-mode]");
+      var custom = row.querySelector("[data-custom-fields]");
+      var note = row.querySelector("[data-standard-note]");
+      if (!radios.length || !custom) return;
+
+      function selected() {
+        for (var i = 0; i < radios.length; i += 1) if (radios[i].checked) return radios[i].value;
+        return "custom";
+      }
+
+      function sync(clearOnStandard) {
+        var standard = selected() === "standard";
+        custom.hidden = standard;
+        if (note) note.hidden = !standard;
+        if (standard && clearOnStandard) {
+          custom.querySelectorAll("input[type=text], input[type=color]").forEach(function (input) {
+            input.value = "";
+          });
+        }
+      }
+
+      radios.forEach(function (radio) {
+        radio.addEventListener("change", function () { sync(true); });
+      });
+      sync(false);
     });
   }
 
@@ -118,6 +167,7 @@
     initNav();
     initColorInputs();
     initImagePreviews();
+    initOptionModes();
     initFormsets();
     initPromotionScope();
     initSlugs();

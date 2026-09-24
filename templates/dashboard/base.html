@@ -3,9 +3,10 @@
 <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   {% include "includes/head.html" %}
+  <link rel="stylesheet" href="{% static 'vendor/cropperjs/cropper.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
   <meta name="robots" content="noindex, nofollow">
-  <title>{% block title %}{% translate "Dashboard" %}{% endblock %} · {% translate "Rawnaq owner" %}</title>
+  <title>{% block title %}{% translate "Dashboard" %}{% endblock %} · {% business_name %}</title>
 </head>
 <body class="dashboard" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   <a class="skip-link" href="#main">{% translate "Skip to main content" %}</a>
@@ -16,7 +17,7 @@
       </button>
       <a class="logo logo--small" href="{% url 'dashboard:overview' %}">
         <img class="logo__mark" src="{% static 'img/brand/logo-mark.png' %}" alt="" width="36" height="36">
-        <span class="logo__text"><span lang="en" dir="ltr">Rawnaq</span> · {% translate "Owner" %}</span>
+        <span class="logo__text"><span lang="en" dir="ltr">{% business_name %}</span> · {% translate "Owner" %}</span>
       </a>
       <div class="header-actions">
         <form class="lang-switch" action="{% url 'set_language' %}" method="post">
@@ -53,6 +54,8 @@
   <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
   <script src="{% static 'vendor/htmx/htmx.min.js' %}" defer></script>
   <script src="{% static 'js/app.js' %}" defer></script>
+  <script src="{% static 'vendor/cropperjs/cropper.min.js' %}" defer></script>
+  <script src="{% static 'js/image-cropper.js' %}" defer></script>
   <script src="{% static 'js/dashboard.js' %}" defer></script>
 </body>
 </html>

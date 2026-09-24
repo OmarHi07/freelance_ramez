@@ -25,7 +25,7 @@ class SiteSettings(LocalizedFieldsMixin, models.Model):
 
     SINGLETON_PK = 1
 
-    store_name_ar = models.CharField(_("store name (Arabic)"), max_length=120, default=constants.STORE_NAME_AR_DEMO)
+    store_name_ar = models.CharField(_("store name (Arabic)"), max_length=120, default=constants.STORE_NAME_AR)
     store_name_en = models.CharField(_("store name (English)"), max_length=120, default=constants.STORE_NAME_EN)
     whatsapp_number = models.CharField(
         _("WhatsApp number (international)"),

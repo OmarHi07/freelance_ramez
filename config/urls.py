@@ -15,9 +15,10 @@ from django.views.i18n import set_language
 from django.views.static import serve as serve_media
 
 from core import views as core_views
+from core.constants import BUSINESS_NAME
 
-admin.site.site_header = "Rawnaq Accessories · Technical admin"
-admin.site.site_title = "Rawnaq admin"
+admin.site.site_header = f"{BUSINESS_NAME} · Technical admin"
+admin.site.site_title = f"{BUSINESS_NAME} admin"
 admin.site.index_title = "Technical fallback — use /owner/ for day-to-day work"
 
 urlpatterns = [

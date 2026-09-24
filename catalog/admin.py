@@ -7,6 +7,7 @@ from catalog.models import Brand, Category, Product, ProductImage, ProductVarian
 class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
     extra = 0
+    readonly_fields = ("sku",)
     fields = (
         "name_ar",
         "name_en",
@@ -58,6 +59,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("is_active", "is_featured", "verification_status", "brand", "categories")
     list_select_related = ("brand",)
     search_fields = ("name_en", "name_ar", "sku", "variants__sku")
+    readonly_fields = ("sku",)
     prepopulated_fields = {"slug": ("name_en",)}
     filter_horizontal = ("categories",)
     inlines = [ProductVariantInline, ProductImageInline]
@@ -69,6 +71,7 @@ class ProductVariantAdmin(admin.ModelAdmin):
     list_filter = ("is_active",)
     list_select_related = ("product",)
     search_fields = ("sku", "product__name_en", "product__name_ar")
+    readonly_fields = ("sku",)
     raw_id_fields = ("product",)
 
 

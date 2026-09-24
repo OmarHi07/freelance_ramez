@@ -11,13 +11,30 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from catalog.skus import generate_product_sku, generate_variant_sku
 from core import colors
 from core.i18n import LocalizedFieldsMixin, localized_value
-from core.images import UploadTo, delete_replaced_files, image_dimensions, optimize_field_if_new, optimize_image
+from core.images import (
+    BRAND_BANNER,
+    BRAND_LOGO,
+    CATEGORY_IMAGE,
+    PRODUCT_IMAGE,
+    UploadTo,
+    capped,
+    crop_and_optimize,
+    delete_replaced_files,
+    image_dimensions,
+    optimize_field_if_new,
+)
 from core.models import TimeStampedModel
 from core.validators import IMAGE_VALIDATORS, hex_color_validator
 
 HEX_COLOR_REGEX = r"^#[0-9A-Fa-f]{6}$"
+
+# The single-option name used when a product has no real choice to make.
+# Stored in both languages so storefront pages never fall back.
+STANDARD_OPTION_NAME_AR = "قياسي"
+STANDARD_OPTION_NAME_EN = "Standard"
 
 
 class Brand(LocalizedFieldsMixin, TimeStampedModel):
@@ -58,8 +75,9 @@ class Brand(LocalizedFieldsMixin, TimeStampedModel):
         self.primary_color = colors.safe_hex(self.primary_color, colors.FALLBACK_PRIMARY)
         self.secondary_color = colors.safe_hex(self.secondary_color, colors.FALLBACK_SECONDARY)
         delete_replaced_files(self, ["logo", "banner_image"], only_uncommitted=True)
-        optimize_field_if_new(self, "logo", 800)
-        optimize_field_if_new(self, "banner_image", 1920)
+        # Square logo (shown in a circular mask) and a wide 16:5 brand-page banner.
+        optimize_field_if_new(self, "logo", BRAND_LOGO)
+        optimize_field_if_new(self, "banner_image", BRAND_BANNER)
         super().save(*args, **kwargs)
 
     @property
@@ -97,7 +115,7 @@ class Category(LocalizedFieldsMixin, TimeStampedModel):
 
     def save(self, *args, **kwargs):
         delete_replaced_files(self, ["image"], only_uncommitted=True)
-        optimize_field_if_new(self, "image", 800)
+        optimize_field_if_new(self, "image", CATEGORY_IMAGE)
         super().save(*args, **kwargs)
 
     @property
@@ -119,7 +137,14 @@ class Product(LocalizedFieldsMixin, TimeStampedModel):
     slug = models.SlugField(_("slug"), max_length=220, unique=True)
     description_ar = models.TextField(_("description (Arabic)"), blank=True)
     description_en = models.TextField(_("description (English)"), blank=True)
-    sku = models.CharField(_("SKU"), max_length=64, unique=True)
+    sku = models.CharField(
+        _("product code (SKU)"),
+        max_length=64,
+        unique=True,
+        default=generate_product_sku,
+        editable=False,
+        help_text=_("Generated automatically. It never changes once the product exists."),
+    )
     regular_price = models.DecimalField(
         _("regular price (₪)"),
         max_digits=10,
@@ -151,6 +176,14 @@ class Product(LocalizedFieldsMixin, TimeStampedModel):
 
     def __str__(self) -> str:
         return self.name_en or self.name_ar
+
+    def save(self, *args, **kwargs):
+        # Defence in depth: the field default covers normal creation, this
+        # covers rows built with an explicitly blank SKU. Existing codes are
+        # never touched, so editing a product cannot change its SKU.
+        if not self.sku:
+            self.sku = generate_product_sku()
+        super().save(*args, **kwargs)
 
     @property
     def name(self) -> str:
@@ -205,7 +238,14 @@ class ProductVariant(LocalizedFieldsMixin, TimeStampedModel):
     color_hex = models.CharField(
         _("colour swatch"), max_length=7, blank=True, validators=[hex_color_validator], help_text=_("#RRGGBB, optional")
     )
-    sku = models.CharField(_("SKU"), max_length=64, unique=True)
+    sku = models.CharField(
+        _("option code (SKU)"),
+        max_length=64,
+        unique=True,
+        default=generate_variant_sku,
+        editable=False,
+        help_text=_("Generated automatically. It never changes once the option exists."),
+    )
     stock_quantity = models.PositiveIntegerField(_("stock quantity"), default=0)
     price_override = models.DecimalField(
         _("price override (₪)"),
@@ -240,6 +280,16 @@ class ProductVariant(LocalizedFieldsMixin, TimeStampedModel):
 
     def __str__(self) -> str:
         return f"{self.product} — {self.name_en or self.name_ar}"
+
+    def save(self, *args, **kwargs):
+        if not self.sku:
+            self.sku = generate_variant_sku()
+        super().save(*args, **kwargs)
+
+    @property
+    def is_standard_option(self) -> bool:
+        """True when this option carries the localized "Standard" names."""
+        return self.name_ar == STANDARD_OPTION_NAME_AR and self.name_en == STANDARD_OPTION_NAME_EN
 
     @property
     def name(self) -> str:
@@ -303,8 +353,10 @@ class ProductImage(TimeStampedModel):
         if is_new_file:
             delete_replaced_files(self, ["image", "thumbnail"], force=True)
             source = self.image.file
-            optimized = optimize_image(source, max_edge=settings.IMAGE_OPTIMIZE_MAX_EDGE)
-            thumb = optimize_image(source, max_edge=settings.IMAGE_THUMBNAIL_EDGE)
+            # Both are square, so a card thumbnail always matches its gallery
+            # image. Replacing an image regenerates the thumbnail from the new file.
+            optimized = crop_and_optimize(source, capped(PRODUCT_IMAGE, settings.IMAGE_OPTIMIZE_MAX_EDGE))
+            thumb = crop_and_optimize(source, capped(PRODUCT_IMAGE, settings.IMAGE_THUMBNAIL_EDGE))
             self.width, self.height = image_dimensions(optimized) or (None, None)
             self.image.save("image.webp", optimized, save=False)
             self.thumbnail.save("thumb.webp", thumb, save=False)

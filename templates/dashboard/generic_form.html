@@ -10,13 +10,16 @@
   {% csrf_token %}
   {% include "includes/form_errors.html" %}
   <div class="form-grid">
+    {% if official_name %}
+      <div class="field field--readonly form-grid__wide">
+        <span class="field__label">{% translate "Official business name" %}</span>
+        <p class="readonly-value" lang="en" dir="ltr">{{ official_name }}</p>
+        <p class="field__help">{% translate "Shown across the website, emails and WhatsApp messages. It is fixed and cannot be edited here." %}</p>
+      </div>
+    {% endif %}
     {% for field in form %}
-      {% if field.name == "logo" or field.name == "banner_image" or field.name == "image" %}
-        <div class="field image-field form-grid__wide">
-          {% include "includes/form_field.html" %}
-          {% if field.value and field.value.url %}<img class="image-field__preview" src="{{ field.value.url }}" alt="" loading="lazy">{% endif %}
-          <img class="image-field__preview" data-preview-for="{{ field.auto_id }}" alt="" hidden>
-        </div>
+      {% if field.field.widget.attrs|get_item:"data-crop" %}
+        {% include "dashboard/_crop_field.html" %}
       {% else %}
         {% include "includes/form_field.html" %}
       {% endif %}

@@ -1,0 +1,39 @@
+{% load i18n rawnaq %}
+<fieldset class="formset__item variant-row{% if vform.errors %} has-errors{% endif %}" data-variant-row>
+  <legend>{% if vform.instance.pk %}{{ vform.instance.name }}{% else %}{% translate "New option" %}{% endif %}</legend>
+  {{ vform.id }}
+  {% for error in vform.non_field_errors %}<p class="field__error">{% icon "alert" %}<span>{{ error }}</span></p>{% endfor %}
+
+  <div class="field field--modes">
+    <fieldset class="option-mode">
+      <legend>{{ vform.option_mode.label }}</legend>
+      {{ vform.option_mode }}
+    </fieldset>
+    <p class="field__help">{{ vform.option_mode.help_text }}</p>
+    {% for error in vform.option_mode.errors %}<p class="field__error">{% icon "alert" %}<span>{{ error }}</span></p>{% endfor %}
+  </div>
+
+  <p class="variant-row__standard-note muted small" data-standard-note>
+    {% blocktranslate %}This option will be saved as <span lang="ar" dir="rtl">قياسي</span> / <span lang="en" dir="ltr">Standard</span>. Just enter the stock quantity below.{% endblocktranslate %}
+  </p>
+
+  <div class="form-grid form-grid--dense variant-row__custom" data-custom-fields>
+    {% include "includes/form_field.html" with field=vform.name_ar %}
+    {% include "includes/form_field.html" with field=vform.name_en %}
+    {% include "includes/form_field.html" with field=vform.color_name_ar %}
+    {% include "includes/form_field.html" with field=vform.color_name_en %}
+    {% include "includes/form_field.html" with field=vform.color_hex %}
+  </div>
+
+  <div class="form-grid form-grid--dense">
+    {% include "includes/form_field.html" with field=vform.stock_quantity %}
+    {% include "includes/form_field.html" with field=vform.price_override %}
+    {% include "includes/form_field.html" with field=vform.display_order %}
+    {% include "includes/form_field.html" with field=vform.is_active %}
+    {% if vform.instance.pk %}{% include "includes/form_field.html" with field=vform.DELETE %}{% endif %}
+  </div>
+
+  {% if vform.instance.pk %}
+    <p class="muted small">{% translate "Option code" %}: <span class="code-chip" dir="ltr">{{ vform.instance.sku }}</span></p>
+  {% endif %}
+</fieldset>

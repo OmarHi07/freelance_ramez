@@ -13,6 +13,6 @@
   <button class="button button--large button--block" type="submit">{% translate "Log in" %}</button>
 </form>
 <p class="auth__links"><a href="{% url 'accounts:password_reset' %}">{% translate "Forgot your password?" %}</a></p>
-<div class="auth__divider"><span>{% translate "New to Rawnaq?" %}</span></div>
+<div class="auth__divider"><span>{% blocktranslate with store=business_name %}New to <span lang="en" dir="ltr">{{ store }}</span>?{% endblocktranslate %}</span></div>
 <a class="button button--ghost button--block" href="{% url 'accounts:register' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Create an account" %}</a>
 {% endblock %}

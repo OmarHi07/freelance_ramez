@@ -15,6 +15,7 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import gettext as _
 
+from core.constants import BUSINESS_NAME
 from core.formatting import format_money
 from orders.models import Order
 
@@ -58,7 +59,7 @@ def build_order_message(order: Order, owner_url: str, language: str | None = Non
     language = language or order.language or settings.LANGUAGE_CODE
     with translation.override(language):
         lines = [
-            _("New Rawnaq order"),
+            _("New %(store)s order") % {"store": BUSINESS_NAME},
             _("Order number: %(number)s") % {"number": order.number},
             _("Customer: %(name)s") % {"name": order.customer_name},
             _("Total: %(total)s") % {"total": format_money(order.total)},

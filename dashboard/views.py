@@ -20,6 +20,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, T
 
 from accounts.models import User
 from catalog.models import Brand, Category, Product, ProductImage, ProductVariant, Promotion
+from core.constants import BUSINESS_NAME
 from core.models import SiteSettings
 from dashboard.forms import (
     BrandForm,
@@ -184,12 +185,24 @@ class OrderNotesUpdateView(StaffRequiredMixin, View):
 # ---------------------------------------------------------------------------
 # Generic CRUD helpers
 # ---------------------------------------------------------------------------
+def show_image_warnings(request, *forms) -> None:
+    """Surface "this picture is small" notes without blocking the save."""
+    seen = set()
+    for form in forms:
+        for warning in getattr(form, "image_warnings", ()):
+            text = str(warning)
+            if text not in seen:
+                seen.add(text)
+                messages.warning(request, text)
+
+
 class SuccessMessageMixin:
     success_text = gettext_lazy("Saved.")
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, str(self.success_text))
+        show_image_warnings(self.request, form)
         return response
 
 
@@ -392,6 +405,7 @@ class ProductEditMixin(StaffRequiredMixin):
                 image_formset.save()
                 self._save_new_images(product, form.cleaned_data.get("new_images") or [])
             messages.success(request, _("Product saved."))
+            show_image_warnings(request, form, *image_formset.forms)
             if "save_continue" in request.POST:
                 return redirect("dashboard:product_update", pk=product.pk)
             return redirect("dashboard:product_list")
@@ -594,7 +608,7 @@ class SiteSettingsUpdateView(StaffRequiredMixin, SuccessMessageMixin, UpdateView
     template_name = "dashboard/generic_form.html"
     success_url = reverse_lazy("dashboard:settings")
     success_text = gettext_lazy("Store settings saved.")
-    extra_context = {"title": gettext_lazy("Store settings")}
+    extra_context = {"title": gettext_lazy("Store settings"), "official_name": BUSINESS_NAME}
 
     def get_object(self, queryset=None):
         return SiteSettings.load()

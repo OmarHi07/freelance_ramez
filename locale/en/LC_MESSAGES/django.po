@@ -8,2707 +8,2883 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rawnaq-accessories 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 17:10+0300\n"
+"POT-Creation-Date: 2026-09-24 17:30+0300\n"
 "PO-Revision-Date: 2026-09-21 17:00+0300\n"
-"Last-Translator: Rawnaq Accessories\n"
-"Language-Team: Rawnaq Accessories\n"
+"Last-Translator: rawnaq_accessories1\n"
+"Language-Team: rawnaq_accessories1\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accounts/admin.py:38
+#: .\accounts\admin.py:38
 msgid "Personal info"
 msgstr ""
 
-#: accounts/admin.py:39
+#: .\accounts\admin.py:39
 msgid "Permissions"
 msgstr ""
 
-#: accounts/admin.py:40
+#: .\accounts\admin.py:40
 msgid "Important dates"
 msgstr ""
 
-#: accounts/apps.py:7
+#: .\accounts\apps.py:7
 msgid "Accounts"
 msgstr ""
 
-#: accounts/forms.py:14 templates/accounts/_account_nav.html:5
+#: .\accounts\forms.py:14 .\templates\accounts\_account_nav.html:5
 msgid "Password"
 msgstr ""
 
-#: accounts/forms.py:17
+#: .\accounts\forms.py:17
 msgid "At least 10 characters. Avoid common or all-numeric passwords."
 msgstr ""
 
-#: accounts/forms.py:20
+#: .\accounts\forms.py:20
 msgid "Confirm password"
 msgstr ""
 
-#: accounts/forms.py:42
+#: .\accounts\forms.py:42
 msgid "An account with this email already exists."
 msgstr ""
 
-#: accounts/forms.py:52
+#: .\accounts\forms.py:52
 msgid "The two passwords do not match."
 msgstr ""
 
-#: accounts/forms.py:75 templates/accounts/profile.html:13
+#: .\accounts\forms.py:75 .\templates\accounts\profile.html:13
 msgid "Email"
 msgstr ""
 
-#: accounts/forms.py:80
+#: .\accounts\forms.py:80
 msgid "The email or password is incorrect."
 msgstr ""
 
-#: accounts/forms.py:81
+#: .\accounts\forms.py:81
 msgid "This account is inactive."
 msgstr ""
 
-#: accounts/models.py:47
+#: .\accounts\models.py:47
 msgid "email address"
 msgstr ""
 
-#: accounts/models.py:48
+#: .\accounts\models.py:48
 msgid "full name"
 msgstr ""
 
-#: accounts/models.py:49
+#: .\accounts\models.py:49
 msgid "phone number"
 msgstr ""
 
-#: accounts/models.py:50 catalog/models.py:40 catalog/models.py:87
-#: catalog/models.py:136 catalog/models.py:220
+#: .\accounts\models.py:50 .\catalog\models.py:57 .\catalog\models.py:105
+#: .\catalog\models.py:161 .\catalog\models.py:260
 msgid "active"
 msgstr ""
 
-#: accounts/models.py:52
+#: .\accounts\models.py:52
 msgid "staff status"
 msgstr ""
 
-#: accounts/models.py:54
+#: .\accounts\models.py:54
 msgid "Staff members can access the owner dashboard."
 msgstr ""
 
-#: accounts/models.py:56
+#: .\accounts\models.py:56
 msgid "date joined"
 msgstr ""
 
-#: accounts/models.py:65
+#: .\accounts\models.py:65
 msgid "user"
 msgstr ""
 
-#: accounts/models.py:66
+#: .\accounts\models.py:66
 msgid "users"
 msgstr ""
 
-#: accounts/models.py:89 cart/models.py:26 orders/models.py:39
+#: .\accounts\models.py:89 .\cart\models.py:26 .\orders\models.py:39
 msgid "customer"
 msgstr ""
 
-#: accounts/models.py:90
+#: .\accounts\models.py:90
 msgid "label"
 msgstr ""
 
-#: accounts/models.py:90
+#: .\accounts\models.py:90
 msgid "For example: Home, Work"
 msgstr ""
 
-#: accounts/models.py:91 orders/models.py:46
+#: .\accounts\models.py:91 .\orders\models.py:46
 msgid "city / town"
 msgstr ""
 
-#: accounts/models.py:92 orders/models.py:47
+#: .\accounts\models.py:92 .\orders\models.py:47
 msgid "street"
 msgstr ""
 
-#: accounts/models.py:93 orders/models.py:48
+#: .\accounts\models.py:93 .\orders\models.py:48
 msgid "building / house number"
 msgstr ""
 
-#: accounts/models.py:94 orders/models.py:49
+#: .\accounts\models.py:94 .\orders\models.py:49
 msgid "apartment"
 msgstr ""
 
-#: accounts/models.py:95 orders/models.py:50
+#: .\accounts\models.py:95 .\orders\models.py:50
 msgid "postal code"
 msgstr ""
 
-#: accounts/models.py:96 orders/models.py:51
+#: .\accounts\models.py:96 .\orders\models.py:51
 msgid "landmark or delivery notes"
 msgstr ""
 
-#: accounts/models.py:97
+#: .\accounts\models.py:97
 msgid "default address"
 msgstr ""
 
-#: accounts/models.py:100
+#: .\accounts\models.py:100
 msgid "address"
 msgstr ""
 
-#: accounts/models.py:101
+#: .\accounts\models.py:101
 msgid "addresses"
 msgstr ""
 
-#: accounts/models.py:116 orders/models.py:137
+#: .\accounts\models.py:116 .\orders\models.py:137
 #, python-format
 msgid "Apt. %(apartment)s"
 msgstr ""
 
-#: accounts/views.py:28
+#: .\accounts\views.py:31
 #, python-format
-msgid "Welcome to Rawnaq Accessories, %(name)s!"
+msgid "Welcome to %(store)s, %(name)s!"
 msgstr ""
 
-#: accounts/views.py:74
+#: .\accounts\views.py:78
 msgid "Your password was changed."
 msgstr ""
 
-#: accounts/views.py:84
+#: .\accounts\views.py:88
 msgid "Your profile was updated."
 msgstr ""
 
-#: accounts/views.py:104
+#: .\accounts\views.py:108
 msgid "Address saved."
 msgstr ""
 
-#: accounts/views.py:116
+#: .\accounts\views.py:120
 msgid "Address updated."
 msgstr ""
 
-#: accounts/views.py:133
+#: .\accounts\views.py:137
 msgid "Address deleted."
 msgstr ""
 
-#: cart/apps.py:7 templates/includes/footer.html:28
-#: templates/includes/header.html:32
+#: .\cart\apps.py:7 .\templates\includes\footer.html:28
+#: .\templates\includes\header.html:32
 msgid "Cart"
 msgstr ""
 
-#: cart/models.py:30 cart/models.py:39
+#: .\cart\models.py:30 .\cart\models.py:39
 msgid "cart"
 msgstr ""
 
-#: cart/models.py:31
+#: .\cart\models.py:31
 msgid "carts"
 msgstr ""
 
-#: cart/models.py:41 orders/models.py:165
+#: .\cart\models.py:41 .\orders\models.py:165
 msgid "variant"
 msgstr ""
 
-#: cart/models.py:43 orders/models.py:177
+#: .\cart\models.py:43 .\orders\models.py:177
 msgid "quantity"
 msgstr ""
 
-#: cart/models.py:46
+#: .\cart\models.py:46
 msgid "cart item"
 msgstr ""
 
-#: cart/models.py:47
+#: .\cart\models.py:47
 msgid "cart items"
 msgstr ""
 
-#: cart/views.py:14
+#: .\cart\views.py:14
 msgid "Sorry, this item is no longer available."
 msgstr ""
 
-#: cart/views.py:15
+#: .\cart\views.py:15
 msgid "Sorry, this item is out of stock."
 msgstr ""
 
-#: cart/views.py:16
+#: .\cart\views.py:16
 msgid "That item is no longer in your cart."
 msgstr ""
 
-#: cart/views.py:21
+#: .\cart\views.py:21
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: cart/views.py:33
+#: .\cart\views.py:33
 #, python-format
 msgid "We adjusted the quantity of “%(name)s” to the available stock."
 msgstr ""
 
-#: cart/views.py:42
+#: .\cart\views.py:42
 msgid "Please choose a valid option and quantity."
 msgstr ""
 
-#: cart/views.py:56
+#: .\cart\views.py:56
 #, python-format
 msgid "Added to your cart: %(name)s"
 msgstr ""
 
-#: cart/views.py:77
+#: .\cart\views.py:77
 msgid "Please enter a valid quantity."
 msgstr ""
 
-#: cart/views.py:86
+#: .\cart\views.py:86
 msgid "The item was removed from your cart."
 msgstr ""
 
-#: catalog/apps.py:7
+#: .\catalog\apps.py:7
 msgid "Catalogue"
 msgstr ""
 
-#: catalog/forms.py:10
+#: .\catalog\forms.py:10
 msgid "All items"
 msgstr ""
 
-#: catalog/forms.py:11 templates/catalog/product_detail.html:62
-#: templates/catalog/product_detail.html:77
+#: .\catalog\forms.py:11 .\templates\catalog\product_detail.html:62
+#: .\templates\catalog\product_detail.html:77
 msgid "In stock"
 msgstr ""
 
-#: catalog/forms.py:12 templates/catalog/product_detail.html:62
-#: templates/catalog/product_detail.html:78
-#: templates/dashboard/stock/list.html:8
+#: .\catalog\forms.py:12 .\templates\catalog\product_detail.html:62
+#: .\templates\catalog\product_detail.html:78
+#: .\templates\dashboard\stock\list.html:8
 msgid "Out of stock"
 msgstr ""
 
-#: catalog/forms.py:14
+#: .\catalog\forms.py:14
 msgid "Any status"
 msgstr ""
 
-#: catalog/forms.py:16
+#: .\catalog\forms.py:16
 msgid "Newest"
 msgstr ""
 
-#: catalog/forms.py:17
+#: .\catalog\forms.py:17
 msgid "Price: low to high"
 msgstr ""
 
-#: catalog/forms.py:18
+#: .\catalog\forms.py:18
 msgid "Price: high to low"
 msgstr ""
 
-#: catalog/forms.py:22 catalog/models.py:327
-#: templates/dashboard/categories/list.html:12
-#: templates/dashboard/categories/list.html:16
+#: .\catalog\forms.py:22 .\catalog\models.py:379
+#: .\templates\dashboard\categories\list.html:12
+#: .\templates\dashboard\categories\list.html:16
 msgid "Category"
 msgstr ""
 
-#: catalog/forms.py:22
+#: .\catalog\forms.py:22
 msgid "All categories"
 msgstr ""
 
-#: catalog/forms.py:24
+#: .\catalog\forms.py:24
 msgid "Availability"
 msgstr ""
 
-#: catalog/forms.py:25
+#: .\catalog\forms.py:25
 msgid "Brand confirmation"
 msgstr ""
 
-#: catalog/forms.py:31
+#: .\catalog\forms.py:31
 msgid "Min price (₪)"
 msgstr ""
 
-#: catalog/forms.py:39
+#: .\catalog\forms.py:39
 msgid "Max price (₪)"
 msgstr ""
 
-#: catalog/forms.py:42
+#: .\catalog\forms.py:42
 msgid "Sort by"
 msgstr ""
 
-#: catalog/models.py:24 catalog/models.py:82 catalog/models.py:117
-#: catalog/models.py:340
+#: .\catalog\models.py:41 .\catalog\models.py:100 .\catalog\models.py:135
+#: .\catalog\models.py:392
 msgid "name (Arabic)"
 msgstr ""
 
-#: catalog/models.py:25 catalog/models.py:83 catalog/models.py:118
-#: catalog/models.py:341
+#: .\catalog\models.py:42 .\catalog\models.py:101 .\catalog\models.py:136
+#: .\catalog\models.py:393
 msgid "name (English)"
 msgstr ""
 
-#: catalog/models.py:26 catalog/models.py:84 catalog/models.py:119
+#: .\catalog\models.py:43 .\catalog\models.py:102 .\catalog\models.py:137
 msgid "slug"
 msgstr ""
 
-#: catalog/models.py:28
+#: .\catalog\models.py:45
 msgid "logo / image"
 msgstr ""
 
-#: catalog/models.py:31
+#: .\catalog\models.py:48
 msgid "banner image"
 msgstr ""
 
-#: catalog/models.py:34
+#: .\catalog\models.py:51
 msgid "primary colour"
 msgstr ""
 
-#: catalog/models.py:37
+#: .\catalog\models.py:54
 msgid "secondary colour"
 msgstr ""
 
-#: catalog/models.py:39 catalog/models.py:86 catalog/models.py:219
-#: catalog/models.py:271
+#: .\catalog\models.py:56 .\catalog\models.py:104 .\catalog\models.py:259
+#: .\catalog\models.py:321
 msgid "display order"
 msgstr ""
 
-#: catalog/models.py:43 catalog/models.py:115 catalog/models.py:352
-#: orders/models.py:174
+#: .\catalog\models.py:60 .\catalog\models.py:133 .\catalog\models.py:404
+#: .\orders\models.py:174
 msgid "brand"
 msgstr ""
 
-#: catalog/models.py:44
+#: .\catalog\models.py:61
 msgid "brands"
 msgstr ""
 
-#: catalog/models.py:85 catalog/models.py:267
+#: .\catalog\models.py:103 .\catalog\models.py:317
 msgid "image"
 msgstr ""
 
-#: catalog/models.py:90 catalog/models.py:360
+#: .\catalog\models.py:108 .\catalog\models.py:412
 msgid "category"
 msgstr ""
 
-#: catalog/models.py:91 catalog/models.py:116
+#: .\catalog\models.py:109 .\catalog\models.py:134
 msgid "categories"
 msgstr ""
 
-#: catalog/models.py:109 templates/includes/verification_badge.html:1
+#: .\catalog\models.py:127 .\templates\includes\verification_badge.html:1
 msgid "Confirmed by brand"
 msgstr ""
 
-#: catalog/models.py:110 templates/includes/verification_badge.html:1
+#: .\catalog\models.py:128 .\templates\includes\verification_badge.html:1
 msgid "Not confirmed by brand"
 msgstr ""
 
-#: catalog/models.py:111 templates/includes/verification_badge.html:1
+#: .\catalog\models.py:129 .\templates\includes\verification_badge.html:1
 msgid "Status unknown"
 msgstr ""
 
-#: catalog/models.py:120
+#: .\catalog\models.py:138
 msgid "description (Arabic)"
 msgstr ""
 
-#: catalog/models.py:121
+#: .\catalog\models.py:139
 msgid "description (English)"
 msgstr ""
 
-#: catalog/models.py:122 catalog/models.py:208 orders/models.py:176
-#: templates/dashboard/orders/detail.html:19
-#: templates/dashboard/orders/detail.html:24
-#: templates/dashboard/stock/_row.html:4 templates/dashboard/stock/list.html:14
-msgid "SKU"
+#: .\catalog\models.py:141
+msgid "product code (SKU)"
 msgstr ""
 
-#: catalog/models.py:124
+#: .\catalog\models.py:146
+msgid "Generated automatically. It never changes once the product exists."
+msgstr ""
+
+#: .\catalog\models.py:149
 msgid "regular price (₪)"
 msgstr ""
 
-#: catalog/models.py:130
+#: .\catalog\models.py:155
 msgid "brand verification"
 msgstr ""
 
-#: catalog/models.py:135
+#: .\catalog\models.py:160
 msgid "featured"
 msgstr ""
 
-#: catalog/models.py:139 catalog/models.py:200 catalog/models.py:266
-#: catalog/models.py:363 orders/models.py:157
+#: .\catalog\models.py:164 .\catalog\models.py:233 .\catalog\models.py:316
+#: .\catalog\models.py:415 .\orders\models.py:157
 msgid "product"
 msgstr ""
 
-#: catalog/models.py:140
+#: .\catalog\models.py:165
 msgid "products"
 msgstr ""
 
-#: catalog/models.py:201
+#: .\catalog\models.py:234
 msgid "variant name (Arabic)"
 msgstr ""
 
-#: catalog/models.py:202
+#: .\catalog\models.py:235
 msgid "variant name (English)"
 msgstr ""
 
-#: catalog/models.py:203
+#: .\catalog\models.py:236
 msgid "colour name (Arabic)"
 msgstr ""
 
-#: catalog/models.py:204
+#: .\catalog\models.py:237
 msgid "colour name (English)"
 msgstr ""
 
-#: catalog/models.py:206
+#: .\catalog\models.py:239
 msgid "colour swatch"
 msgstr ""
 
-#: catalog/models.py:206
+#: .\catalog\models.py:239
 msgid "#RRGGBB, optional"
 msgstr ""
 
-#: catalog/models.py:209
+#: .\catalog\models.py:242
+msgid "option code (SKU)"
+msgstr ""
+
+#: .\catalog\models.py:247
+msgid "Generated automatically. It never changes once the option exists."
+msgstr ""
+
+#: .\catalog\models.py:249
 msgid "stock quantity"
 msgstr ""
 
-#: catalog/models.py:211
+#: .\catalog\models.py:251
 msgid "price override (₪)"
 msgstr ""
 
-#: catalog/models.py:217
+#: .\catalog\models.py:257
 msgid "Leave empty to use the product's regular price."
 msgstr ""
 
-#: catalog/models.py:223
+#: .\catalog\models.py:263
 msgid "product variant"
 msgstr ""
 
-#: catalog/models.py:224
+#: .\catalog\models.py:264
 msgid "product variants"
 msgstr ""
 
-#: catalog/models.py:268
+#: .\catalog\models.py:318
 msgid "thumbnail"
 msgstr ""
 
-#: catalog/models.py:269
+#: .\catalog\models.py:319
 msgid "alt text (Arabic)"
 msgstr ""
 
-#: catalog/models.py:270
+#: .\catalog\models.py:320
 msgid "alt text (English)"
 msgstr ""
 
-#: catalog/models.py:272
+#: .\catalog\models.py:322
 msgid "primary image"
 msgstr ""
 
-#: catalog/models.py:277
+#: .\catalog\models.py:327
 msgid "product image"
 msgstr ""
 
-#: catalog/models.py:278
+#: .\catalog\models.py:328
 msgid "product images"
 msgstr ""
 
-#: catalog/models.py:320
+#: .\catalog\models.py:372
 msgid "Percentage"
 msgstr ""
 
-#: catalog/models.py:321
+#: .\catalog\models.py:373
 msgid "Fixed amount (₪)"
 msgstr ""
 
-#: catalog/models.py:325
+#: .\catalog\models.py:377
 msgid "Entire store"
 msgstr ""
 
-#: catalog/models.py:326 dashboard/forms.py:280
-#: templates/catalog/product_detail.html:104
-#: templates/dashboard/brands/list.html:12
-#: templates/dashboard/brands/list.html:16
-#: templates/dashboard/products/list.html:18
-#: templates/dashboard/products/list.html:24
+#: .\catalog\models.py:378 .\dashboard\forms.py:498
+#: .\templates\catalog\product_detail.html:104
+#: .\templates\dashboard\brands\list.html:12
+#: .\templates\dashboard\brands\list.html:16
+#: .\templates\dashboard\products\list.html:18
+#: .\templates\dashboard\products\list.html:24
 msgid "Brand"
 msgstr ""
 
-#: catalog/models.py:328
+#: .\catalog\models.py:380
 msgid "Individual product"
 msgstr ""
 
-#: catalog/models.py:342
+#: .\catalog\models.py:394
 msgid "discount type"
 msgstr ""
 
-#: catalog/models.py:344
+#: .\catalog\models.py:396
 msgid "value"
 msgstr ""
 
-#: catalog/models.py:348
+#: .\catalog\models.py:400
 msgid "Percentage (1-100) or a fixed amount in shekels."
 msgstr ""
 
-#: catalog/models.py:350
+#: .\catalog\models.py:402
 msgid "applies to"
 msgstr ""
 
-#: catalog/models.py:365
+#: .\catalog\models.py:417
 msgid "starts at"
 msgstr ""
 
-#: catalog/models.py:366
+#: .\catalog\models.py:418
 msgid "ends at"
 msgstr ""
 
-#: catalog/models.py:366
+#: .\catalog\models.py:418
 msgid "Leave empty for no end date."
 msgstr ""
 
-#: catalog/models.py:367
+#: .\catalog\models.py:419
 msgid "enabled"
 msgstr ""
 
-#: catalog/models.py:369
+#: .\catalog\models.py:421
 msgid "priority"
 msgstr ""
 
-#: catalog/models.py:372
+#: .\catalog\models.py:424
 msgid ""
 "Higher priority wins when several promotions match an item. With equal "
 "priority, the biggest discount is applied."
 msgstr ""
 
-#: catalog/models.py:380 orders/models.py:175
+#: .\catalog\models.py:432 .\orders\models.py:175
 msgid "promotion"
 msgstr ""
 
-#: catalog/models.py:381
+#: .\catalog\models.py:433
 msgid "promotions"
 msgstr ""
 
-#: catalog/models.py:421
+#: .\catalog\models.py:473
 msgid "The discount value must be greater than zero."
 msgstr ""
 
-#: catalog/models.py:423
+#: .\catalog\models.py:475
 msgid "A percentage discount cannot exceed 100%."
 msgstr ""
 
-#: catalog/models.py:431
+#: .\catalog\models.py:483
 #, python-format
 msgid "A fixed discount cannot be larger than the product price (%(price)s)."
 msgstr ""
 
-#: catalog/models.py:435
+#: .\catalog\models.py:487
 msgid "The end date must be after the start date."
 msgstr ""
 
-#: catalog/models.py:437
+#: .\catalog\models.py:489
 msgid "Choose the brand this promotion applies to."
 msgstr ""
 
-#: catalog/models.py:438
+#: .\catalog\models.py:490
 msgid "Choose the category this promotion applies to."
 msgstr ""
 
-#: catalog/models.py:439
+#: .\catalog\models.py:491
 msgid "Choose the product this promotion applies to."
 msgstr ""
 
-#: config/settings/base.py:174
+#: .\config\settings\base.py:175
 msgid "Arabic"
 msgstr ""
 
-#: config/settings/base.py:175
+#: .\config\settings\base.py:176
 msgid "English"
 msgstr ""
 
-#: core/apps.py:7
+#: .\core\apps.py:7
 msgid "Store core"
 msgstr ""
 
-#: core/models.py:16
+#: .\core\images.py:158
+#, python-format
+msgid ""
+"That picture is small (ideally at least %(width)s×%(height)s pixels), so it "
+"may look soft on the website. It was saved anyway."
+msgstr ""
+
+#: .\core\models.py:16
 msgid "created at"
 msgstr ""
 
-#: core/models.py:17 core/models.py:62
+#: .\core\models.py:17 .\core\models.py:62
 msgid "updated at"
 msgstr ""
 
-#: core/models.py:28
+#: .\core\models.py:28
 msgid "store name (Arabic)"
 msgstr ""
 
-#: core/models.py:29
+#: .\core\models.py:29
 msgid "store name (English)"
 msgstr ""
 
-#: core/models.py:31
+#: .\core\models.py:31
 msgid "WhatsApp number (international)"
 msgstr ""
 
-#: core/models.py:35
+#: .\core\models.py:35
 msgid ""
 "Digits only with country code, used for wa.me links. Example: 972553003327"
 msgstr ""
 
-#: core/models.py:38
+#: .\core\models.py:38
 msgid "WhatsApp number (as displayed)"
 msgstr ""
 
-#: core/models.py:40 dashboard/forms.py:304
+#: .\core\models.py:40 .\dashboard\forms.py:522
 msgid "Instagram URL"
 msgstr ""
 
-#: core/models.py:42
+#: .\core\models.py:42
 msgid "default delivery fee"
 msgstr ""
 
-#: core/models.py:49
+#: .\core\models.py:49
 msgid "free-delivery threshold"
 msgstr ""
 
-#: core/models.py:55
+#: .\core\models.py:55
 msgid ""
 "Orders at or above this amount (after discounts) get free delivery. Leave "
 "empty to disable."
 msgstr ""
 
-#: core/models.py:57
+#: .\core\models.py:57
 msgid "delivery notice (Arabic)"
 msgstr ""
 
-#: core/models.py:58
+#: .\core\models.py:58
 msgid "delivery notice (English)"
 msgstr ""
 
-#: core/models.py:59
+#: .\core\models.py:59
 msgid "sale banner text (Arabic)"
 msgstr ""
 
-#: core/models.py:60
+#: .\core\models.py:60
 msgid "sale banner text (English)"
 msgstr ""
 
-#: core/models.py:61
+#: .\core\models.py:61
 msgid "show sale banner"
 msgstr ""
 
-#: core/models.py:65 core/models.py:66
+#: .\core\models.py:65 .\core\models.py:66
 msgid "site settings"
 msgstr ""
 
-#: core/models.py:77
+#: .\core\models.py:77
 msgid "Site settings"
 msgstr ""
 
-#: core/validators.py:18
+#: .\core\validators.py:18
 msgid "Enter a colour as a six-digit hexadecimal value, for example #F8C8DC."
 msgstr ""
 
-#: core/validators.py:24
+#: .\core\validators.py:24
 msgid ""
 "Use digits only, including the country code, without + or spaces (for "
 "example 972553003327)."
 msgstr ""
 
-#: core/validators.py:30
+#: .\core\validators.py:30
 msgid "Enter a valid phone number, for example 0501234567."
 msgstr ""
 
-#: core/validators.py:70
+#: .\core\validators.py:70
 #, python-format
 msgid "Image files must be smaller than %(size)s MB."
 msgstr ""
 
-#: core/validators.py:81 core/validators.py:86
+#: .\core\validators.py:81 .\core\validators.py:86
 msgid "Upload a valid JPEG, PNG or WebP image."
 msgstr ""
 
-#: core/validators.py:90
+#: .\core\validators.py:90
 #, python-format
 msgid "Images must be at most %(limit)s pixels wide and tall."
 msgstr ""
 
-#: dashboard/apps.py:7 templates/includes/header.html:43
+#: .\dashboard\apps.py:7 .\templates\includes\header.html:43
 msgid "Owner dashboard"
 msgstr ""
 
-#: dashboard/forms.py:49
+#: .\dashboard\forms.py:53
+msgid "Position and crop the picture"
+msgstr ""
+
+#: .\dashboard\forms.py:54
+msgid "Drag the picture to move it, then zoom until it fills the frame."
+msgstr ""
+
+#: .\dashboard\forms.py:55
+msgid "Zoom"
+msgstr ""
+
+#: .\dashboard\forms.py:56
+msgid "Zoom in"
+msgstr ""
+
+#: .\dashboard\forms.py:57
+msgid "Zoom out"
+msgstr ""
+
+#: .\dashboard\forms.py:58
+msgid "Rotate left"
+msgstr ""
+
+#: .\dashboard\forms.py:59
+msgid "Rotate right"
+msgstr ""
+
+#: .\dashboard\forms.py:60 .\templates\dashboard\customers\list.html:8
+#: .\templates\dashboard\orders\list.html:11
+#: .\templates\dashboard\products\list.html:13
+msgid "Reset"
+msgstr ""
+
+#: .\dashboard\forms.py:61 .\templates\accounts\address_confirm_delete.html:12
+#: .\templates\accounts\address_form.html:24
+#: .\templates\dashboard\confirm_delete.html:14
+#: .\templates\dashboard\generic_form.html:30
+#: .\templates\dashboard\promotions\form.html:29
+msgid "Cancel"
+msgstr ""
+
+#: .\dashboard\forms.py:62
+msgid "Use this crop"
+msgstr ""
+
+#: .\dashboard\forms.py:63 .\templates\dashboard\_crop_field.html:12
+#: .\templates\dashboard\products\form.html:73
+msgid "Adjust crop"
+msgstr ""
+
+#: .\dashboard\forms.py:64 .\templates\cart\partials\cart_body.html:39
+msgid "Remove"
+msgstr ""
+
+#: .\dashboard\forms.py:65 .\templates\dashboard\products\form.html:70
+msgid "Main picture"
+msgstr ""
+
+#: .\dashboard\forms.py:108 .\dashboard\forms.py:367
+msgid "Square pictures look best on product cards and in the gallery."
+msgstr ""
+
+#: .\dashboard\forms.py:119
 #, python-format
 msgid "You can upload up to %(count)s images at a time."
 msgstr ""
 
-#: dashboard/forms.py:99
+#: .\dashboard\forms.py:178
+msgid "Shown as a circle on brand cards, and saved as a square picture."
+msgstr ""
+
+#: .\dashboard\forms.py:182
+msgid "The wide background picture at the top of this brand page."
+msgstr ""
+
+#: .\dashboard\forms.py:186
+msgid "Square picture used as the round brand badge."
+msgstr ""
+
+#: .\dashboard\forms.py:188
+msgid ""
+"Background picture for this brand page. Brand cards use the brand colours "
+"instead."
+msgstr ""
+
+#: .\dashboard\forms.py:211
+msgid "Square picture used wherever this category is shown."
+msgstr ""
+
+#: .\dashboard\forms.py:215
 msgid "Add images"
 msgstr ""
 
-#: dashboard/forms.py:134
+#: .\dashboard\forms.py:248
 #, python-format
 msgid ""
 "JPEG, PNG or WebP, up to %(size)s MB each. You can select several files."
 msgstr ""
 
-#: dashboard/forms.py:181
+#: .\dashboard\forms.py:262
+msgid "Standard / قياسي"
+msgstr ""
+
+#: .\dashboard\forms.py:263
+msgid "Custom option / خيار مخصص"
+msgstr ""
+
+#: .\dashboard\forms.py:276
+msgid "Option type"
+msgstr ""
+
+#: .\dashboard\forms.py:281
+msgid ""
+"Choose “Standard” when the product has only one option. The names are filled "
+"in for you."
+msgstr ""
+
+#: .\dashboard\forms.py:344
+msgid "Enter the Arabic option name, or switch to “Standard”."
+msgstr ""
+
+#: .\dashboard\forms.py:346
+msgid "Enter the English option name, or switch to “Standard”."
+msgstr ""
+
+#: .\dashboard\forms.py:373
+msgid "Replace picture"
+msgstr ""
+
+#: .\dashboard\forms.py:374
+msgid "Leave empty to keep the current picture."
+msgstr ""
+
+#: .\dashboard\forms.py:390
 msgid "Choose only one primary image."
 msgstr ""
 
-#: dashboard/forms.py:193
+#: .\dashboard\forms.py:411
 msgid "A product needs at least one active variant (for example “Standard”)."
 msgstr ""
 
-#: dashboard/forms.py:245 dashboard/forms.py:277 dashboard/forms.py:291
-#: templates/dashboard/customers/list.html:8
+#: .\dashboard\forms.py:463 .\dashboard\forms.py:495 .\dashboard\forms.py:509
+#: .\templates\dashboard\customers\list.html:8
 msgid "Search"
 msgstr ""
 
-#: dashboard/forms.py:247
+#: .\dashboard\forms.py:465
 msgid "Order number, name, phone or email"
 msgstr ""
 
-#: dashboard/forms.py:250 dashboard/forms.py:283
-#: templates/dashboard/brands/list.html:12
-#: templates/dashboard/brands/list.html:20
-#: templates/dashboard/categories/list.html:12
-#: templates/dashboard/categories/list.html:20
-#: templates/dashboard/orders/_table.html:2
-#: templates/dashboard/orders/_table.html:9
-#: templates/dashboard/products/list.html:18
-#: templates/dashboard/products/list.html:27
-#: templates/dashboard/promotions/list.html:13
-#: templates/dashboard/promotions/list.html:22
-#: templates/orders/confirmation.html:12
+#: .\dashboard\forms.py:468 .\dashboard\forms.py:501
+#: .\templates\dashboard\brands\list.html:12
+#: .\templates\dashboard\brands\list.html:20
+#: .\templates\dashboard\categories\list.html:12
+#: .\templates\dashboard\categories\list.html:20
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:9
+#: .\templates\dashboard\products\list.html:18
+#: .\templates\dashboard\products\list.html:27
+#: .\templates\dashboard\promotions\list.html:13
+#: .\templates\dashboard\promotions\list.html:22
+#: .\templates\orders\confirmation.html:12
 msgid "Status"
 msgstr ""
 
-#: dashboard/forms.py:250
+#: .\dashboard\forms.py:468
 msgid "All statuses"
 msgstr ""
 
-#: dashboard/forms.py:252 templates/includes/price.html:2
+#: .\dashboard\forms.py:470 .\templates\includes\price.html:2
 msgid "From"
 msgstr ""
 
-#: dashboard/forms.py:253
+#: .\dashboard\forms.py:471
 msgid "To"
 msgstr ""
 
-#: dashboard/forms.py:257
+#: .\dashboard\forms.py:475
 msgid "New status"
 msgstr ""
 
-#: dashboard/forms.py:258
+#: .\dashboard\forms.py:476
 msgid "Note (optional)"
 msgstr ""
 
-#: dashboard/forms.py:277
+#: .\dashboard\forms.py:495
 msgid "Name or SKU"
 msgstr ""
 
-#: dashboard/forms.py:280 templates/core/home.html:39
-#: templates/includes/footer.html:27
+#: .\dashboard\forms.py:498 .\templates\core\home.html:39
+#: .\templates\includes\footer.html:27
 msgid "All brands"
 msgstr ""
 
-#: dashboard/forms.py:285
+#: .\dashboard\forms.py:503
 msgid "All"
 msgstr ""
 
-#: dashboard/forms.py:285 templates/dashboard/brands/list.html:20
-#: templates/dashboard/categories/list.html:20
-#: templates/dashboard/products/list.html:27
+#: .\dashboard\forms.py:503 .\templates\dashboard\brands\list.html:20
+#: .\templates\dashboard\categories\list.html:20
+#: .\templates\dashboard\products\list.html:27
 msgid "Active"
 msgstr ""
 
-#: dashboard/forms.py:285 templates/dashboard/brands/list.html:20
-#: templates/dashboard/categories/list.html:20
-#: templates/dashboard/products/list.html:27
-#: templates/dashboard/stock/_row.html:2
+#: .\dashboard\forms.py:503 .\templates\dashboard\brands\list.html:20
+#: .\templates\dashboard\categories\list.html:20
+#: .\templates\dashboard\products\list.html:27
+#: .\templates\dashboard\stock\_row.html:2
 msgid "Hidden"
 msgstr ""
 
-#: dashboard/forms.py:285
+#: .\dashboard\forms.py:503
 msgid "Low stock"
 msgstr ""
 
-#: dashboard/forms.py:291
+#: .\dashboard\forms.py:509
 msgid "Name, email or phone"
 msgstr ""
 
-#: dashboard/views.py:149 dashboard/views.py:156
+#: .\dashboard\views.py:150 .\dashboard\views.py:157
 msgid "That status change is not allowed for this order."
 msgstr ""
 
-#: dashboard/views.py:160
+#: .\dashboard\views.py:161
 #, python-format
 msgid "Not enough stock to confirm this order. Check these SKUs: %(skus)s"
 msgstr ""
 
-#: dashboard/views.py:165
+#: .\dashboard\views.py:166
 #, python-format
 msgid "Order status updated to “%(status)s”."
 msgstr ""
 
-#: dashboard/views.py:178
+#: .\dashboard\views.py:179
 msgid "Internal notes saved."
 msgstr ""
 
-#: dashboard/views.py:180
+#: .\dashboard\views.py:181
 msgid "The notes could not be saved."
 msgstr ""
 
-#: dashboard/views.py:188
+#: .\dashboard\views.py:200
 msgid "Saved."
 msgstr ""
 
-#: dashboard/views.py:198
+#: .\dashboard\views.py:211
 msgid "This item is still in use and cannot be deleted. Hide it instead."
 msgstr ""
 
-#: dashboard/views.py:199
+#: .\dashboard\views.py:212
 msgid "Deleted."
 msgstr ""
 
-#: dashboard/views.py:239 dashboard/views.py:248
+#: .\dashboard\views.py:252 .\dashboard\views.py:261
 msgid "Brand saved."
 msgstr ""
 
-#: dashboard/views.py:240 templates/dashboard/brands/list.html:7
-#: templates/dashboard/brands/list.html:32
+#: .\dashboard\views.py:253 .\templates\dashboard\brands\list.html:7
+#: .\templates\dashboard\brands\list.html:32
 msgid "New brand"
 msgstr ""
 
-#: dashboard/views.py:249
+#: .\dashboard\views.py:262
 msgid "Edit brand"
 msgstr ""
 
-#: dashboard/views.py:255
+#: .\dashboard\views.py:268
 msgid ""
 "This brand still has products. Move or delete them first, or hide the brand."
 msgstr ""
 
-#: dashboard/views.py:256
+#: .\dashboard\views.py:269
 msgid "Brand deleted."
 msgstr ""
 
-#: dashboard/views.py:261
+#: .\dashboard\views.py:274
 #, python-format
 msgid "This brand has %(count)s products, so it cannot be deleted."
 msgstr ""
 
-#: dashboard/views.py:262
+#: .\dashboard\views.py:275
 msgid "Promotions that target this brand will also be deleted."
 msgstr ""
 
-#: dashboard/views.py:282 dashboard/views.py:291
+#: .\dashboard\views.py:295 .\dashboard\views.py:304
 msgid "Category saved."
 msgstr ""
 
-#: dashboard/views.py:283 templates/dashboard/categories/list.html:7
-#: templates/dashboard/categories/list.html:31
+#: .\dashboard\views.py:296 .\templates\dashboard\categories\list.html:7
+#: .\templates\dashboard\categories\list.html:31
 msgid "New category"
 msgstr ""
 
-#: dashboard/views.py:292
+#: .\dashboard\views.py:305
 msgid "Edit category"
 msgstr ""
 
-#: dashboard/views.py:298
+#: .\dashboard\views.py:311
 msgid "Category deleted."
 msgstr ""
 
-#: dashboard/views.py:302
+#: .\dashboard\views.py:315
 msgid ""
 "Products stay in the store but will no longer be listed in this category."
 msgstr ""
 
-#: dashboard/views.py:303
+#: .\dashboard\views.py:316
 msgid "Promotions that target this category will also be deleted."
 msgstr ""
 
-#: dashboard/views.py:394
+#: .\dashboard\views.py:407
 msgid "Product saved."
 msgstr ""
 
-#: dashboard/views.py:398
+#: .\dashboard\views.py:412
 msgid "Please correct the errors below."
 msgstr ""
 
-#: dashboard/views.py:419 templates/dashboard/products/list.html:7
-#: templates/dashboard/products/list.html:38
+#: .\dashboard\views.py:433 .\templates\dashboard\products\list.html:7
+#: .\templates\dashboard\products\list.html:38
 msgid "New product"
 msgstr ""
 
-#: dashboard/views.py:423
+#: .\dashboard\views.py:437
 msgid "Edit product"
 msgstr ""
 
-#: dashboard/views.py:432
+#: .\dashboard\views.py:446
 msgid "Product deleted."
 msgstr ""
 
-#: dashboard/views.py:436
+#: .\dashboard\views.py:450
 msgid "Its variants, images and product-specific promotions will be deleted."
 msgstr ""
 
-#: dashboard/views.py:437
+#: .\dashboard\views.py:451
 msgid "Past orders keep their saved names and prices."
 msgstr ""
 
-#: dashboard/views.py:438
+#: .\dashboard\views.py:452
 msgid "Tip: untick “Active” to hide a product without deleting it."
 msgstr ""
 
-#: dashboard/views.py:483
+#: .\dashboard\views.py:497
 msgid "Stock updated."
 msgstr ""
 
-#: dashboard/views.py:485
+#: .\dashboard\views.py:499
 msgid "Enter a stock quantity of 0 or more."
 msgstr ""
 
-#: dashboard/views.py:521 dashboard/views.py:530
+#: .\dashboard\views.py:535 .\dashboard\views.py:544
 msgid "Promotion saved."
 msgstr ""
 
-#: dashboard/views.py:522 templates/dashboard/promotions/list.html:7
-#: templates/dashboard/promotions/list.html:38
+#: .\dashboard\views.py:536 .\templates\dashboard\promotions\list.html:7
+#: .\templates\dashboard\promotions\list.html:38
 msgid "New promotion"
 msgstr ""
 
-#: dashboard/views.py:531
+#: .\dashboard\views.py:545
 msgid "Edit promotion"
 msgstr ""
 
-#: dashboard/views.py:537
+#: .\dashboard\views.py:551
 msgid "Promotion deleted."
 msgstr ""
 
-#: dashboard/views.py:540
+#: .\dashboard\views.py:554
 msgid "Prices return to normal immediately. Existing orders are not affected."
 msgstr ""
 
-#: dashboard/views.py:596
+#: .\dashboard\views.py:610
 msgid "Store settings saved."
 msgstr ""
 
-#: dashboard/views.py:597 templates/dashboard/base.html:43
+#: .\dashboard\views.py:611 .\templates\dashboard\base.html:44
 msgid "Store settings"
 msgstr ""
 
-#: orders/apps.py:7 templates/dashboard/base.html:36
-#: templates/dashboard/customers/detail.html:12
-#: templates/dashboard/customers/list.html:13
-#: templates/dashboard/customers/list.html:19
-#: templates/dashboard/orders/list.html:3
-#: templates/dashboard/orders/list.html:5
+#: .\orders\apps.py:7 .\templates\dashboard\base.html:37
+#: .\templates\dashboard\customers\detail.html:12
+#: .\templates\dashboard\customers\list.html:13
+#: .\templates\dashboard\customers\list.html:19
+#: .\templates\dashboard\orders\list.html:3
+#: .\templates\dashboard\orders\list.html:5
 msgid "Orders"
 msgstr ""
 
-#: orders/forms.py:24
+#: .\orders\forms.py:24
 msgid "Enter a new address"
 msgstr ""
 
-#: orders/forms.py:26 templates/dashboard/orders/detail.html:83
-#: templates/orders/checkout.html:16
+#: .\orders\forms.py:26 .\templates\dashboard\orders\detail.html:83
+#: .\templates\orders\checkout.html:16
 msgid "Delivery address"
 msgstr ""
 
-#: orders/forms.py:28
+#: .\orders\forms.py:28
 msgid "City / town"
 msgstr ""
 
-#: orders/forms.py:29
+#: .\orders\forms.py:29
 msgid "Street"
 msgstr ""
 
-#: orders/forms.py:30
+#: .\orders\forms.py:30
 msgid "Building / house number"
 msgstr ""
 
-#: orders/forms.py:31
+#: .\orders\forms.py:31
 msgid "Apartment (optional)"
 msgstr ""
 
-#: orders/forms.py:32
+#: .\orders\forms.py:32
 msgid "Postal code (optional)"
 msgstr ""
 
-#: orders/forms.py:34
+#: .\orders\forms.py:34
 msgid "Landmark or delivery notes (optional)"
 msgstr ""
 
-#: orders/forms.py:37
+#: .\orders\forms.py:37
 msgid "Near the pharmacy, second floor…"
 msgstr ""
 
-#: orders/forms.py:39
+#: .\orders\forms.py:39
 msgid "Save this address to my account"
 msgstr ""
 
-#: orders/forms.py:41
+#: .\orders\forms.py:41
 msgid "Phone number"
 msgstr ""
 
-#: orders/forms.py:47
+#: .\orders\forms.py:47
 msgid "Order notes (optional)"
 msgstr ""
 
-#: orders/forms.py:91
+#: .\orders\forms.py:91
 msgid "This field is required."
 msgstr ""
 
-#: orders/models.py:16
+#: .\orders\models.py:16
 msgid "Pending"
 msgstr ""
 
-#: orders/models.py:17
+#: .\orders\models.py:17
 msgid "Received"
 msgstr ""
 
-#: orders/models.py:18
+#: .\orders\models.py:18
 msgid "Confirmed"
 msgstr ""
 
-#: orders/models.py:19
+#: .\orders\models.py:19
 msgid "Preparing"
 msgstr ""
 
-#: orders/models.py:20
+#: .\orders\models.py:20
 msgid "Out for delivery"
 msgstr ""
 
-#: orders/models.py:21
+#: .\orders\models.py:21
 msgid "Delivered"
 msgstr ""
 
-#: orders/models.py:22
+#: .\orders\models.py:22
 msgid "Cancelled"
 msgstr ""
 
-#: orders/models.py:32
+#: .\orders\models.py:32
 msgid "order number"
 msgstr ""
 
-#: orders/models.py:42
+#: .\orders\models.py:42
 msgid "customer name"
 msgstr ""
 
-#: orders/models.py:43
+#: .\orders\models.py:43
 msgid "customer email"
 msgstr ""
 
-#: orders/models.py:44
+#: .\orders\models.py:44
 msgid "customer phone"
 msgstr ""
 
-#: orders/models.py:53
+#: .\orders\models.py:53
 msgid "latitude"
 msgstr ""
 
-#: orders/models.py:54
+#: .\orders\models.py:54
 msgid "longitude"
 msgstr ""
 
-#: orders/models.py:56
+#: .\orders\models.py:56
 msgid "location accuracy (m)"
 msgstr ""
 
-#: orders/models.py:58
+#: .\orders\models.py:58
 msgid "location consent given at"
 msgstr ""
 
-#: orders/models.py:60
+#: .\orders\models.py:60
 msgid "subtotal"
 msgstr ""
 
-#: orders/models.py:61
+#: .\orders\models.py:61
 msgid "discount total"
 msgstr ""
 
-#: orders/models.py:62
+#: .\orders\models.py:62
 msgid "delivery fee"
 msgstr ""
 
-#: orders/models.py:63
+#: .\orders\models.py:63
 msgid "total"
 msgstr ""
 
-#: orders/models.py:65
+#: .\orders\models.py:65
 msgid "status"
 msgstr ""
 
-#: orders/models.py:67
+#: .\orders\models.py:67
 msgid "customer notes"
 msgstr ""
 
-#: orders/models.py:68
+#: .\orders\models.py:68
 msgid "internal notes"
 msgstr ""
 
-#: orders/models.py:69
+#: .\orders\models.py:69
 msgid "language"
 msgstr ""
 
-#: orders/models.py:70
+#: .\orders\models.py:70
 msgid "WhatsApp opened at"
 msgstr ""
 
-#: orders/models.py:71
+#: .\orders\models.py:71
 msgid "stock deducted at"
 msgstr ""
 
-#: orders/models.py:72
+#: .\orders\models.py:72
 msgid "stock restored at"
 msgstr ""
 
-#: orders/models.py:75 orders/models.py:155 orders/models.py:216
+#: .\orders\models.py:75 .\orders\models.py:155 .\orders\models.py:216
 msgid "order"
 msgstr ""
 
-#: orders/models.py:76
+#: .\orders\models.py:76
 msgid "orders"
 msgstr ""
 
-#: orders/models.py:170
+#: .\orders\models.py:170
 msgid "product name (Arabic)"
 msgstr ""
 
-#: orders/models.py:171
+#: .\orders\models.py:171
 msgid "product name (English)"
 msgstr ""
 
-#: orders/models.py:172
+#: .\orders\models.py:172
 msgid "variant (Arabic)"
 msgstr ""
 
-#: orders/models.py:173
+#: .\orders\models.py:173
 msgid "variant (English)"
 msgstr ""
 
-#: orders/models.py:178
+#: .\orders\models.py:176 .\templates\dashboard\orders\detail.html:19
+#: .\templates\dashboard\orders\detail.html:24
+#: .\templates\dashboard\stock\_row.html:4
+#: .\templates\dashboard\stock\list.html:14
+msgid "SKU"
+msgstr ""
+
+#: .\orders\models.py:178
 msgid "original unit price"
 msgstr ""
 
-#: orders/models.py:179
+#: .\orders\models.py:179
 msgid "discount per unit"
 msgstr ""
 
-#: orders/models.py:180
+#: .\orders\models.py:180
 msgid "final unit price"
 msgstr ""
 
-#: orders/models.py:181
+#: .\orders\models.py:181
 msgid "line total"
 msgstr ""
 
-#: orders/models.py:184
+#: .\orders\models.py:184
 msgid "order item"
 msgstr ""
 
-#: orders/models.py:185
+#: .\orders\models.py:185
 msgid "order items"
 msgstr ""
 
-#: orders/models.py:217
+#: .\orders\models.py:217
 msgid "from"
 msgstr ""
 
-#: orders/models.py:218
+#: .\orders\models.py:218
 msgid "to"
 msgstr ""
 
-#: orders/models.py:225
+#: .\orders\models.py:225
 msgid "changed by"
 msgstr ""
 
-#: orders/models.py:227
+#: .\orders\models.py:227
 msgid "note"
 msgstr ""
 
-#: orders/models.py:228
+#: .\orders\models.py:228
 msgid "changed at"
 msgstr ""
 
-#: orders/models.py:231
+#: .\orders\models.py:231
 msgid "status change"
 msgstr ""
 
-#: orders/models.py:232
+#: .\orders\models.py:232
 msgid "status history"
 msgstr ""
 
-#: orders/services/whatsapp.py:61
-msgid "New Rawnaq order"
+#: .\orders\services\whatsapp.py:62
+#, python-format
+msgid "New %(store)s order"
 msgstr ""
 
-#: orders/services/whatsapp.py:62
+#: .\orders\services\whatsapp.py:63
 #, python-format
 msgid "Order number: %(number)s"
 msgstr ""
 
-#: orders/services/whatsapp.py:63
+#: .\orders\services\whatsapp.py:64
 #, python-format
 msgid "Customer: %(name)s"
 msgstr ""
 
-#: orders/services/whatsapp.py:64
+#: .\orders\services\whatsapp.py:65
 #, python-format
 msgid "Total: %(total)s"
 msgstr ""
 
-#: orders/services/whatsapp.py:65
+#: .\orders\services\whatsapp.py:66
 #, python-format
 msgid "Order link (staff only): %(url)s"
 msgstr ""
 
-#: orders/views.py:26
+#: .\orders\views.py:26
 #, python-format
 msgid "Some items are no longer available: %(names)s. Please review your cart."
 msgstr ""
 
-#: orders/views.py:28
+#: .\orders\views.py:28
 #, python-format
 msgid "Not enough stock for: %(names)s. Please review your cart."
 msgstr ""
 
-#: orders/views.py:30 orders/views.py:39
+#: .\orders\views.py:30 .\orders\views.py:39
 msgid "Your cart is empty."
 msgstr ""
 
-#: orders/views.py:31
+#: .\orders\views.py:31
 msgid "We could not place your order. Please try again."
 msgstr ""
 
-#: orders/views.py:44
+#: .\orders\views.py:44
 msgid "Some items in your cart changed. Please review it before checking out."
 msgstr ""
 
-#: templates/403.html:3
+#: .\templates\403.html:3
 msgid "Access denied"
 msgstr ""
 
-#: templates/403.html:7
+#: .\templates\403.html:7
 msgid "You don’t have access to this page"
 msgstr ""
 
-#: templates/403.html:8
+#: .\templates\403.html:8
 msgid "If you think this is a mistake, log in with the right account."
 msgstr ""
 
-#: templates/403.html:9 templates/404.html:10
-#: templates/accounts/logged_out.html:6 templates/errors/csrf.html:9
+#: .\templates\403.html:9 .\templates\404.html:10
+#: .\templates\accounts\logged_out.html:6 .\templates\errors\csrf.html:9
 msgid "Back to the store"
 msgstr ""
 
-#: templates/404.html:3
+#: .\templates\404.html:3
 msgid "Page not found"
 msgstr ""
 
-#: templates/404.html:7
+#: .\templates\404.html:7
 msgid "We couldn’t find that page"
 msgstr ""
 
-#: templates/404.html:8
+#: .\templates\404.html:8
 msgid "The link may be old, or the piece is no longer available."
 msgstr ""
 
-#: templates/404.html:11 templates/cart/partials/cart_body.html:5
-#: templates/orders/order_list.html:28
+#: .\templates\404.html:11 .\templates\cart\partials\cart_body.html:5
+#: .\templates\orders\order_list.html:28
 msgid "Browse brands"
 msgstr ""
 
-#: templates/accounts/_account_nav.html:1 templates/accounts/profile.html:3
-#: templates/includes/header.html:23
+#: .\templates\accounts\_account_nav.html:1 .\templates\accounts\profile.html:3
+#: .\templates\includes\header.html:23
 msgid "My account"
 msgstr ""
 
-#: templates/accounts/_account_nav.html:2 templates/accounts/profile.html:11
+#: .\templates\accounts\_account_nav.html:2
+#: .\templates\accounts\profile.html:11
 msgid "Profile"
 msgstr ""
 
-#: templates/accounts/_account_nav.html:3 templates/includes/footer.html:29
-#: templates/includes/header.html:42 templates/orders/order_detail.html:6
-#: templates/orders/order_list.html:3 templates/orders/order_list.html:6
+#: .\templates\accounts\_account_nav.html:3 .\templates\includes\footer.html:29
+#: .\templates\includes\header.html:42 .\templates\orders\order_detail.html:6
+#: .\templates\orders\order_list.html:3 .\templates\orders\order_list.html:6
 msgid "My orders"
 msgstr ""
 
-#: templates/accounts/_account_nav.html:4
+#: .\templates\accounts\_account_nav.html:4
 msgid "Addresses"
 msgstr ""
 
-#: templates/accounts/_account_nav.html:6
-#: templates/accounts/logout_confirm.html:3
-#: templates/accounts/logout_confirm.html:8 templates/dashboard/base.html:45
+#: .\templates\accounts\_account_nav.html:6
+#: .\templates\accounts\logout_confirm.html:3
+#: .\templates\accounts\logout_confirm.html:8
+#: .\templates\dashboard\base.html:46
 msgid "Log out"
 msgstr ""
 
-#: templates/accounts/address_confirm_delete.html:3
+#: .\templates\accounts\address_confirm_delete.html:3
 msgid "Delete address"
 msgstr ""
 
-#: templates/accounts/address_confirm_delete.html:5
+#: .\templates\accounts\address_confirm_delete.html:5
 msgid "Delete this address?"
 msgstr ""
 
-#: templates/accounts/address_confirm_delete.html:7
+#: .\templates\accounts\address_confirm_delete.html:7
 msgid "Past orders keep their own copy of the address."
 msgstr ""
 
-#: templates/accounts/address_confirm_delete.html:10
+#: .\templates\accounts\address_confirm_delete.html:10
 msgid "Yes, delete it"
 msgstr ""
 
-#: templates/accounts/address_confirm_delete.html:12
-#: templates/accounts/address_form.html:24
-#: templates/dashboard/confirm_delete.html:14
-#: templates/dashboard/generic_form.html:27
-#: templates/dashboard/promotions/form.html:29
-msgid "Cancel"
-msgstr ""
-
-#: templates/accounts/address_form.html:3
-#: templates/accounts/address_form.html:8
-#: templates/accounts/address_list.html:10
-#: templates/accounts/address_list.html:31
+#: .\templates\accounts\address_form.html:3
+#: .\templates\accounts\address_form.html:8
+#: .\templates\accounts\address_list.html:10
+#: .\templates\accounts\address_list.html:31
 msgid "Add address"
 msgstr ""
 
-#: templates/accounts/address_form.html:3
-#: templates/accounts/address_form.html:8
+#: .\templates\accounts\address_form.html:3
+#: .\templates\accounts\address_form.html:8
 msgid "Edit address"
 msgstr ""
 
-#: templates/accounts/address_form.html:23
+#: .\templates\accounts\address_form.html:23
 msgid "Save address"
 msgstr ""
 
-#: templates/accounts/address_list.html:3
-#: templates/accounts/address_list.html:9
+#: .\templates\accounts\address_list.html:3
+#: .\templates\accounts\address_list.html:9
 msgid "My addresses"
 msgstr ""
 
-#: templates/accounts/address_list.html:17
+#: .\templates\accounts\address_list.html:17
 msgid "Address"
 msgstr ""
 
-#: templates/accounts/address_list.html:17
-#: templates/dashboard/customers/detail.html:27
+#: .\templates\accounts\address_list.html:17
+#: .\templates\dashboard\customers\detail.html:27
 msgid "Default"
 msgstr ""
 
-#: templates/accounts/address_list.html:22
-#: templates/dashboard/brands/list.html:23
-#: templates/dashboard/categories/list.html:22
-#: templates/dashboard/products/list.html:29
-#: templates/dashboard/promotions/list.html:29
+#: .\templates\accounts\address_list.html:22
+#: .\templates\dashboard\brands\list.html:23
+#: .\templates\dashboard\categories\list.html:22
+#: .\templates\dashboard\products\list.html:29
+#: .\templates\dashboard\promotions\list.html:29
 msgid "Edit"
 msgstr ""
 
-#: templates/accounts/address_list.html:23
-#: templates/dashboard/brands/list.html:24
-#: templates/dashboard/categories/list.html:23
-#: templates/dashboard/products/form.html:120
-#: templates/dashboard/products/list.html:30
-#: templates/dashboard/promotions/list.html:30
+#: .\templates\accounts\address_list.html:23
+#: .\templates\dashboard\brands\list.html:24
+#: .\templates\dashboard\categories\list.html:23
+#: .\templates\dashboard\products\form.html:100
+#: .\templates\dashboard\products\list.html:30
+#: .\templates\dashboard\promotions\list.html:30
 msgid "Delete"
 msgstr ""
 
-#: templates/accounts/address_list.html:29
+#: .\templates\accounts\address_list.html:29
 msgid "No saved addresses"
 msgstr ""
 
-#: templates/accounts/address_list.html:30
+#: .\templates\accounts\address_list.html:30
 msgid "Save an address to make checkout faster."
 msgstr ""
 
-#: templates/accounts/emails/password_reset_email.txt:1
+#: .\templates\accounts\emails\password_reset_email.txt:1
 msgid "Hello,"
 msgstr ""
 
-#: templates/accounts/emails/password_reset_email.txt:3
+#: .\templates\accounts\emails\password_reset_email.txt:3
+#, python-format
 msgid ""
-"We received a request to reset the password for your Rawnaq Accessories "
-"account. Open this link to choose a new password:"
+"We received a request to reset the password for your %(store)s account. Open "
+"this link to choose a new password:"
 msgstr ""
 
-#: templates/accounts/emails/password_reset_email.txt:7
+#: .\templates\accounts\emails\password_reset_email.txt:7
 msgid ""
 "If you did not ask for this, you can ignore this email. Your password will "
 "not change."
 msgstr ""
 
-#: templates/accounts/emails/password_reset_subject.txt:1
-msgid "Reset your Rawnaq Accessories password"
+#: .\templates\accounts\emails\password_reset_subject.txt:1
+#, python-format
+msgid "Reset your %(store)s password"
 msgstr ""
 
-#: templates/accounts/lockout.html:3
+#: .\templates\accounts\lockout.html:3
 msgid "Too many attempts"
 msgstr ""
 
-#: templates/accounts/lockout.html:6
+#: .\templates\accounts\lockout.html:6
 msgid "Too many login attempts"
 msgstr ""
 
-#: templates/accounts/lockout.html:7
+#: .\templates\accounts\lockout.html:7
 msgid ""
 "For your security, logging in is paused for a little while. Please try again "
 "later or reset your password."
 msgstr ""
 
-#: templates/accounts/lockout.html:8
-#: templates/accounts/password_reset_form.html:3
+#: .\templates\accounts\lockout.html:8
+#: .\templates\accounts\password_reset_form.html:3
 msgid "Reset password"
 msgstr ""
 
-#: templates/accounts/logged_out.html:3
+#: .\templates\accounts\logged_out.html:3
 msgid "Logged out"
 msgstr ""
 
-#: templates/accounts/logged_out.html:5
+#: .\templates\accounts\logged_out.html:5
 msgid "You are logged out"
 msgstr ""
 
-#: templates/accounts/login.html:3 templates/accounts/login.html:13
-#: templates/accounts/password_reset_complete.html:6
-#: templates/accounts/register.html:18 templates/includes/header.html:28
+#: .\templates\accounts\login.html:3 .\templates\accounts\login.html:13
+#: .\templates\accounts\password_reset_complete.html:6
+#: .\templates\accounts\register.html:18 .\templates\includes\header.html:28
 msgid "Log in"
 msgstr ""
 
-#: templates/accounts/login.html:5
+#: .\templates\accounts\login.html:5
 msgid "Welcome back"
 msgstr ""
 
-#: templates/accounts/login.html:6
+#: .\templates\accounts\login.html:6
 msgid "Log in or create an account to finish your order. Your cart is saved."
 msgstr ""
 
-#: templates/accounts/login.html:15
+#: .\templates\accounts\login.html:15
 msgid "Forgot your password?"
 msgstr ""
 
-#: templates/accounts/login.html:16
-msgid "New to Rawnaq?"
+#: .\templates\accounts\login.html:16
+#, python-format
+msgid "New to <span lang=\"en\" dir=\"ltr\">%(store)s</span>?"
 msgstr ""
 
-#: templates/accounts/login.html:17 templates/accounts/register.html:3
-#: templates/includes/footer.html:29
+#: .\templates\accounts\login.html:17 .\templates\accounts\register.html:3
+#: .\templates\includes\footer.html:29
 msgid "Create an account"
 msgstr ""
 
-#: templates/accounts/logout_confirm.html:5
+#: .\templates\accounts\logout_confirm.html:5
 msgid "Log out?"
 msgstr ""
 
-#: templates/accounts/logout_confirm.html:10
+#: .\templates\accounts\logout_confirm.html:10
 msgid "Stay logged in"
 msgstr ""
 
-#: templates/accounts/password_change.html:3
-#: templates/accounts/password_change.html:5
+#: .\templates\accounts\password_change.html:3
+#: .\templates\accounts\password_change.html:5
 msgid "Change password"
 msgstr ""
 
-#: templates/accounts/password_change.html:12
-#: templates/accounts/password_reset_confirm.html:12
+#: .\templates\accounts\password_change.html:12
+#: .\templates\accounts\password_reset_confirm.html:12
 msgid "Save new password"
 msgstr ""
 
-#: templates/accounts/password_change.html:14
+#: .\templates\accounts\password_change.html:14
 msgid "Back to my account"
 msgstr ""
 
-#: templates/accounts/password_reset_complete.html:3
+#: .\templates\accounts\password_reset_complete.html:3
 msgid "Password updated"
 msgstr ""
 
-#: templates/accounts/password_reset_complete.html:5
+#: .\templates\accounts\password_reset_complete.html:5
 msgid "Your password was updated"
 msgstr ""
 
-#: templates/accounts/password_reset_confirm.html:3
-#: templates/accounts/password_reset_confirm.html:6
+#: .\templates\accounts\password_reset_confirm.html:3
+#: .\templates\accounts\password_reset_confirm.html:6
 msgid "Choose a new password"
 msgstr ""
 
-#: templates/accounts/password_reset_confirm.html:15
+#: .\templates\accounts\password_reset_confirm.html:15
 msgid "This link is no longer valid"
 msgstr ""
 
-#: templates/accounts/password_reset_confirm.html:16
+#: .\templates\accounts\password_reset_confirm.html:16
 msgid "It may have been used already or expired. Please request a new one."
 msgstr ""
 
-#: templates/accounts/password_reset_confirm.html:17
+#: .\templates\accounts\password_reset_confirm.html:17
 msgid "Request a new link"
 msgstr ""
 
-#: templates/accounts/password_reset_done.html:3
-#: templates/accounts/password_reset_done.html:5
+#: .\templates\accounts\password_reset_done.html:3
+#: .\templates\accounts\password_reset_done.html:5
 msgid "Check your email"
 msgstr ""
 
-#: templates/accounts/password_reset_done.html:6
+#: .\templates\accounts\password_reset_done.html:6
 msgid ""
 "If an account exists for that email, we sent a link to reset the password. "
 "The link expires in a few hours."
 msgstr ""
 
-#: templates/accounts/password_reset_done.html:7
-#: templates/accounts/password_reset_form.html:13
+#: .\templates\accounts\password_reset_done.html:7
+#: .\templates\accounts\password_reset_form.html:13
 msgid "Back to log in"
 msgstr ""
 
-#: templates/accounts/password_reset_form.html:5
+#: .\templates\accounts\password_reset_form.html:5
 msgid "Reset your password"
 msgstr ""
 
-#: templates/accounts/password_reset_form.html:6
+#: .\templates\accounts\password_reset_form.html:6
 msgid ""
 "Enter your account email and we’ll send you a link to choose a new password."
 msgstr ""
 
-#: templates/accounts/password_reset_form.html:11
+#: .\templates\accounts\password_reset_form.html:11
 msgid "Send reset link"
 msgstr ""
 
-#: templates/accounts/profile.html:8
+#: .\templates\accounts\profile.html:8
 #, python-format
 msgid "Hello, %(name)s"
 msgstr ""
 
-#: templates/accounts/profile.html:16
+#: .\templates\accounts\profile.html:16
 msgid "Save changes"
 msgstr ""
 
-#: templates/accounts/profile.html:19 templates/dashboard/overview.html:15
+#: .\templates\accounts\profile.html:19 .\templates\dashboard\overview.html:15
 msgid "Recent orders"
 msgstr ""
 
-#: templates/accounts/profile.html:19 templates/catalog/product_detail.html:116
+#: .\templates\accounts\profile.html:19
+#: .\templates\catalog\product_detail.html:116
 msgid "View all"
 msgstr ""
 
-#: templates/accounts/profile.html:26
-#: templates/dashboard/customers/detail.html:13
+#: .\templates\accounts\profile.html:26
+#: .\templates\dashboard\customers\detail.html:13
 msgid "No orders yet."
 msgstr ""
 
-#: templates/accounts/register.html:5
+#: .\templates\accounts\register.html:5
 msgid "Create your account"
 msgstr ""
 
-#: templates/accounts/register.html:6
+#: .\templates\accounts\register.html:6
 msgid ""
 "You only need an account to place an order. Browsing and the cart work "
 "without one."
 msgstr ""
 
-#: templates/accounts/register.html:16
+#: .\templates\accounts\register.html:16
 msgid "Create account"
 msgstr ""
 
-#: templates/accounts/register.html:18
+#: .\templates\accounts\register.html:18
 msgid "Already have an account?"
 msgstr ""
 
-#: templates/base.html:7 templates/includes/footer.html:6
+#: .\templates\base.html:7 .\templates\includes\footer.html:6
 msgid "Curated girls’ accessories from brands you love."
 msgstr ""
 
-#: templates/base.html:11 templates/dashboard/base.html:11
+#: .\templates\base.html:11 .\templates\dashboard\base.html:12
 msgid "Skip to main content"
 msgstr ""
 
-#: templates/cart/cart_detail.html:3 templates/cart/cart_detail.html:6
+#: .\templates\cart\cart_detail.html:3 .\templates\cart\cart_detail.html:6
 msgid "Your cart"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:3
+#: .\templates\cart\partials\cart_body.html:3
 msgid "Your cart is empty"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:4
+#: .\templates\cart\partials\cart_body.html:4
 msgid "Start with a brand you love — we’ll keep your picks here."
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:10
+#: .\templates\cart\partials\cart_body.html:10
 msgid "Items in your cart"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:24
+#: .\templates\cart\partials\cart_body.html:24
 msgid "No longer available — please remove it."
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:26
+#: .\templates\cart\partials\cart_body.html:26
 #, python-format
 msgid "Only %(counter)s left in stock."
 msgid_plural "Only %(counter)s left in stock."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/cart/partials/cart_body.html:32
-#: templates/catalog/product_detail.html:84
+#: .\templates\cart\partials\cart_body.html:32
+#: .\templates\catalog\product_detail.html:84
 msgid "Decrease quantity"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:33
-#: templates/catalog/product_detail.html:83
+#: .\templates\cart\partials\cart_body.html:33
+#: .\templates\catalog\product_detail.html:83
 msgid "Quantity"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:34
-#: templates/catalog/product_detail.html:86
+#: .\templates\cart\partials\cart_body.html:34
+#: .\templates\catalog\product_detail.html:86
 msgid "Increase quantity"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:39
-msgid "Remove"
-msgstr ""
-
-#: templates/cart/partials/cart_body.html:41
-#: templates/dashboard/orders/detail.html:19
-#: templates/dashboard/orders/detail.html:27
+#: .\templates\cart\partials\cart_body.html:41
+#: .\templates\dashboard\orders\detail.html:19
+#: .\templates\dashboard\orders\detail.html:27
 msgid "Line total"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:49
+#: .\templates\cart\partials\cart_body.html:49
 msgid "Order summary"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:52
+#: .\templates\cart\partials\cart_body.html:52
 msgid "Remove unavailable items to continue."
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:53
-#: templates/cart/partials/cart_body.html:55
+#: .\templates\cart\partials\cart_body.html:53
+#: .\templates\cart\partials\cart_body.html:55
 msgid "Proceed to checkout"
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:56
+#: .\templates\cart\partials\cart_body.html:56
 msgid "You’ll log in or create an account at checkout. Your cart will be kept."
 msgstr ""
 
-#: templates/cart/partials/cart_body.html:58
+#: .\templates\cart\partials\cart_body.html:58
 msgid "No online payment. We confirm your order with you on WhatsApp."
 msgstr ""
 
-#: templates/cart/partials/toast.html:4
+#: .\templates\cart\partials\toast.html:4
 msgid "View cart"
 msgstr ""
 
-#: templates/cart/partials/toast.html:5
+#: .\templates\cart\partials\toast.html:5
 msgid "Close"
 msgstr ""
 
-#: templates/cart/partials/totals.html:2
-#: templates/dashboard/orders/detail.html:33
-#: templates/orders/order_detail.html:38
+#: .\templates\cart\partials\totals.html:2
+#: .\templates\dashboard\orders\detail.html:33
+#: .\templates\orders\order_detail.html:38
 msgid "Subtotal"
 msgstr ""
 
-#: templates/cart/partials/totals.html:3
-#: templates/dashboard/orders/detail.html:34
-#: templates/orders/order_detail.html:39
+#: .\templates\cart\partials\totals.html:3
+#: .\templates\dashboard\orders\detail.html:34
+#: .\templates\orders\order_detail.html:39
 msgid "Discounts"
 msgstr ""
 
-#: templates/cart/partials/totals.html:4
-#: templates/dashboard/orders/detail.html:35
-#: templates/orders/order_detail.html:40 templates/orders/order_detail.html:46
+#: .\templates\cart\partials\totals.html:4
+#: .\templates\dashboard\orders\detail.html:35
+#: .\templates\orders\order_detail.html:40
+#: .\templates\orders\order_detail.html:46
 msgid "Delivery"
 msgstr ""
 
-#: templates/cart/partials/totals.html:4 templates/orders/order_detail.html:40
+#: .\templates\cart\partials\totals.html:4
+#: .\templates\orders\order_detail.html:40
 msgid "Free"
 msgstr ""
 
-#: templates/cart/partials/totals.html:5
-#: templates/dashboard/orders/_table.html:2
-#: templates/dashboard/orders/_table.html:10
-#: templates/dashboard/orders/detail.html:36
-#: templates/orders/confirmation.html:11 templates/orders/order_detail.html:41
+#: .\templates\cart\partials\totals.html:5
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:10
+#: .\templates\dashboard\orders\detail.html:36
+#: .\templates\orders\confirmation.html:11
+#: .\templates\orders\order_detail.html:41
 msgid "Total"
 msgstr ""
 
-#: templates/cart/partials/totals.html:8
+#: .\templates\cart\partials\totals.html:8
 #, python-format
 msgid "Free delivery on orders from %(amount)s."
 msgstr ""
 
-#: templates/catalog/brand_detail.html:10
-#: templates/catalog/product_detail.html:9 templates/orders/order_detail.html:6
+#: .\templates\catalog\brand_detail.html:10
+#: .\templates\catalog\product_detail.html:9
+#: .\templates\orders\order_detail.html:6
 msgid "Breadcrumb"
 msgstr ""
 
-#: templates/catalog/brand_detail.html:11
-#: templates/catalog/product_detail.html:10 templates/includes/header.html:39
+#: .\templates\catalog\brand_detail.html:11
+#: .\templates\catalog\product_detail.html:10
+#: .\templates\includes\header.html:39
 msgid "Home"
 msgstr ""
 
-#: templates/catalog/brand_detail.html:11 templates/catalog/brand_list.html:3
-#: templates/catalog/brand_list.html:7 templates/dashboard/base.html:39
-#: templates/dashboard/brands/list.html:3
-#: templates/dashboard/brands/list.html:6 templates/includes/header.html:40
+#: .\templates\catalog\brand_detail.html:11
+#: .\templates\catalog\brand_list.html:3 .\templates\catalog\brand_list.html:7
+#: .\templates\dashboard\base.html:40 .\templates\dashboard\brands\list.html:3
+#: .\templates\dashboard\brands\list.html:6 .\templates\includes\header.html:40
 msgid "Brands"
 msgstr ""
 
-#: templates/catalog/brand_detail.html:17
+#: .\templates\catalog\brand_detail.html:17
 #, python-format
 msgid "%(counter)s piece"
 msgid_plural "%(counter)s pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/brand_detail.html:23
+#: .\templates\catalog\brand_detail.html:23
 msgid "Filter & sort"
 msgstr ""
 
-#: templates/catalog/brand_detail.html:38
+#: .\templates\catalog\brand_detail.html:38
 msgid "Apply"
 msgstr ""
 
-#: templates/catalog/brand_detail.html:39
-#: templates/catalog/partials/product_results.html:10
+#: .\templates\catalog\brand_detail.html:39
+#: .\templates\catalog\partials\product_results.html:10
 msgid "Clear filters"
 msgstr ""
 
-#: templates/catalog/brand_list.html:8
+#: .\templates\catalog\brand_list.html:8
 msgid "Pick a brand to see all of its pieces."
 msgstr ""
 
-#: templates/catalog/brand_list.html:15 templates/core/home.html:46
+#: .\templates\catalog\brand_list.html:15 .\templates\core\home.html:46
 msgid "Brands are coming soon"
 msgstr ""
 
-#: templates/catalog/partials/product_results.html:1
-#: templates/dashboard/base.html:37 templates/dashboard/brands/list.html:12
-#: templates/dashboard/brands/list.html:18
-#: templates/dashboard/categories/list.html:12
-#: templates/dashboard/categories/list.html:18
-#: templates/dashboard/products/list.html:3
-#: templates/dashboard/products/list.html:6
+#: .\templates\catalog\partials\product_results.html:1
+#: .\templates\dashboard\base.html:38 .\templates\dashboard\brands\list.html:12
+#: .\templates\dashboard\brands\list.html:18
+#: .\templates\dashboard\categories\list.html:12
+#: .\templates\dashboard\categories\list.html:18
+#: .\templates\dashboard\products\list.html:3
+#: .\templates\dashboard\products\list.html:6
 msgid "Products"
 msgstr ""
 
-#: templates/catalog/partials/product_results.html:8
+#: .\templates\catalog\partials\product_results.html:8
 msgid "No pieces match these filters"
 msgstr ""
 
-#: templates/catalog/partials/product_results.html:9
+#: .\templates\catalog\partials\product_results.html:9
 msgid "Try removing a filter or widening the price range."
 msgstr ""
 
-#: templates/catalog/product_detail.html:16
+#: .\templates\catalog\product_detail.html:16
 msgid "Product images"
 msgstr ""
 
-#: templates/catalog/product_detail.html:30
+#: .\templates\catalog\product_detail.html:30
 #, python-format
 msgid "Show image %(number)s"
 msgstr ""
 
-#: templates/catalog/product_detail.html:45
+#: .\templates\catalog\product_detail.html:45
 msgid "Sale price applied automatically."
 msgstr ""
 
-#: templates/catalog/product_detail.html:56
+#: .\templates\catalog\product_detail.html:56
 msgid "Choose an option"
 msgstr ""
 
-#: templates/catalog/product_detail.html:62
-#: templates/catalog/product_detail.html:77
+#: .\templates\catalog\product_detail.html:62
+#: .\templates\catalog\product_detail.html:77
 #, python-format
 msgid "Only %(counter)s left"
 msgid_plural "Only %(counter)s left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/product_detail.html:65
-#: templates/includes/product_card.html:14
+#: .\templates\catalog\product_detail.html:65
+#: .\templates\includes\product_card.html:14
 msgid "Sold out"
 msgstr ""
 
-#: templates/catalog/product_detail.html:89
+#: .\templates\catalog\product_detail.html:89
 msgid "Add to cart"
 msgstr ""
 
-#: templates/catalog/product_detail.html:94
+#: .\templates\catalog\product_detail.html:94
 msgid "This piece is currently unavailable."
 msgstr ""
 
-#: templates/catalog/product_detail.html:99
+#: .\templates\catalog\product_detail.html:99
 msgid "Description"
 msgstr ""
 
-#: templates/catalog/product_detail.html:105 templates/dashboard/base.html:40
-#: templates/dashboard/categories/list.html:3
-#: templates/dashboard/categories/list.html:6
+#: .\templates\catalog\product_detail.html:105
+#: .\templates\dashboard\base.html:41
+#: .\templates\dashboard\categories\list.html:3
+#: .\templates\dashboard\categories\list.html:6
 msgid "Categories"
 msgstr ""
 
-#: templates/catalog/product_detail.html:106
+#: .\templates\catalog\product_detail.html:106
+#: .\templates\dashboard\products\form.html:26
 msgid "Product code"
 msgstr ""
 
-#: templates/catalog/product_detail.html:115
+#: .\templates\catalog\product_detail.html:115
 #, python-format
 msgid "More from %(brand)s"
 msgstr ""
 
-#: templates/core/home.html:3
+#: .\templates\core\home.html:3
 msgid "Girls’ accessories by brand"
 msgstr ""
 
-#: templates/core/home.html:10
+#: .\templates\core\home.html:10
 msgid "Little details, lasting glow"
 msgstr ""
 
-#: templates/core/home.html:11
+#: .\templates\core\home.html:11
 msgid ""
 "Curated girls’ accessories from the brands you love. Choose a brand to start "
 "exploring."
 msgstr ""
 
-#: templates/core/home.html:13 templates/core/home.html:38
+#: .\templates\core\home.html:13 .\templates\core\home.html:38
 msgid "Shop by brand"
 msgstr ""
 
-#: templates/core/home.html:14
+#: .\templates\core\home.html:14
 msgid "See what’s new"
 msgstr ""
 
-#: templates/core/home.html:27
+#: .\templates\core\home.html:27
 msgid "Current offer"
 msgstr ""
 
-#: templates/core/home.html:31
+#: .\templates\core\home.html:31
 msgid "Shop the sale"
 msgstr ""
 
-#: templates/core/home.html:53
+#: .\templates\core\home.html:53
 msgid "Featured picks"
 msgstr ""
 
-#: templates/core/home.html:61 templates/includes/header.html:41
+#: .\templates\core\home.html:61 .\templates\includes\header.html:41
 msgid "New arrivals"
 msgstr ""
 
-#: templates/core/home.html:67
+#: .\templates\core\home.html:67
 msgid "New pieces are on their way"
 msgstr ""
 
-#: templates/core/home.html:68
+#: .\templates\core\home.html:68
 msgid "Follow us on Instagram to be the first to know."
 msgstr ""
 
-#: templates/core/home.html:75
+#: .\templates\core\home.html:75
 msgid "Brand confirmation, clearly shown"
 msgstr ""
 
-#: templates/core/home.html:75
+#: .\templates\core\home.html:75
 msgid "Every product tells you whether the brand confirmed it."
 msgstr ""
 
-#: templates/core/home.html:76
+#: .\templates\core\home.html:76
 msgid "Personal order follow-up"
 msgstr ""
 
-#: templates/core/home.html:76
+#: .\templates\core\home.html:76
 msgid "Place your order here, then message us on WhatsApp to confirm details."
 msgstr ""
 
-#: templates/core/home.html:77
+#: .\templates\core\home.html:77
 msgid "Delivered to your door"
 msgstr ""
 
-#: templates/core/home.html:77
+#: .\templates\core\home.html:77
 msgid "Delivery details are confirmed with you after you order."
 msgstr ""
 
-#: templates/dashboard/base.html:8
+#: .\templates\dashboard\_crop_field.html:8
+msgid "Current picture"
+msgstr ""
+
+#: .\templates\dashboard\base.html:9
 msgid "Dashboard"
 msgstr ""
 
-#: templates/dashboard/base.html:8
-msgid "Rawnaq owner"
-msgstr ""
-
-#: templates/dashboard/base.html:15
+#: .\templates\dashboard\base.html:16
 msgid "Menu"
 msgstr ""
 
-#: templates/dashboard/base.html:19
+#: .\templates\dashboard\base.html:20
 msgid "Owner"
 msgstr ""
 
-#: templates/dashboard/base.html:27
+#: .\templates\dashboard\base.html:28
 msgid "View store"
 msgstr ""
 
-#: templates/dashboard/base.html:33
+#: .\templates\dashboard\base.html:34
 msgid "Dashboard navigation"
 msgstr ""
 
-#: templates/dashboard/base.html:35 templates/dashboard/overview.html:3
+#: .\templates\dashboard\base.html:36 .\templates\dashboard\overview.html:3
 msgid "Overview"
 msgstr ""
 
-#: templates/dashboard/base.html:38 templates/dashboard/products/list.html:18
-#: templates/dashboard/products/list.html:26
-#: templates/dashboard/stock/_row.html:5 templates/dashboard/stock/list.html:3
-#: templates/dashboard/stock/list.html:5 templates/dashboard/stock/list.html:14
+#: .\templates\dashboard\base.html:39
+#: .\templates\dashboard\products\list.html:18
+#: .\templates\dashboard\products\list.html:26
+#: .\templates\dashboard\stock\_row.html:5
+#: .\templates\dashboard\stock\list.html:3
+#: .\templates\dashboard\stock\list.html:5
+#: .\templates\dashboard\stock\list.html:14
 msgid "Stock"
 msgstr ""
 
-#: templates/dashboard/base.html:41 templates/dashboard/promotions/list.html:3
-#: templates/dashboard/promotions/list.html:6
+#: .\templates\dashboard\base.html:42
+#: .\templates\dashboard\promotions\list.html:3
+#: .\templates\dashboard\promotions\list.html:6
 msgid "Promotions"
 msgstr ""
 
-#: templates/dashboard/base.html:42 templates/dashboard/customers/list.html:3
-#: templates/dashboard/customers/list.html:5
-#: templates/dashboard/overview.html:10
+#: .\templates\dashboard\base.html:43
+#: .\templates\dashboard\customers\list.html:3
+#: .\templates\dashboard\customers\list.html:5
+#: .\templates\dashboard\overview.html:10
 msgid "Customers"
 msgstr ""
 
-#: templates/dashboard/brands/list.html:12
-#: templates/dashboard/brands/list.html:17
+#: .\templates\dashboard\brands\list.html:12
+#: .\templates\dashboard\brands\list.html:17
 msgid "Colours"
 msgstr ""
 
-#: templates/dashboard/brands/list.html:12
-#: templates/dashboard/brands/list.html:19
-#: templates/dashboard/categories/list.html:12
-#: templates/dashboard/categories/list.html:19
-#: templates/dashboard/orders/_table.html:2
-#: templates/dashboard/orders/_table.html:6
-#: templates/orders/order_detail.html:8
+#: .\templates\dashboard\brands\list.html:12
+#: .\templates\dashboard\brands\list.html:19
+#: .\templates\dashboard\categories\list.html:12
+#: .\templates\dashboard\categories\list.html:19
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:6
+#: .\templates\orders\order_detail.html:8
 msgid "Order"
 msgstr ""
 
-#: templates/dashboard/brands/list.html:12
-#: templates/dashboard/categories/list.html:12
-#: templates/dashboard/products/list.html:18
-#: templates/dashboard/promotions/list.html:13
+#: .\templates\dashboard\brands\list.html:12
+#: .\templates\dashboard\categories\list.html:12
+#: .\templates\dashboard\products\list.html:18
+#: .\templates\dashboard\promotions\list.html:13
 msgid "Actions"
 msgstr ""
 
-#: templates/dashboard/brands/list.html:22
-#: templates/dashboard/products/form.html:9
+#: .\templates\dashboard\brands\list.html:22
+#: .\templates\dashboard\products\form.html:9
 msgid "View in store"
 msgstr ""
 
-#: templates/dashboard/brands/list.html:32
+#: .\templates\dashboard\brands\list.html:32
 msgid "No brands yet"
 msgstr ""
 
-#: templates/dashboard/brands/list.html:32
+#: .\templates\dashboard\brands\list.html:32
 msgid "Brands are the main way customers browse the store. Add the first one."
 msgstr ""
 
-#: templates/dashboard/categories/list.html:12
-#: templates/dashboard/categories/list.html:17
+#: .\templates\dashboard\categories\list.html:12
+#: .\templates\dashboard\categories\list.html:17
 msgid "Slug"
 msgstr ""
 
-#: templates/dashboard/categories/list.html:31
+#: .\templates\dashboard\categories\list.html:31
 msgid "No categories yet"
 msgstr ""
 
-#: templates/dashboard/categories/list.html:31
+#: .\templates\dashboard\categories\list.html:31
 msgid "Categories help customers filter products inside each brand."
 msgstr ""
 
-#: templates/dashboard/confirm_delete.html:3
+#: .\templates\dashboard\confirm_delete.html:3
 msgid "Confirm deletion"
 msgstr ""
 
-#: templates/dashboard/confirm_delete.html:7
+#: .\templates\dashboard\confirm_delete.html:7
 #, python-format
 msgid "Delete “%(name)s”?"
 msgstr ""
 
-#: templates/dashboard/confirm_delete.html:8
+#: .\templates\dashboard\confirm_delete.html:8
 msgid "This cannot be undone."
 msgstr ""
 
-#: templates/dashboard/confirm_delete.html:13
+#: .\templates\dashboard\confirm_delete.html:13
 msgid "Yes, delete"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:6
+#: .\templates\dashboard\customers\detail.html:6
 msgid "All customers"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:18
-#: templates/dashboard/customers/list.html:13
-#: templates/dashboard/customers/list.html:18 templates/orders/checkout.html:73
+#: .\templates\dashboard\customers\detail.html:18
+#: .\templates\dashboard\customers\list.html:13
+#: .\templates\dashboard\customers\list.html:18
+#: .\templates\orders\checkout.html:73
 msgid "Contact"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:21
-#: templates/dashboard/orders/detail.html:78
+#: .\templates\dashboard\customers\detail.html:21
+#: .\templates\dashboard\orders\detail.html:78
 msgid "Message on WhatsApp"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:22
+#: .\templates\dashboard\customers\detail.html:22
 #, python-format
 msgid "Joined %(date)s"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:22
+#: .\templates\dashboard\customers\detail.html:22
 msgid "Inactive account"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:25
-#: templates/orders/checkout.html:18
+#: .\templates\dashboard\customers\detail.html:25
+#: .\templates\orders\checkout.html:18
 msgid "Saved addresses"
 msgstr ""
 
-#: templates/dashboard/customers/detail.html:28
+#: .\templates\dashboard\customers\detail.html:28
 msgid "No saved addresses."
 msgstr ""
 
-#: templates/dashboard/customers/list.html:8
-#: templates/dashboard/orders/list.html:11
-#: templates/dashboard/products/list.html:13
-msgid "Reset"
-msgstr ""
-
-#: templates/dashboard/customers/list.html:13
-#: templates/dashboard/customers/list.html:17
+#: .\templates\dashboard\customers\list.html:13
+#: .\templates\dashboard\customers\list.html:17
 msgid "Name"
 msgstr ""
 
-#: templates/dashboard/customers/list.html:13
-#: templates/dashboard/customers/list.html:20
+#: .\templates\dashboard\customers\list.html:13
+#: .\templates\dashboard\customers\list.html:20
 msgid "Spent"
 msgstr ""
 
-#: templates/dashboard/customers/list.html:13
-#: templates/dashboard/customers/list.html:21
+#: .\templates\dashboard\customers\list.html:13
+#: .\templates\dashboard\customers\list.html:21
 msgid "Joined"
 msgstr ""
 
-#: templates/dashboard/customers/list.html:28
+#: .\templates\dashboard\customers\list.html:28
 msgid "No customers found"
 msgstr ""
 
-#: templates/dashboard/customers/list.html:28
+#: .\templates\dashboard\customers\list.html:28
 msgid "Customers appear here after they create an account."
 msgstr ""
 
-#: templates/dashboard/generic_form.html:6
+#: .\templates\dashboard\generic_form.html:6
 msgid "Back"
 msgstr ""
 
-#: templates/dashboard/generic_form.html:26
-#: templates/dashboard/stock/_row.html:11
+#: .\templates\dashboard\generic_form.html:15
+msgid "Official business name"
+msgstr ""
+
+#: .\templates\dashboard\generic_form.html:17
+msgid ""
+"Shown across the website, emails and WhatsApp messages. It is fixed and "
+"cannot be edited here."
+msgstr ""
+
+#: .\templates\dashboard\generic_form.html:29
+#: .\templates\dashboard\stock\_row.html:11
 msgid "Save"
 msgstr ""
 
-#: templates/dashboard/orders/_results.html:3
+#: .\templates\dashboard\orders\_results.html:3
 #, python-format
 msgid "%(counter)s order"
 msgid_plural "%(counter)s orders"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/dashboard/orders/_results.html:7
+#: .\templates\dashboard\orders\_results.html:7
 msgid "No orders found"
 msgstr ""
 
-#: templates/dashboard/orders/_results.html:7
+#: .\templates\dashboard\orders\_results.html:7
 msgid "Try a different search or status."
 msgstr ""
 
-#: templates/dashboard/orders/_table.html:2
-#: templates/dashboard/orders/_table.html:7
-#: templates/dashboard/orders/detail.html:74
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:7
+#: .\templates\dashboard\orders\detail.html:74
 msgid "Customer"
 msgstr ""
 
-#: templates/dashboard/orders/_table.html:2
-#: templates/dashboard/orders/_table.html:8
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:8
 msgid "Date"
 msgstr ""
 
-#: templates/dashboard/orders/_table.html:2
-#: templates/dashboard/orders/_table.html:11 templates/includes/footer.html:19
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:11
+#: .\templates\includes\footer.html:19
 msgid "WhatsApp"
 msgstr ""
 
-#: templates/dashboard/orders/_table.html:11
+#: .\templates\dashboard\orders\_table.html:11
 msgid "Opened"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:6
-#: templates/dashboard/overview.html:15
+#: .\templates\dashboard\orders\detail.html:6
+#: .\templates\dashboard\overview.html:15
 msgid "All orders"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:11
-#: templates/orders/order_detail.html:61
+#: .\templates\dashboard\orders\detail.html:11
+#: .\templates\orders\order_detail.html:61
 #, python-format
 msgid "Placed on %(date)s"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:11
+#: .\templates\dashboard\orders\detail.html:11
 #, python-format
 msgid "Customer opened WhatsApp on %(date)s"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:17
-#: templates/orders/order_detail.html:26
+#: .\templates\dashboard\orders\detail.html:17
+#: .\templates\orders\order_detail.html:26
 msgid "Items"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:19
-#: templates/dashboard/orders/detail.html:23
-#: templates/dashboard/products/list.html:18
-#: templates/dashboard/products/list.html:23
-#: templates/dashboard/stock/_row.html:2 templates/dashboard/stock/list.html:14
+#: .\templates\dashboard\orders\detail.html:19
+#: .\templates\dashboard\orders\detail.html:23
+#: .\templates\dashboard\products\list.html:18
+#: .\templates\dashboard\products\list.html:23
+#: .\templates\dashboard\stock\_row.html:2
+#: .\templates\dashboard\stock\list.html:14
 msgid "Product"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:19
-#: templates/dashboard/orders/detail.html:25
+#: .\templates\dashboard\orders\detail.html:19
+#: .\templates\dashboard\orders\detail.html:25
 msgid "Qty"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:19
-#: templates/dashboard/orders/detail.html:26
+#: .\templates\dashboard\orders\detail.html:19
+#: .\templates\dashboard\orders\detail.html:26
 msgid "Unit price"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:41
+#: .\templates\dashboard\orders\detail.html:41
 msgid "Status history"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:47
+#: .\templates\dashboard\orders\detail.html:47
 msgid "Order placed"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:59
+#: .\templates\dashboard\orders\detail.html:59
 msgid "Update status"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:65
+#: .\templates\dashboard\orders\detail.html:65
 msgid "Save status"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:67
+#: .\templates\dashboard\orders\detail.html:67
 msgid ""
 "Stock is reduced once when you confirm the order, and restored once if a "
 "confirmed order is cancelled."
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:69
+#: .\templates\dashboard\orders\detail.html:69
 msgid "This order is closed. Its status can no longer change."
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:79
+#: .\templates\dashboard\orders\detail.html:79
 msgid "Customer profile"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:87
+#: .\templates\dashboard\orders\detail.html:87
 msgid "Open location in Google Maps"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:88
+#: .\templates\dashboard\orders\detail.html:88
 #, python-format
 msgid "Location shared with consent on %(date)s"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:89
+#: .\templates\dashboard\orders\detail.html:89
 msgid "No location shared."
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:90
+#: .\templates\dashboard\orders\detail.html:90
 msgid "Customer notes"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:94
+#: .\templates\dashboard\orders\detail.html:94
 msgid "Internal notes"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:98
+#: .\templates\dashboard\orders\detail.html:98
 msgid "Save notes"
 msgstr ""
 
-#: templates/dashboard/orders/detail.html:100
+#: .\templates\dashboard\orders\detail.html:100
 msgid "Only staff can see these notes."
 msgstr ""
 
-#: templates/dashboard/orders/list.html:11
-#: templates/dashboard/products/list.html:13
+#: .\templates\dashboard\orders\list.html:11
+#: .\templates\dashboard\products\list.html:13
 msgid "Filter"
 msgstr ""
 
-#: templates/dashboard/overview.html:5
+#: .\templates\dashboard\overview.html:5
 #, python-format
 msgid "Welcome, %(name)s"
 msgstr ""
 
-#: templates/dashboard/overview.html:7
+#: .\templates\dashboard\overview.html:7
 msgid "New orders"
 msgstr ""
 
-#: templates/dashboard/overview.html:7
+#: .\templates\dashboard\overview.html:7
 msgid "Pending or received"
 msgstr ""
 
-#: templates/dashboard/overview.html:8
+#: .\templates\dashboard\overview.html:8
 msgid "Active products"
 msgstr ""
 
-#: templates/dashboard/overview.html:9
+#: .\templates\dashboard\overview.html:9
 msgid "Low-stock variants"
 msgstr ""
 
-#: templates/dashboard/overview.html:9
+#: .\templates\dashboard\overview.html:9
 #, python-format
 msgid "%(low_stock_threshold)s or fewer left"
 msgstr ""
 
-#: templates/dashboard/overview.html:11
+#: .\templates\dashboard\overview.html:11
 msgid "Sales, last 7 days"
 msgstr ""
 
-#: templates/dashboard/overview.html:11
+#: .\templates\dashboard\overview.html:11
 msgid "Confirmed orders onward"
 msgstr ""
 
-#: templates/dashboard/overview.html:12
+#: .\templates\dashboard\overview.html:12
 msgid "Sales, last 30 days"
 msgstr ""
 
-#: templates/dashboard/overview.html:19 templates/orders/order_list.html:26
+#: .\templates\dashboard\overview.html:19 .\templates\orders\order_list.html:26
 msgid "No orders yet"
 msgstr ""
 
-#: templates/dashboard/overview.html:19
+#: .\templates\dashboard\overview.html:19
 msgid "New orders will appear here as soon as customers check out."
 msgstr ""
 
-#: templates/dashboard/products/form.html:6
+#: .\templates\dashboard\products\_variant_row.html:3
+msgid "New option"
+msgstr ""
+
+#: .\templates\dashboard\products\_variant_row.html:17
+msgid ""
+"This option will be saved as <span lang=\"ar\" dir=\"rtl\">قياسي</span> / "
+"<span lang=\"en\" dir=\"ltr\">Standard</span>. Just enter the stock quantity "
+"below."
+msgstr ""
+
+#: .\templates\dashboard\products\_variant_row.html:37
+msgid "Option code"
+msgstr ""
+
+#: .\templates\dashboard\products\form.html:6
 msgid "All products"
 msgstr ""
 
-#: templates/dashboard/products/form.html:17
+#: .\templates\dashboard\products\form.html:17
 msgid "Details"
 msgstr ""
 
-#: templates/dashboard/products/form.html:38
+#: .\templates\dashboard\products\form.html:28
+msgid "Created automatically and never changes."
+msgstr ""
+
+#: .\templates\dashboard\products\form.html:44
 msgid "Variants & stock"
 msgstr ""
 
-#: templates/dashboard/products/form.html:39
+#: .\templates\dashboard\products\form.html:45
 msgid ""
-"Every product needs at least one active variant. Use “Standard” when there "
-"is only one option."
+"Every product needs at least one option. Pick “Standard” when there is only "
+"one; pick “Custom option” for colours or sizes."
 msgstr ""
 
-#: templates/dashboard/products/form.html:45
-#: templates/dashboard/products/form.html:66
-msgid "New variant"
+#: .\templates\dashboard\products\form.html:56
+msgid "Add another option"
 msgstr ""
 
-#: templates/dashboard/products/form.html:84
-msgid "Add another variant"
-msgstr ""
-
-#: templates/dashboard/products/form.html:88
+#: .\templates\dashboard\products\form.html:60
 msgid "Images"
 msgstr ""
 
-#: templates/dashboard/products/form.html:107
+#: .\templates\dashboard\products\form.html:87
 msgid ""
-"Lower display order numbers appear first. The primary image is used on "
-"product cards."
+"Lower display order numbers appear first. The main picture is used on "
+"product cards. “Adjust crop” reframes a picture you already uploaded."
 msgstr ""
 
-#: templates/dashboard/products/form.html:109
+#: .\templates\dashboard\products\form.html:89
 msgid "No images yet. Products without images show a neutral placeholder."
 msgstr ""
 
-#: templates/dashboard/products/form.html:118
+#: .\templates\dashboard\products\form.html:98
 msgid "Save product"
 msgstr ""
 
-#: templates/dashboard/products/form.html:119
+#: .\templates\dashboard\products\form.html:99
 msgid "Save and keep editing"
 msgstr ""
 
-#: templates/dashboard/products/list.html:18
+#: .\templates\dashboard\products\list.html:18
 msgid "Image"
 msgstr ""
 
-#: templates/dashboard/products/list.html:18
-#: templates/dashboard/products/list.html:25
+#: .\templates\dashboard\products\list.html:18
+#: .\templates\dashboard\products\list.html:25
 msgid "Price"
 msgstr ""
 
-#: templates/dashboard/products/list.html:27
+#: .\templates\dashboard\products\list.html:27
 msgid "Featured"
 msgstr ""
 
-#: templates/dashboard/products/list.html:38
+#: .\templates\dashboard\products\list.html:38
 msgid "No products yet"
 msgstr ""
 
-#: templates/dashboard/products/list.html:38
+#: .\templates\dashboard\products\list.html:38
 msgid "Add your first product, with its variants and photos."
 msgstr ""
 
-#: templates/dashboard/promotions/form.html:6
+#: .\templates\dashboard\promotions\form.html:6
 msgid "All promotions"
 msgstr ""
 
-#: templates/dashboard/promotions/form.html:26
+#: .\templates\dashboard\promotions\form.html:26
 msgid ""
 "Times use the store time zone (Asia/Jerusalem). Fixed discounts can never "
 "make a price negative."
 msgstr ""
 
-#: templates/dashboard/promotions/form.html:28
+#: .\templates\dashboard\promotions\form.html:28
 msgid "Save promotion"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:9
+#: .\templates\dashboard\promotions\list.html:9
 msgid ""
 "Only one promotion applies to each item. The highest priority wins; with "
 "equal priority, the biggest discount wins. Discounts never stack."
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:13
-#: templates/dashboard/promotions/list.html:17
+#: .\templates\dashboard\promotions\list.html:13
+#: .\templates\dashboard\promotions\list.html:17
 msgid "Promotion"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:13
-#: templates/dashboard/promotions/list.html:18
+#: .\templates\dashboard\promotions\list.html:13
+#: .\templates\dashboard\promotions\list.html:18
 msgid "Discount"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:13
-#: templates/dashboard/promotions/list.html:19
+#: .\templates\dashboard\promotions\list.html:13
+#: .\templates\dashboard\promotions\list.html:19
 msgid "Applies to"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:13
-#: templates/dashboard/promotions/list.html:20
+#: .\templates\dashboard\promotions\list.html:13
+#: .\templates\dashboard\promotions\list.html:20
 msgid "Dates"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:13
-#: templates/dashboard/promotions/list.html:21
+#: .\templates\dashboard\promotions\list.html:13
+#: .\templates\dashboard\promotions\list.html:21
 msgid "Priority"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:20
+#: .\templates\dashboard\promotions\list.html:20
 msgid "no end"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:23
+#: .\templates\dashboard\promotions\list.html:23
 msgid "Disabled"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:24
+#: .\templates\dashboard\promotions\list.html:24
 msgid "Scheduled"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:25
+#: .\templates\dashboard\promotions\list.html:25
 msgid "Ended"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:26
+#: .\templates\dashboard\promotions\list.html:26
 msgid "Running"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:38
+#: .\templates\dashboard\promotions\list.html:38
 msgid "No promotions yet"
 msgstr ""
 
-#: templates/dashboard/promotions/list.html:38
+#: .\templates\dashboard\promotions\list.html:38
 msgid ""
 "Create a percentage or fixed discount for the whole store, a brand, a "
 "category or one product."
 msgstr ""
 
-#: templates/dashboard/stock/_row.html:3 templates/dashboard/stock/list.html:14
+#: .\templates\dashboard\stock\_row.html:3
+#: .\templates\dashboard\stock\list.html:14
 msgid "Variant"
 msgstr ""
 
-#: templates/dashboard/stock/_row.html:9
+#: .\templates\dashboard\stock\_row.html:9
 msgid "Stock quantity"
 msgstr ""
 
-#: templates/dashboard/stock/_row.html:12
+#: .\templates\dashboard\stock\_row.html:12
 msgid "Saved"
 msgstr ""
 
-#: templates/dashboard/stock/_row.html:12
+#: .\templates\dashboard\stock\_row.html:12
 msgid "Enter 0 or more."
 msgstr ""
 
-#: templates/dashboard/stock/list.html:6
+#: .\templates\dashboard\stock\list.html:6
 msgid "Stock filter"
 msgstr ""
 
-#: templates/dashboard/stock/list.html:7
+#: .\templates\dashboard\stock\list.html:7
 #, python-format
 msgid "Low (%(low_stock_threshold)s or fewer)"
 msgstr ""
 
-#: templates/dashboard/stock/list.html:9
+#: .\templates\dashboard\stock\list.html:9
 msgid "All variants"
 msgstr ""
 
-#: templates/dashboard/stock/list.html:21
+#: .\templates\dashboard\stock\list.html:21
 msgid "Nothing to restock"
 msgstr ""
 
-#: templates/dashboard/stock/list.html:21
+#: .\templates\dashboard\stock\list.html:21
 msgid "All variants in this view have healthy stock."
 msgstr ""
 
-#: templates/errors/csrf.html:3
+#: .\templates\errors\csrf.html:3
 msgid "Please try again"
 msgstr ""
 
-#: templates/errors/csrf.html:7
+#: .\templates\errors\csrf.html:7
 msgid "Your session expired"
 msgstr ""
 
-#: templates/errors/csrf.html:8
+#: .\templates\errors\csrf.html:8
 msgid ""
 "For your security, please go back, refresh the page and try again. Make sure "
 "cookies are enabled."
 msgstr ""
 
-#: templates/includes/footer.html:10
+#: .\templates\includes\footer.html:10
 msgid "Contact us"
 msgstr ""
 
-#: templates/includes/footer.html:14
+#: .\templates\includes\footer.html:14
 msgid "Instagram"
 msgstr ""
 
-#: templates/includes/footer.html:25
+#: .\templates\includes\footer.html:25
 msgid "Shop"
 msgstr ""
 
-#: templates/includes/footer.html:34
+#: .\templates\includes\footer.html:34
 msgid "No online payment is collected on this website."
 msgstr ""
 
-#: templates/includes/form_errors.html:4
+#: .\templates\includes\form_errors.html:4
 msgid "Please check the highlighted fields."
 msgstr ""
 
-#: templates/includes/header.html:24
+#: .\templates\includes\header.html:24
 msgid "Account"
 msgstr ""
 
-#: templates/includes/header.html:27
+#: .\templates\includes\header.html:27
 msgid "Log in or create an account"
 msgstr ""
 
-#: templates/includes/header.html:37
+#: .\templates\includes\header.html:37
 msgid "Main navigation"
 msgstr ""
 
-#: templates/includes/pagination.html:2
+#: .\templates\includes\pagination.html:2
 msgid "Pagination"
 msgstr ""
 
-#: templates/includes/pagination.html:4 templates/includes/pagination.html:5
+#: .\templates\includes\pagination.html:4
+#: .\templates\includes\pagination.html:5
 msgid "Previous"
 msgstr ""
 
-#: templates/includes/pagination.html:6
+#: .\templates\includes\pagination.html:6
 #, python-format
 msgid "Page %(current)s of %(total)s"
 msgstr ""
 
-#: templates/includes/pagination.html:8 templates/includes/pagination.html:9
+#: .\templates\includes\pagination.html:8
+#: .\templates\includes\pagination.html:9
 msgid "Next"
 msgstr ""
 
-#: templates/includes/price.html:3
+#: .\templates\includes\price.html:3
 msgid "Sale price:"
 msgstr ""
 
-#: templates/includes/price.html:5
+#: .\templates\includes\price.html:5
 msgid "Original price:"
 msgstr ""
 
-#: templates/includes/product_card.html:14
+#: .\templates\includes\product_card.html:14
 msgid "Only a few left"
 msgstr ""
 
-#: templates/orders/checkout.html:3 templates/orders/checkout.html:7
+#: .\templates\orders\checkout.html:3 .\templates\orders\checkout.html:7
 msgid "Checkout"
 msgstr ""
 
-#: templates/orders/checkout.html:8
+#: .\templates\orders\checkout.html:8
 msgid ""
 "Tell us where to deliver. There is no online payment — we’ll confirm "
 "everything with you on WhatsApp."
 msgstr ""
 
-#: templates/orders/checkout.html:42
+#: .\templates\orders\checkout.html:42
 msgid "Exact location (optional)"
 msgstr ""
 
-#: templates/orders/checkout.html:43
+#: .\templates\orders\checkout.html:43
 msgid ""
 "You can share your current location to help the courier find you. Your "
 "written address is still required and is enough on its own."
 msgstr ""
 
-#: templates/orders/checkout.html:44
+#: .\templates\orders\checkout.html:44
 msgid "Use my current location"
 msgstr ""
 
-#: templates/orders/checkout.html:47
+#: .\templates\orders\checkout.html:47
 msgid "Before we ask your browser"
 msgstr ""
 
-#: templates/orders/checkout.html:49
+#: .\templates\orders\checkout.html:49
 msgid ""
 "If you continue, your browser will ask for permission to share your location "
 "once."
 msgstr ""
 
-#: templates/orders/checkout.html:51
+#: .\templates\orders\checkout.html:51
 msgid "We only use it to help deliver this order."
 msgstr ""
 
-#: templates/orders/checkout.html:52
+#: .\templates\orders\checkout.html:52
 msgid "It is saved with this order only if you allow it and place the order."
 msgstr ""
 
-#: templates/orders/checkout.html:53
+#: .\templates\orders\checkout.html:53
 msgid "We never track your location in the background."
 msgstr ""
 
-#: templates/orders/checkout.html:54
+#: .\templates\orders\checkout.html:54
 msgid "You can remove it before placing the order."
 msgstr ""
 
-#: templates/orders/checkout.html:58
+#: .\templates\orders\checkout.html:58
 msgid "Allow and continue"
 msgstr ""
 
-#: templates/orders/checkout.html:59
+#: .\templates\orders\checkout.html:59
 msgid "Not now"
 msgstr ""
 
-#: templates/orders/checkout.html:63
+#: .\templates\orders\checkout.html:63
 msgid "Getting your location…"
 msgstr ""
 
-#: templates/orders/checkout.html:64
+#: .\templates\orders\checkout.html:64
 #, python-format
 msgid "Location added. Accuracy: about %%(meters)s m."
 msgstr ""
 
-#: templates/orders/checkout.html:65
+#: .\templates\orders\checkout.html:65
 msgid ""
 "Location permission was not given. No problem — your written address is "
 "enough."
 msgstr ""
 
-#: templates/orders/checkout.html:66
+#: .\templates\orders\checkout.html:66
 msgid ""
 "Your location isn’t available right now. Your written address is enough."
 msgstr ""
 
-#: templates/orders/checkout.html:67
+#: .\templates\orders\checkout.html:67
 msgid "Location removed. It will not be saved."
 msgstr ""
 
-#: templates/orders/checkout.html:68
+#: .\templates\orders\checkout.html:68
 msgid "Remove location"
 msgstr ""
 
-#: templates/orders/checkout.html:74
+#: .\templates\orders\checkout.html:74
 #, python-format
 msgid "Ordering as %(name)s (%(email)s)."
 msgstr ""
 
-#: templates/orders/checkout.html:79
+#: .\templates\orders\checkout.html:79
 msgid "Place order"
 msgstr ""
 
-#: templates/orders/checkout.html:80
+#: .\templates\orders\checkout.html:80
 msgid ""
 "By placing the order you agree that we contact you about this order by phone "
 "or WhatsApp."
 msgstr ""
 
-#: templates/orders/checkout.html:84
+#: .\templates\orders\checkout.html:84
 msgid "Your order"
 msgstr ""
 
-#: templates/orders/checkout.html:91
+#: .\templates\orders\checkout.html:91
 msgid "Totals are calculated by our system when you place the order."
 msgstr ""
 
-#: templates/orders/checkout.html:92
+#: .\templates\orders\checkout.html:92
 msgid "Edit cart"
 msgstr ""
 
-#: templates/orders/confirmation.html:3
+#: .\templates\orders\confirmation.html:3
 msgid "Order received"
 msgstr ""
 
-#: templates/orders/confirmation.html:8
+#: .\templates\orders\confirmation.html:8
 msgid "Thank you! Your order is saved."
 msgstr ""
 
-#: templates/orders/confirmation.html:10
+#: .\templates\orders\confirmation.html:10
 msgid "Order number"
 msgstr ""
 
-#: templates/orders/confirmation.html:15
+#: .\templates\orders\confirmation.html:15
 msgid "Next step: send your order on WhatsApp"
 msgstr ""
 
-#: templates/orders/confirmation.html:16
+#: .\templates\orders\confirmation.html:16
+#, python-format
 msgid ""
-"The button opens WhatsApp with a ready message to Rawnaq. Please press Send "
-"inside WhatsApp so we can confirm your order quickly."
+"The button opens WhatsApp with a ready message to <span lang=\"en\" "
+"dir=\"ltr\">%(store)s</span>. Please press Send inside WhatsApp so we can "
+"confirm your order quickly."
 msgstr ""
 
-#: templates/orders/confirmation.html:20 templates/orders/order_detail.html:58
+#: .\templates\orders\confirmation.html:20
+#: .\templates\orders\order_detail.html:58
 msgid "Send order via WhatsApp"
 msgstr ""
 
-#: templates/orders/confirmation.html:23
+#: .\templates\orders\confirmation.html:23
 msgid ""
 "Opening WhatsApp does not send anything automatically. Your order is already "
 "saved in your account either way."
 msgstr ""
 
-#: templates/orders/confirmation.html:26
+#: .\templates\orders\confirmation.html:26
 msgid "View order status"
 msgstr ""
 
-#: templates/orders/confirmation.html:27
+#: .\templates\orders\confirmation.html:27
 msgid "Continue shopping"
 msgstr ""
 
-#: templates/orders/order_detail.html:3
+#: .\templates\orders\order_detail.html:3
 #, python-format
 msgid "Order %(number)s"
 msgstr ""
 
-#: templates/orders/order_detail.html:13
+#: .\templates\orders\order_detail.html:13
 msgid "Order progress"
 msgstr ""
 
-#: templates/orders/order_detail.html:22
+#: .\templates\orders\order_detail.html:22
 msgid "This order was cancelled. Contact us on WhatsApp if you have questions."
 msgstr ""
 
-#: templates/orders/order_detail.html:49
+#: .\templates\orders\order_detail.html:49
 msgid "Phone"
 msgstr ""
 
-#: templates/orders/order_detail.html:50
+#: .\templates\orders\order_detail.html:50
 msgid "You shared your location with this order."
 msgstr ""
 
-#: templates/orders/order_detail.html:51
+#: .\templates\orders\order_detail.html:51
 msgid "Your notes"
 msgstr ""
 
-#: templates/orders/order_detail.html:56
+#: .\templates\orders\order_detail.html:56
 msgid "Need to follow up?"
 msgstr ""
 
-#: templates/orders/order_detail.html:57
+#: .\templates\orders\order_detail.html:57
 msgid "Message us on WhatsApp with your order number."
 msgstr ""
 
-#: templates/orders/order_list.html:27
+#: .\templates\orders\order_list.html:27
 msgid "When you place an order it will appear here with its status."
 msgstr ""

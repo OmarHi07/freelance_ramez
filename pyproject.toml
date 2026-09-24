@@ -1,7 +1,7 @@
 [project]
 name = "rawnaq-accessories"
 version = "1.0.0"
-description = "Bilingual (Arabic/English) girls' accessories store for Rawnaq Accessories."
+description = "Bilingual (Arabic/English) girls' accessories store for rawnaq_accessories1."
 requires-python = ">=3.13"
 
 [tool.pytest.ini_options]

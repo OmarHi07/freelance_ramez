@@ -106,3 +106,56 @@ a.stat-card:hover { color: inherit; box-shadow: var(--shadow); }
 .consequences { margin: 0 0 16px; color: var(--color-muted); }
 .confirm-delete { display: grid; gap: 8px; }
 .scope-target.is-hidden { display: none; }
+
+/* --- Read-only values (generated codes, the fixed business name) ---------- */
+.field--readonly .field__label { display: block; font-weight: 600; font-size: 0.9rem; margin-block-end: 4px; }
+.readonly-value { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.code-chip { display: inline-block; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--color-pink-soft); color: var(--color-rose-deep); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85rem; }
+
+/* --- Standard / custom option switch -------------------------------------- */
+.field--modes { margin-block-end: 10px; }
+.option-mode { border: 0; margin: 0; padding: 0; min-width: 0; }
+.option-mode legend { font-weight: 600; font-size: 0.9rem; padding: 0; margin-block-end: 6px; }
+.option-mode ul, .option-mode div { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.option-mode label { display: inline-flex; align-items: center; gap: 8px; min-height: var(--touch); padding: 0 14px; border: 1.5px solid var(--color-line); border-radius: var(--radius-pill); background: #fff; cursor: pointer; font-weight: 500; }
+.option-mode label:has(input:checked) { border-color: var(--color-rose); background: var(--color-pink-soft); color: var(--color-rose-deep); }
+.option-mode label:has(input:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.option-mode input[type="radio"] { accent-color: var(--color-rose); width: 18px; height: 18px; flex: none; }
+.variant-row__standard-note { margin-block: 0 10px; }
+.variant-row__custom[hidden] { display: none; }
+
+/* --- Cropper previews ----------------------------------------------------- */
+.crop-previews { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.crop-preview { display: grid; gap: 6px; width: 160px; }
+.crop-preview__frame { position: relative; width: 100%; aspect-ratio: var(--crop-ratio, 1 / 1); border-radius: var(--radius-sm); overflow: hidden; background: var(--color-pink-soft); }
+.crop-preview__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.crop-preview--circle .crop-preview__frame, .crop-preview__frame.crop-preview--circle { border-radius: 50%; }
+.crop-preview__meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.crop-preview__badge { display: inline-block; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--color-rose); color: #fff; font-size: 0.72rem; font-weight: 600; }
+.image-field__current { display: grid; gap: 8px; justify-items: start; width: min(260px, 100%); margin-block-start: 8px; }
+.image-manager__figure { display: grid; gap: 6px; justify-items: start; }
+
+/* --- Crop modal ----------------------------------------------------------- */
+body.has-crop-dialog { overflow: hidden; }
+.crop-dialog { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(37, 29, 33, 0.55); }
+.crop-dialog[hidden] { display: none; }
+.crop-dialog__panel { width: min(560px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; display: grid; gap: 12px; padding: 16px; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); animation: crop-in 160ms var(--ease); }
+@keyframes crop-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.crop-dialog--no-motion .crop-dialog__panel { animation: none; }
+@media (prefers-reduced-motion: reduce) { .crop-dialog__panel { animation: none; } }
+.crop-dialog__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.crop-dialog__title { margin: 0; font-size: 1.1rem; }
+.crop-dialog__hint { margin: 0; color: var(--color-muted); font-size: 0.86rem; }
+.crop-dialog__stage { position: relative; width: 100%; max-height: 52dvh; aspect-ratio: var(--crop-ratio, 1 / 1); background: var(--color-pink-soft); border-radius: var(--radius-sm); overflow: hidden; }
+.crop-dialog__stage img { display: block; max-width: 100%; }
+.crop-dialog__stage.is-circle .cropper-view-box, .crop-dialog__stage.is-circle .cropper-face { border-radius: 50%; }
+.crop-dialog__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.crop-dialog__zoom { flex: 1 1 160px; display: grid; gap: 2px; min-width: 140px; }
+.crop-dialog__zoom-label { font-size: 0.78rem; color: var(--color-muted); font-weight: 600; }
+.crop-dialog__zoom-input { width: 100%; min-height: 32px; accent-color: var(--color-rose); }
+.crop-dialog__icon-button { min-width: var(--touch); min-height: var(--touch); justify-content: center; }
+.crop-dialog__icon-button .crop-dialog__button-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.crop-dialog__actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.crop-dialog__actions .button { min-height: var(--touch); }
+/* Cropper.js positions its own layers; keep them inside our rounded stage. */
+.crop-dialog__stage .cropper-container { max-width: 100%; }

@@ -2,17 +2,83 @@ from __future__ import annotations
 
 from django import forms
 from django.conf import settings
+from django.db.models import TextChoices
 from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
-from catalog.models import Brand, Category, Product, ProductImage, ProductVariant, Promotion, PromotionScope
+from catalog.models import (
+    STANDARD_OPTION_NAME_AR,
+    STANDARD_OPTION_NAME_EN,
+    Brand,
+    Category,
+    Product,
+    ProductImage,
+    ProductVariant,
+    Promotion,
+    PromotionScope,
+)
+from core.images import (
+    BRAND_BANNER,
+    BRAND_LOGO,
+    CATEGORY_IMAGE,
+    PRODUCT_IMAGE,
+    CropTarget,
+    is_low_resolution,
+    low_resolution_warning,
+)
 from core.models import SiteSettings
 from core.validators import IMAGE_VALIDATORS
 from orders.models import Order, OrderStatus
 
 DATETIME_LOCAL_FORMAT = "%Y-%m-%dT%H:%M"
 MAX_NEW_IMAGES = 10
+ACCEPTED_IMAGE_TYPES = "image/jpeg,image/png,image/webp"
+
+
+def crop_attrs(target: CropTarget, *, shape: str = "square", hint: str = "") -> dict[str, str]:
+    """Data attributes that turn a file input into a cropper field.
+
+    Every label is passed through so the modal speaks the owner's language.
+    Without JavaScript the attributes are inert and the field stays an ordinary
+    file input, which the server centre-crops to the same shape.
+    """
+    return {
+        "accept": ACCEPTED_IMAGE_TYPES,
+        "data-crop": target.name,
+        "data-crop-ratio": f"{target.ratio_w}/{target.ratio_h}",
+        "data-crop-shape": shape,
+        "data-crop-width": str(target.max_width),
+        "data-crop-height": str(target.max_height),
+        "data-crop-title": _("Position and crop the picture"),
+        "data-crop-hint": hint or _("Drag the picture to move it, then zoom until it fills the frame."),
+        "data-crop-zoom": _("Zoom"),
+        "data-crop-zoom-in": _("Zoom in"),
+        "data-crop-zoom-out": _("Zoom out"),
+        "data-crop-rotate-left": _("Rotate left"),
+        "data-crop-rotate-right": _("Rotate right"),
+        "data-crop-reset": _("Reset"),
+        "data-crop-cancel": _("Cancel"),
+        "data-crop-apply": _("Use this crop"),
+        "data-crop-adjust": _("Adjust crop"),
+        "data-crop-remove": _("Remove"),
+        "data-crop-primary": _("Main picture"),
+    }
+
+
+class CropAttrsMixin:
+    def __init__(self, target: CropTarget, *, shape: str = "square", hint: str = "", attrs=None):
+        merged = crop_attrs(target, shape=shape, hint=hint)
+        merged.update(attrs or {})
+        super().__init__(merged)
+
+
+class CropFileInput(CropAttrsMixin, forms.ClearableFileInput):
+    """Single-file input wired to the cropper, keeping Django's clear checkbox."""
+
+
+class CropReplaceInput(CropAttrsMixin, forms.FileInput):
+    """Same, without a clear checkbox, for fields that must keep a file."""
 
 
 class ColorInput(forms.TextInput):
@@ -36,9 +102,13 @@ class MultipleFileInput(forms.ClearableFileInput):
 
 class MultipleImageField(forms.ImageField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault(
-            "widget", MultipleFileInput(attrs={"accept": "image/jpeg,image/png,image/webp", "data-image-preview": ""})
+        # Several files can be picked at once and each one is cropped on its own.
+        attrs = crop_attrs(
+            PRODUCT_IMAGE,
+            hint=_("Square pictures look best on product cards and in the gallery."),
         )
+        attrs["data-image-preview"] = ""
+        kwargs.setdefault("widget", MultipleFileInput(attrs=attrs))
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
@@ -52,7 +122,37 @@ class MultipleImageField(forms.ImageField):
         return [single(data, initial)] if data else []
 
 
-class BrandForm(forms.ModelForm):
+class LowResolutionWarningMixin:
+    """Collects a friendly warning when an uploaded picture is small.
+
+    The upload is still accepted — the owner is told the result may look soft,
+    and the view surfaces the notes as warning messages.
+    """
+
+    crop_targets: dict[str, CropTarget] = {}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.image_warnings: list[str] = []
+
+    def _check_resolution(self, field_name: str) -> None:
+        upload = self.cleaned_data.get(field_name)
+        target = self.crop_targets.get(field_name)
+        if not upload or not target or getattr(upload, "_committed", False):
+            return
+        if is_low_resolution(upload, target):
+            self.image_warnings.append(low_resolution_warning(target))
+
+    def clean(self):
+        cleaned = super().clean()
+        for field_name in self.crop_targets:
+            self._check_resolution(field_name)
+        return cleaned
+
+
+class BrandForm(LowResolutionWarningMixin, forms.ModelForm):
+    crop_targets = {"logo": BRAND_LOGO, "banner_image": BRAND_BANNER}
+
     class Meta:
         model = Brand
         fields = (
@@ -72,8 +172,19 @@ class BrandForm(forms.ModelForm):
             "name_en": forms.TextInput(attrs={"dir": "ltr"}),
             "name_ar": forms.TextInput(attrs={"dir": "rtl"}),
             "slug": forms.TextInput(attrs={"dir": "ltr", "data-slug-from": "id_name_en"}),
-            "logo": forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
-            "banner_image": forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
+            "logo": CropFileInput(
+                BRAND_LOGO,
+                shape="circle",
+                hint=_("Shown as a circle on brand cards, and saved as a square picture."),
+            ),
+            "banner_image": CropFileInput(
+                BRAND_BANNER,
+                hint=_("The wide background picture at the top of this brand page."),
+            ),
+        }
+        help_texts = {
+            "logo": _("Square picture used as the round brand badge."),
+            "banner_image": _("Background picture for this brand page. Brand cards use the brand colours instead."),
         }
 
     def clean_primary_color(self):
@@ -83,7 +194,9 @@ class BrandForm(forms.ModelForm):
         return self.cleaned_data["secondary_color"].upper()
 
 
-class CategoryForm(forms.ModelForm):
+class CategoryForm(LowResolutionWarningMixin, forms.ModelForm):
+    crop_targets = {"image": CATEGORY_IMAGE}
+
     class Meta:
         model = Category
         fields = ("name_ar", "name_en", "slug", "image", "display_order", "is_active")
@@ -91,11 +204,12 @@ class CategoryForm(forms.ModelForm):
             "name_en": forms.TextInput(attrs={"dir": "ltr"}),
             "name_ar": forms.TextInput(attrs={"dir": "rtl"}),
             "slug": forms.TextInput(attrs={"dir": "ltr", "data-slug-from": "id_name_en"}),
-            "image": forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
+            "image": CropFileInput(CATEGORY_IMAGE),
         }
+        help_texts = {"image": _("Square picture used wherever this category is shown.")}
 
 
-class ProductForm(forms.ModelForm):
+class ProductForm(LowResolutionWarningMixin, forms.ModelForm):
     new_images = MultipleImageField(label=_("Add images"), required=False, validators=IMAGE_VALIDATORS)
 
     class Meta:
@@ -106,7 +220,6 @@ class ProductForm(forms.ModelForm):
             "name_ar",
             "name_en",
             "slug",
-            "sku",
             "description_ar",
             "description_en",
             "regular_price",
@@ -119,7 +232,6 @@ class ProductForm(forms.ModelForm):
             "name_en": forms.TextInput(attrs={"dir": "ltr"}),
             "name_ar": forms.TextInput(attrs={"dir": "rtl"}),
             "slug": forms.TextInput(attrs={"dir": "ltr", "data-slug-from": "id_name_en"}),
-            "sku": forms.TextInput(attrs={"dir": "ltr"}),
             "description_en": forms.Textarea(attrs={"rows": 4, "dir": "ltr"}),
             "description_ar": forms.Textarea(attrs={"rows": 4, "dir": "rtl"}),
             "regular_price": forms.NumberInput(attrs={"step": "0.01", "min": "0.01", "inputmode": "decimal"}),
@@ -134,8 +246,39 @@ class ProductForm(forms.ModelForm):
             "JPEG, PNG or WebP, up to %(size)s MB each. You can select several files."
         ) % {"size": settings.MAX_IMAGE_UPLOAD_SIZE // (1024 * 1024)}
 
+    def clean(self):
+        cleaned = super().clean()
+        # new_images holds a list, so it needs its own low-resolution check.
+        if any(is_low_resolution(upload, PRODUCT_IMAGE) for upload in cleaned.get("new_images") or []):
+            self.image_warnings.append(low_resolution_warning(PRODUCT_IMAGE))
+        return cleaned
+
+
+class OptionMode(TextChoices):
+    """How a variant's option name is decided. Not stored: it is inferred from the names."""
+
+    STANDARD = "standard", _("Standard / قياسي")
+    CUSTOM = "custom", _("Custom option / خيار مخصص")
+
 
 class VariantForm(forms.ModelForm):
+    """One row of the "Variants & stock" section.
+
+    ``option_mode`` is a form-only choice — nothing is added to the database,
+    because a variant is "standard" exactly when it carries the two localized
+    Standard names. In standard mode the server fills both names itself, so the
+    owner never types them and a forged POST cannot put anything else there.
+    """
+
+    option_mode = forms.ChoiceField(
+        label=_("Option type"),
+        choices=OptionMode.choices,
+        initial=OptionMode.STANDARD,
+        required=False,
+        widget=forms.RadioSelect(attrs={"data-option-mode": ""}),
+        help_text=_("Choose “Standard” when the product has only one option. The names are filled in for you."),
+    )
+
     class Meta:
         model = ProductVariant
         fields = (
@@ -144,29 +287,93 @@ class VariantForm(forms.ModelForm):
             "color_name_ar",
             "color_name_en",
             "color_hex",
-            "sku",
             "stock_quantity",
             "price_override",
             "display_order",
             "is_active",
         )
         widgets = {
+            "name_en": forms.TextInput(attrs={"dir": "ltr"}),
+            "name_ar": forms.TextInput(attrs={"dir": "rtl"}),
+            "color_name_en": forms.TextInput(attrs={"dir": "ltr"}),
+            "color_name_ar": forms.TextInput(attrs={"dir": "rtl"}),
             "color_hex": ColorInput(attrs={"placeholder": "#000000"}),
-            "sku": forms.TextInput(attrs={"dir": "ltr"}),
             "stock_quantity": forms.NumberInput(attrs={"min": "0", "inputmode": "numeric"}),
             "price_override": forms.NumberInput(attrs={"step": "0.01", "min": "0.01", "inputmode": "decimal"}),
             "display_order": forms.NumberInput(attrs={"min": "0", "inputmode": "numeric"}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Names are validated in clean(): required in custom mode, filled in by
+        # the server in standard mode.
+        for name in ("name_ar", "name_en"):
+            self.fields[name].required = False
+        if self.instance.pk and not self.instance.is_standard_option:
+            self.fields["option_mode"].initial = OptionMode.CUSTOM
+        else:
+            self.fields["option_mode"].initial = OptionMode.STANDARD
+
+    def has_changed(self) -> bool:
+        # A standard option needs no typing at all, so a row the formset marks
+        # as mandatory (the first one on a new product) always counts as filled
+        # in. Without this an untouched standard row would be silently dropped.
+        if not self.empty_permitted:
+            return True
+        return super().has_changed()
+
     def clean_color_hex(self):
         return (self.cleaned_data.get("color_hex") or "").upper()
 
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get("DELETE"):
+            return cleaned
+        # An unknown or missing mode falls back to custom, which demands both
+        # names — a forged POST can never skip validation this way.
+        mode = cleaned.get("option_mode") or OptionMode.CUSTOM
+        if mode == OptionMode.STANDARD:
+            cleaned["name_ar"] = STANDARD_OPTION_NAME_AR
+            cleaned["name_en"] = STANDARD_OPTION_NAME_EN
+            self.errors.pop("name_ar", None)
+            self.errors.pop("name_en", None)
+        else:
+            if not cleaned.get("name_ar"):
+                self.add_error("name_ar", _("Enter the Arabic option name, or switch to “Standard”."))
+            if not cleaned.get("name_en"):
+                self.add_error("name_en", _("Enter the English option name, or switch to “Standard”."))
+        return cleaned
 
-class ProductImageForm(forms.ModelForm):
+
+class ProductImageForm(LowResolutionWarningMixin, forms.ModelForm):
+    """An image the product already has: alt text, order, and an optional replacement.
+
+    Leaving the file field empty keeps the stored picture exactly as it is, so
+    saving the product never rewrites or re-crops images the owner did not touch.
+    """
+
+    crop_targets = {"image": PRODUCT_IMAGE}
+
     class Meta:
         model = ProductImage
-        fields = ("alt_text_ar", "alt_text_en", "display_order", "is_primary")
-        widgets = {"display_order": forms.NumberInput(attrs={"min": "0", "inputmode": "numeric"})}
+        fields = ("image", "alt_text_ar", "alt_text_en", "display_order", "is_primary")
+        widgets = {
+            # FileInput, not ClearableFileInput: an image is removed with the
+            # row's own delete tick, never by blanking the file field.
+            "image": CropReplaceInput(
+                PRODUCT_IMAGE,
+                hint=_("Square pictures look best on product cards and in the gallery."),
+            ),
+            "alt_text_en": forms.TextInput(attrs={"dir": "ltr"}),
+            "alt_text_ar": forms.TextInput(attrs={"dir": "rtl"}),
+            "display_order": forms.NumberInput(attrs={"min": "0", "inputmode": "numeric"}),
+        }
+        labels = {"image": _("Replace picture")}
+        help_texts = {"image": _("Leave empty to keep the current picture.")}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["image"].required = False
 
 
 class BaseImageFormSet(forms.BaseInlineFormSet):
@@ -182,6 +389,15 @@ class BaseImageFormSet(forms.BaseInlineFormSet):
 
 
 class BaseVariantFormSet(forms.BaseInlineFormSet):
+    def _construct_form(self, i, **kwargs):
+        form = super()._construct_form(i, **kwargs)
+        if i == 0 and not self.instance.pk:
+            # A new product must describe its first option, so this row is
+            # always validated and always saved — even in standard mode, where
+            # the owner may legitimately leave every field at its default.
+            form.empty_permitted = False
+        return form
+
     def clean(self):
         super().clean()
         active = [
@@ -306,9 +522,10 @@ class SiteSettingsForm(forms.ModelForm):
 
     class Meta:
         model = SiteSettings
+        # The official business name is deliberately absent: it is fixed in
+        # core.constants.BUSINESS_NAME and shown read-only on the settings page,
+        # so it cannot be renamed by accident.
         fields = (
-            "store_name_ar",
-            "store_name_en",
             "whatsapp_number",
             "whatsapp_display_number",
             "instagram_url",

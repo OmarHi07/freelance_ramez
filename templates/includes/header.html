@@ -3,7 +3,7 @@
   <div class="container header-bar">
     <a class="logo" href="{% url 'core:home' %}">
       <img class="logo__mark" src="{% static 'img/brand/logo-mark.png' %}" alt="" width="44" height="44">
-      <span class="logo__text" lang="en" dir="ltr">{{ site_settings.store_name_en }}</span>
+      <span class="logo__text" lang="en" dir="ltr">{% business_name %}</span>
     </a>
     <div class="header-actions">
       <form class="lang-switch" action="{% url 'set_language' %}" method="post">

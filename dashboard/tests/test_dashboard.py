@@ -11,6 +11,7 @@ from PIL import Image
 
 from catalog.models import Brand, Category, Product, ProductImage, Promotion
 from conftest import make_brand, make_category, make_product, make_promotion, uploaded_image
+from core.constants import BUSINESS_NAME
 from dashboard import urls as dashboard_urls
 
 pytestmark = pytest.mark.django_db
@@ -190,13 +191,13 @@ def test_staff_category_crud(staff_client, site_settings):
 
 
 def product_payload(brand, category, **overrides):
+    """What the owner form posts. No SKUs: the server generates those."""
     data = {
         "brand": brand.pk,
         "categories": [category.pk],
         "name_ar": "قرط",
         "name_en": "Earring",
         "slug": "earring",
-        "sku": "EAR-1",
         "description_ar": "",
         "description_en": "",
         "regular_price": "49.90",
@@ -206,9 +207,9 @@ def product_payload(brand, category, **overrides):
         "variants-INITIAL_FORMS": "0",
         "variants-MIN_NUM_FORMS": "0",
         "variants-MAX_NUM_FORMS": "1000",
+        "variants-0-option_mode": "custom",
         "variants-0-name_ar": "ذهبي",
         "variants-0-name_en": "Gold",
-        "variants-0-sku": "EAR-1-G",
         "variants-0-stock_quantity": "7",
         "variants-0-display_order": "0",
         "variants-0-is_active": "on",
@@ -301,7 +302,8 @@ def test_uploaded_images_are_stripped_and_resized(site_settings, settings):
     settings.IMAGE_OPTIMIZE_MAX_EDGE = 200
     product = make_product()
     image = ProductImage.objects.create(product=product, image=uploaded_image("x.jpg", fmt="JPEG", size=(800, 400)))
-    assert (image.width, image.height) == (200, 100)
+    # Product images are square, so a wide upload is centre-cropped server-side.
+    assert (image.width, image.height) == (200, 200)
     with image.image.open("rb") as handle, Image.open(handle) as stored:
         assert stored.format == "WEBP"
         assert not stored.getexif()
@@ -353,11 +355,10 @@ def test_order_list_search_and_htmx(staff_client, site_settings):
 
 def test_site_settings_update(staff_client, site_settings):
     data = {
-        "store_name_ar": "رونق",
-        "store_name_en": "Rawnaq Accessories",
+        # The official business name is not part of this form; see test_branding.py.
         "whatsapp_number": "972553003327",
         "whatsapp_display_number": "0553003327",
-        "instagram_url": "https://www.instagram.com/rawnaq_accessories1/",
+        "instagram_url": f"https://www.instagram.com/{BUSINESS_NAME}/",
         "default_delivery_fee": "25.00",
         "free_delivery_threshold": "200",
         "sale_banner_enabled": "on",
@@ -385,7 +386,7 @@ def test_django_admin_pages_load_for_superuser(client, site_settings):
     make_product()
     superuser = make_user(email="root@example.test", is_staff=True, is_superuser=True)
     client.force_login(superuser)
-    assert "Rawnaq" in client.get("/django-admin/").content.decode()
+    assert BUSINESS_NAME in client.get("/django-admin/").content.decode()
     for model, model_admin in admin.site._registry.items():
         opts = model._meta
         changelist = f"/django-admin/{opts.app_label}/{opts.model_name}/"

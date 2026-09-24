@@ -3,7 +3,7 @@
 <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   {% include "includes/head.html" %}
-  <title>{% block title %}{{ site_settings.store_name }}{% endblock %} · {{ site_settings.store_name_en }}</title>
+  <title>{% block title %}{% business_name %}{% endblock %} · {% business_name %}</title>
   <meta name="description" content="{% block meta_description %}{% translate "Curated girls’ accessories from brands you love." %}{% endblock %}">
   {% block extra_head %}{% endblock %}
 </head>

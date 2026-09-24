@@ -9,6 +9,7 @@ from django.utils import translation
 from cart.models import Cart, CartItem
 from catalog.models import DiscountType
 from conftest import make_product, make_promotion
+from core.constants import BUSINESS_NAME
 from orders.models import Order, OrderStatus
 from orders.services.notifications import ClickToChatNotifier
 from orders.services.whatsapp import build_whatsapp_url, customer_whatsapp_url, owner_order_url
@@ -202,9 +203,9 @@ def test_whatsapp_message_is_localized(customer, site_settings):
         language="ar",
     )
     text = ClickToChatNotifier().new_order(order).message
-    assert "طلب جديد من رونق" in text and "RNQ-20260921-AB12" in text
+    assert f"طلب جديد من {BUSINESS_NAME}" in text and "RNQ-20260921-AB12" in text
     order.language = "en"
-    assert "New Rawnaq order" in ClickToChatNotifier().new_order(order).message
+    assert f"New {BUSINESS_NAME} order" in ClickToChatNotifier().new_order(order).message
 
 
 def test_whatsapp_url_uses_international_number():

@@ -21,7 +21,13 @@
       {% include "includes/form_field.html" with field=form.brand %}
       {% include "includes/form_field.html" with field=form.regular_price %}
       {% include "includes/form_field.html" with field=form.slug %}
-      {% include "includes/form_field.html" with field=form.sku %}
+      {% if object %}
+        <div class="field field--readonly">
+          <span class="field__label">{% translate "Product code" %}</span>
+          <p class="readonly-value code-chip" dir="ltr">{{ object.sku }}</p>
+          <p class="field__help">{% translate "Created automatically and never changes." %}</p>
+        </div>
+      {% endif %}
       {% include "includes/form_field.html" with field=form.description_ar extra_class="form-grid__wide" %}
       {% include "includes/form_field.html" with field=form.description_en extra_class="form-grid__wide" %}
       {% include "includes/form_field.html" with field=form.verification_status %}
@@ -36,52 +42,18 @@
 
   <section class="dash-card">
     <h2 class="dash-card__title">{% translate "Variants & stock" %}</h2>
-    <p class="muted small">{% translate "Every product needs at least one active variant. Use “Standard” when there is only one option." %}</p>
+    <p class="muted small">{% translate "Every product needs at least one option. Pick “Standard” when there is only one; pick “Custom option” for colours or sizes." %}</p>
     {{ variant_formset.management_form }}
     {% for error in variant_formset.non_form_errors %}<p class="alert alert--error">{% icon "alert" %}<span>{{ error }}</span></p>{% endfor %}
     <div class="formset" data-formset="variants">
       {% for vform in variant_formset %}
-        <fieldset class="formset__item{% if vform.errors %} has-errors{% endif %}">
-          <legend>{% if vform.instance.pk %}{{ vform.instance.name }}{% else %}{% translate "New variant" %}{% endif %}</legend>
-          {{ vform.id }}
-          {% for error in vform.non_field_errors %}<p class="field__error">{{ error }}</p>{% endfor %}
-          <div class="form-grid form-grid--dense">
-            {% include "includes/form_field.html" with field=vform.name_ar %}
-            {% include "includes/form_field.html" with field=vform.name_en %}
-            {% include "includes/form_field.html" with field=vform.sku %}
-            {% include "includes/form_field.html" with field=vform.stock_quantity %}
-            {% include "includes/form_field.html" with field=vform.price_override %}
-            {% include "includes/form_field.html" with field=vform.color_name_ar %}
-            {% include "includes/form_field.html" with field=vform.color_name_en %}
-            {% include "includes/form_field.html" with field=vform.color_hex %}
-            {% include "includes/form_field.html" with field=vform.display_order %}
-            {% include "includes/form_field.html" with field=vform.is_active %}
-            {% if vform.instance.pk %}{% include "includes/form_field.html" with field=vform.DELETE %}{% endif %}
-          </div>
-        </fieldset>
+        {% include "dashboard/products/_variant_row.html" %}
       {% endfor %}
       <template data-formset-template="variants">
-        {% with vform=variant_formset.empty_form %}
-        <fieldset class="formset__item">
-          <legend>{% translate "New variant" %}</legend>
-          {{ vform.id }}
-          <div class="form-grid form-grid--dense">
-            {% include "includes/form_field.html" with field=vform.name_ar %}
-            {% include "includes/form_field.html" with field=vform.name_en %}
-            {% include "includes/form_field.html" with field=vform.sku %}
-            {% include "includes/form_field.html" with field=vform.stock_quantity %}
-            {% include "includes/form_field.html" with field=vform.price_override %}
-            {% include "includes/form_field.html" with field=vform.color_name_ar %}
-            {% include "includes/form_field.html" with field=vform.color_name_en %}
-            {% include "includes/form_field.html" with field=vform.color_hex %}
-            {% include "includes/form_field.html" with field=vform.display_order %}
-            {% include "includes/form_field.html" with field=vform.is_active %}
-          </div>
-        </fieldset>
-        {% endwith %}
+        {% include "dashboard/products/_variant_row.html" with vform=variant_formset.empty_form %}
       </template>
     </div>
-    <button class="button button--ghost" type="button" data-formset-add="variants" hidden>{% icon "plus" %}<span>{% translate "Add another variant" %}</span></button>
+    <button class="button button--ghost" type="button" data-formset-add="variants" hidden>{% icon "plus" %}<span>{% translate "Add another option" %}</span></button>
   </section>
 
   <section class="dash-card">
@@ -93,8 +65,16 @@
         {% for iform in image_formset %}
           <li class="image-manager__item{% if iform.instance.is_primary %} is-primary{% endif %}">
             {{ iform.id }}
-            <img src="{{ iform.instance.thumbnail_url }}" alt="{{ iform.instance.alt_text }}" width="160" height="160" loading="lazy">
+            <div class="image-manager__figure">
+              <img src="{{ iform.instance.thumbnail_url }}" alt="{{ iform.instance.alt_text }}" width="160" height="160" loading="lazy">
+              {% if iform.instance.is_primary %}<span class="crop-preview__badge">{% translate "Main picture" %}</span>{% endif %}
+              <button class="button button--ghost button--small" type="button" hidden
+                      data-crop-adjust-for="{{ iform.image.auto_id }}" data-crop-adjust="{{ iform.instance.image.url }}">
+                {% translate "Adjust crop" %}
+              </button>
+            </div>
             <div class="image-manager__fields">
+              {% include "includes/form_field.html" with field=iform.image %}
               {% include "includes/form_field.html" with field=iform.alt_text_ar %}
               {% include "includes/form_field.html" with field=iform.alt_text_en %}
               {% include "includes/form_field.html" with field=iform.display_order %}
@@ -104,7 +84,7 @@
           </li>
         {% endfor %}
       </ul>
-      <p class="muted small">{% translate "Lower display order numbers appear first. The primary image is used on product cards." %}</p>
+      <p class="muted small">{% translate "Lower display order numbers appear first. The main picture is used on product cards. “Adjust crop” reframes a picture you already uploaded." %}</p>
     {% else %}
       <p class="muted">{% translate "No images yet. Products without images show a neutral placeholder." %}</p>
     {% endif %}

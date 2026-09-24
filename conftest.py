@@ -77,7 +77,6 @@ def make_product(brand=None, *, price="100.00", stock=10, categories=(), variant
         "name_en": f"Product {n}",
         "name_ar": f"منتج {n}",
         "slug": f"product-{n}",
-        "sku": f"SKU-{n}",
         "regular_price": Decimal(price),
         "verification_status": VerificationStatus.CONFIRMED,
     }
@@ -90,8 +89,8 @@ def make_product(brand=None, *, price="100.00", stock=10, categories=(), variant
             product=product,
             name_en=f"Option {index + 1}",
             name_ar=f"خيار {index + 1}",
-            sku=f"{defaults['sku']}-{index + 1}",
             stock_quantity=stock,
+            display_order=index,
         )
     return product
 
