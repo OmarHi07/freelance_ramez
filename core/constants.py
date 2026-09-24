@@ -22,5 +22,6 @@ INSTAGRAM_URL = f"https://www.instagram.com/{BUSINESS_NAME}/"
 WHATSAPP_DISPLAY_NUMBER = "0553003327"
 WHATSAPP_INTERNATIONAL_NUMBER = "972553003327"
 CURRENCY_SYMBOL = "₪"
-DEFAULT_DELIVERY_FEE = Decimal("20.00")
+# Delivery is quoted per order on WhatsApp, so checkout never adds a fee.
+DEFAULT_DELIVERY_FEE = Decimal("0.00")
 MONEY_QUANTUM = Decimal("0.01")

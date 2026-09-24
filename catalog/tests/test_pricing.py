@@ -102,20 +102,25 @@ def test_variant_price_override_is_discounted():
     assert quote.final == Decimal("60.00")
 
 
-def test_price_lines_server_totals_and_delivery(site_settings):
+def test_price_lines_total_is_products_only(site_settings):
     product = make_product(price="30.00")
     variant = product.variants.first()
     make_promotion(value="10.00")
     totals = price_lines([(variant, 3)], site_settings)
     assert totals.subtotal == Decimal("90.00")
     assert totals.discount_total == Decimal("9.00")
-    assert totals.delivery_fee == Decimal("20.00")
-    assert totals.total == Decimal("101.00")
+    assert totals.total == Decimal("81.00")  # subtotal minus discounts
+    assert totals.items_total == totals.total
 
-    site_settings.free_delivery_threshold = Decimal("80.00")
-    totals = price_lines([(variant, 3)], site_settings)
+
+def test_no_delivery_fee_is_added_even_if_old_settings_still_store_one(site_settings):
+    """Delivery is agreed on WhatsApp, so a stale stored fee must not resurface."""
+    variant = make_product(price="30.00").variants.first()
+    site_settings.default_delivery_fee = Decimal("20.00")
+    site_settings.free_delivery_threshold = Decimal("500.00")
+    totals = price_lines([(variant, 1)], site_settings)
     assert totals.delivery_fee == Decimal("0.00")
-    assert totals.total == Decimal("81.00")
+    assert totals.total == Decimal("30.00")
 
 
 def test_promotion_validation_rules():

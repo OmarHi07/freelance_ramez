@@ -12,6 +12,8 @@ Rules
 * Percentage discounts are 0-100 %; fixed discounts are capped at the item
   price, so a final price can never be negative.
 * All amounts are ``Decimal`` rounded half-up to 0.01. Floats are never used.
+* No delivery fee is ever added: the owner agrees it with the customer on
+  WhatsApp after the order is placed.
 
 The same functions are used to display prices and, on the server, to create
 orders, so totals submitted by a browser are never trusted.
@@ -191,6 +193,14 @@ class PricedLine:
 
 @dataclass(frozen=True)
 class Totals:
+    """Checkout totals. Delivery is never part of them.
+
+    The owner agrees the delivery cost with each customer on WhatsApp after the
+    order, so ``total`` is exactly the products total: subtotal minus discounts.
+    ``delivery_fee`` stays at zero and is kept only so the field lines up with
+    the historical ``Order.delivery_fee`` snapshot.
+    """
+
     lines: list[PricedLine] = field(default_factory=list)
     subtotal: Decimal = ZERO  # before discounts
     discount_total: Decimal = ZERO
@@ -205,21 +215,15 @@ class Totals:
     def item_count(self) -> int:
         return sum(line.quantity for line in self.lines)
 
-    @property
-    def free_delivery_applied(self) -> bool:
-        return bool(self.lines) and self.delivery_fee == ZERO
 
+def price_lines(
+    items: Iterable[tuple[ProductVariant, int]], site_settings=None, promotions=None, *, now=None
+) -> Totals:
+    """Compute authoritative totals for ``(variant, quantity)`` pairs.
 
-def delivery_fee_for(items_total: Decimal, site_settings) -> Decimal:
-    fee = money(site_settings.default_delivery_fee or ZERO)
-    threshold = site_settings.free_delivery_threshold
-    if threshold is not None and items_total >= threshold:
-        return ZERO
-    return fee
-
-
-def price_lines(items: Iterable[tuple[ProductVariant, int]], site_settings, promotions=None, *, now=None) -> Totals:
-    """Compute authoritative totals for ``(variant, quantity)`` pairs."""
+    ``site_settings`` is accepted for call-site compatibility and deliberately
+    ignored: no delivery fee is added even if an old row still stores one.
+    """
     if promotions is None:
         promotions = load_active_promotions(now)
     lines = [
@@ -228,12 +232,10 @@ def price_lines(items: Iterable[tuple[ProductVariant, int]], site_settings, prom
     ]
     subtotal = money(sum((line.original_total for line in lines), ZERO))
     discount_total = money(sum((line.discount_total for line in lines), ZERO))
-    items_total = money(subtotal - discount_total)
-    delivery_fee = delivery_fee_for(items_total, site_settings) if lines else ZERO
     return Totals(
         lines=lines,
         subtotal=subtotal,
         discount_total=discount_total,
-        delivery_fee=delivery_fee,
-        total=money(items_total + delivery_fee),
+        delivery_fee=ZERO,
+        total=money(subtotal - discount_total),
     )

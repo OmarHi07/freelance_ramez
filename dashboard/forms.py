@@ -526,11 +526,13 @@ class SiteSettingsForm(forms.ModelForm):
         # core.constants.BUSINESS_NAME and shown read-only on the settings page,
         # so it cannot be renamed by accident.
         fields = (
+            "order_notification_email",
             "whatsapp_number",
             "whatsapp_display_number",
             "instagram_url",
-            "default_delivery_fee",
-            "free_delivery_threshold",
+            # The delivery fee and free-delivery threshold are intentionally not
+            # editable: delivery is agreed per order on WhatsApp and checkout
+            # never adds a fee, so exposing them could only cause confusion.
             "delivery_notice_ar",
             "delivery_notice_en",
             "sale_banner_enabled",
@@ -538,6 +540,7 @@ class SiteSettingsForm(forms.ModelForm):
             "sale_banner_text_en",
         )
         widgets = {
+            "order_notification_email": forms.EmailInput(attrs={"dir": "ltr", "autocomplete": "email"}),
             "whatsapp_number": forms.TextInput(attrs={"dir": "ltr", "inputmode": "numeric"}),
             "whatsapp_display_number": forms.TextInput(attrs={"dir": "ltr"}),
             "instagram_url": forms.URLInput(attrs={"dir": "ltr"}),

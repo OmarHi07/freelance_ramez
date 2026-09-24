@@ -6,7 +6,7 @@ A bilingual online store for **`rawnaq_accessories1`** (Instagram: [@rawnaq_acce
 
 - **Arabic** is the default language (right-to-left), at `/ar/`. **English** is the second language (left-to-right), at `/en/`.
 - Shoppers browse **by brand**, add items to a cart without an account, and sign in only at checkout.
-- There is **no online payment**. After checkout the order is saved, and the customer can open WhatsApp with a ready-made message to the store.
+- There is **no online payment**. The customer completes everything on the website; the order is saved, and **the owner** is emailed and starts the WhatsApp conversation about payment and delivery.
 - The owner runs the store from a phone-friendly dashboard at **`/owner/`**. The standard Django admin at `/django-admin/` is kept as a technical fallback.
 - Prices are shown in Israeli new shekels (₪). The store time zone is Asia/Jerusalem.
 
@@ -31,7 +31,7 @@ A bilingual online store for **`rawnaq_accessories1`** (Instagram: [@rawnaq_acce
 13. [Custom domain and HTTPS checklist](#custom-domain-and-https-checklist)
 14. [Database backup checklist](#database-backup-checklist)
 15. [Orders, stock and discounts](#orders-stock-and-discounts)
-16. [WhatsApp: behavior and limits](#whatsapp--behavior-and-limitations)
+16. [Order flow, owner email and WhatsApp](#order-flow-owner-email-and-whatsapp)
 17. [Future: official WhatsApp Business Platform](#future-official-whatsapp-business-platform-integration)
 18. [Security notes](#security-notes)
 19. [Privacy checklist for addresses and coordinates](#privacy-checklist-addresses-and-coordinates)
@@ -61,7 +61,7 @@ A bilingual online store for **`rawnaq_accessories1`** (Instagram: [@rawnaq_acce
 
 **Owner dashboard (`/owner/`)**
 - Overview cards: new orders, active products, low-stock variants, customers, and sales for the last 7 and 30 days. A list of recent orders follows.
-- Orders: search and filters (live with HTMX), order detail, status updates, internal notes, a Google Maps link when the customer shared a location, and a button to message the customer on WhatsApp.
+- Orders: search and filters (live with HTMX), order detail, status updates, internal notes, a Google Maps link when the customer shared a location, the state of the new-order email with a resend button, and a **WhatsApp button that opens a chat with that customer** carrying a ready message about payment and delivery.
 - Products, with **automatic product and option codes (SKUs)** — the owner never types one — and multiple images with preview, ordering, main picture and delete.
 - **Variants & stock** offers two option types per row: *Standard / قياسي* (the server fills both localized names, so only the stock quantity is needed) or *Custom option / خيار مخصص* (Arabic and English names, optional colour name and swatch).
 - An **Instagram-style crop editor** for every picture: drag, zoom, rotate, reset and apply, with the exact frame the storefront will use. It works with touch, keyboard, RTL and reduced motion, and existing pictures can be reframed with **Adjust crop**.
@@ -94,7 +94,7 @@ A bilingual online store for **`rawnaq_accessories1`** (Instagram: [@rawnaq_acce
 | `accounts` | Custom `User` (email login), registration, profile, saved addresses, password flows |
 | `catalog` | Brands, categories, products, variants, images, promotions, storefront pages, demo seed |
 | `cart` | Session/user carts, HTMX cart updates, safe merge on login |
-| `orders` | Checkout, orders with snapshots, status history, WhatsApp link |
+| `orders` | Checkout, orders with snapshots, status history, owner notification email, WhatsApp link |
 | `dashboard` | Owner dashboard (staff only) |
 
 ### Service modules
@@ -103,16 +103,16 @@ Business rules live in services, not in templates or views.
 
 | Module | What it does |
 |---|---|
-| `catalog/services/pricing.py` | **Discount calculation**: finds the one best promotion per item, rounds with `Decimal`, calculates cart/order totals and delivery fees |
+| `catalog/services/pricing.py` | **Discount calculation**: finds the one best promotion per item, rounds with `Decimal`, calculates cart/order totals (products only, no delivery) |
 | `orders/services/creation.py` | **Order creation** inside `transaction.atomic()`: locks the cart, re-checks availability, recalculates totals, snapshots names and prices |
 | `orders/services/status.py` | **Status transitions** and stock: deducts stock once on confirmation, restores it once on cancellation, with row locks |
-| `orders/services/whatsapp.py` | **WhatsApp message and link generation** (`wa.me/972553003327`) |
-| `orders/services/notifications.py` | Notifier interface (`ClickToChatNotifier` today, replaceable later) |
+| `orders/services/whatsapp.py` | Phone normalization and the **owner-to-customer** `wa.me` draft |
+| `orders/services/notifications.py` | **Owner notification email** (rendered, sent on commit, never raises) |
 | `cart/services.py` | Cart lookup, add/update/remove, normalization, merge |
 
 ### Data model (summary)
 
-- `SiteSettings` (single row): store names (fixed to the official business name and not editable by the owner), WhatsApp numbers, Instagram URL, delivery fee, free-delivery threshold, delivery notice, sale banner.
+- `SiteSettings` (single row): store names (fixed to the official business name and not editable by the owner), the **new-order notification email address**, WhatsApp numbers, Instagram URL, delivery notice, sale banner. The delivery fee and free-delivery threshold are kept at zero and are no longer editable, because delivery is agreed per order on WhatsApp.
 - `Brand`, `Category`, `Product` (`brand` foreign key, `categories` many-to-many), `ProductVariant` (stock, optional price override, color), `ProductImage`, `Promotion`.
 - `Product.sku` and `ProductVariant.sku` are generated by `catalog/skus.py` (`RAW-P-…` / `RAW-V-…`, random UUID hex). They are `editable=False`, so no form — not even a forged POST — can set or change them, and they stay unique and stable for the life of the row. Order items keep their own SKU snapshot.
 - `Cart`, `CartItem`.
@@ -256,11 +256,11 @@ Copy `.env.example` to `.env` for local work. **Never commit `.env`.** In produc
 | `DJANGO_SECRET_KEY` | Required in production (40+ random characters) | `python -c "import secrets; print(secrets.token_urlsafe(50))"` |
 | `DJANGO_ALLOWED_HOSTS` | Comma-separated host names | `rawnaq.example,www.rawnaq.example` |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | Full HTTPS origins | `https://rawnaq.example,https://www.rawnaq.example` |
-| `SITE_URL` | Public base URL for the owner link in WhatsApp messages | `https://rawnaq.example` |
+| `SITE_URL` | Public base URL for the dashboard link inside the owner email | `https://rawnaq.example` |
 | `DATABASE_URL` | PostgreSQL connection | `postgres://…` |
 | `TRUSTED_PROXY_COUNT` | Reverse proxies in front of the app (Render/Railway: `1`) | `1` |
 | `DJANGO_SECURE_SSL_REDIRECT`, `DJANGO_SECURE_HSTS_*` | HTTPS settings (production) | see file |
-| `EMAIL_URL`, `DEFAULT_FROM_EMAIL` | Password-reset email (SMTP) | `smtp+tls://user:pass@smtp.example.com:587` |
+| `EMAIL_URL`, `DEFAULT_FROM_EMAIL`, `EMAIL_TIMEOUT` | Password-reset **and new-order owner email** (SMTP) | `smtp+tls://user:pass@smtp.example.com:587` |
 | `MEDIA_STORAGE_BACKEND` | `local`, `s3` or `cloudinary` | `s3` |
 | `S3_*` | S3-compatible storage settings | see below |
 | `CLOUDINARY_URL` | Cloudinary credentials | `cloudinary://…` |
@@ -304,7 +304,7 @@ python manage.py runserver           # http://127.0.0.1:8000/
 pytest                    # full suite (needs PostgreSQL; uses config.settings.test)
 pytest orders -k stock    # a subset
 ```
-The suite covers: browsing, the anonymous cart and merging it on login, checkout authentication, per-user order isolation, staff-only dashboard routes (every URL is checked automatically), catalog CRUD permissions, discount dates, scopes and best-discount selection, server-side totals, price snapshots, deducting stock once and restoring it once, invalid status transitions, the international WhatsApp number, Arabic and English pages, optional location, upload validation, security headers and the seed command.
+The suite covers: browsing, the anonymous cart and merging it on login, checkout authentication, per-user order isolation, staff-only dashboard routes (every URL is checked automatically), catalog CRUD permissions, discount dates, scopes and best-discount selection, server-side totals, price snapshots, deducting stock once and restoring it once, invalid status transitions, the international WhatsApp number, the owner notification email (sent once, only after commit, never resent by a refresh, and harmless when it fails), the prepared owner-to-customer WhatsApp draft, the staff-only resend action, zero delivery on new orders with historical orders untouched, Arabic and English pages, optional location, upload validation, security headers and the seed command.
 
 ### Ruff
 ```bash
@@ -484,7 +484,7 @@ MEDIA_STORAGE_BACKEND=s3   (+ S3_* variables)
 - [ ] Keep `DJANGO_SECURE_SSL_REDIRECT=True` and `TRUSTED_PROXY_COUNT=1`.
 - [ ] Start with `DJANGO_SECURE_HSTS_SECONDS=3600`. After a week without HTTPS problems, raise it to `31536000`. Enable `…INCLUDE_SUBDOMAINS` / `…PRELOAD` only if **every** subdomain is HTTPS.
 - [ ] Run `python manage.py check --deploy` with production variables. Only the HSTS preload/subdomain warnings you chose to accept should remain.
-- [ ] Test: log in, place a test order, open the WhatsApp link, and open the owner link from WhatsApp while logged out (it must ask you to log in).
+- [ ] Test: set the notification address in `/owner/settings/`, place a test order, confirm exactly one owner email arrives, and open its dashboard link while logged out (it must ask you to log in).
 - [ ] Choose one canonical domain and redirect the other (for example `www` → apex) at the platform/DNS level.
 - [ ] Set up email sending (SPF/DKIM for the sending domain) and test the password reset.
 
@@ -526,39 +526,78 @@ PENDING ──► RECEIVED ──► CONFIRMED ──► PREPARING ──► OUT
 - A percentage must be between 1 and 100. A fixed discount is capped at the item price, so a price can never go below zero. A product-scope fixed discount larger than the product price is rejected in the form.
 - Discounted prices show the original price with a strike-through and the final price prominently.
 - The same pricing code runs on the server when the order is created. Totals from the browser are never trusted.
-- Delivery fee: the `SiteSettings.default_delivery_fee`, which becomes free at or above the optional free-delivery threshold (after discounts).
+- **No delivery fee is ever added.** A new order totals products only (`subtotal − discounts`); the delivery cost is agreed with the customer on WhatsApp afterwards. A stale stored fee cannot resurface: the pricing service ignores it.
 
 ---
 
-## WhatsApp — behavior and limitations
+## Order flow, owner email and WhatsApp
 
-After checkout:
-1. The order is saved in PostgreSQL. **The database is the authoritative record.**
-2. The confirmation page shows the order number, total and status, and a **"Send order via WhatsApp"** button.
-3. The button opens `https://wa.me/972553003327?text=…` with a short message in the customer's language. The message includes a "New rawnaq_accessories1 order" heading, the order number, the customer's name, the total, and a link to the order in the owner dashboard (`https://<site>/owner/orders/<uuid>/`).
-4. The owner link **requires a logged-in staff account**. Knowing the URL is not enough: anonymous visitors are sent to the login page, and customers get "403 Forbidden".
+### What happens when a customer checks out
 
-Limitations, which the site states clearly to customers:
-- The website **only opens** WhatsApp. It cannot send messages or know whether the customer pressed *Send*.
-- Pressing the button records `whatsapp_opened_at`, the first time it was pressed. This is **not** "sent". It is shown in the dashboard as "Opened".
-- If the customer never sends the message, the order still appears in `/owner/` as **Pending**. Check the dashboard regularly.
-- The store number is editable in **Store settings** (international digits only, e.g. `972553003327`). The displayed number is `0553003327`.
+1. The customer fills the cart, registers or logs in, and submits checkout **entirely on the website**.
+2. The order is saved in PostgreSQL. **The database is the authoritative record.**
+3. The confirmation page shows the order number, the products total and the status, and says that the owner
+   will get in touch on WhatsApp. **The customer sends nothing and never opens WhatsApp.**
+4. Once the checkout transaction commits, the site emails the owner (`transaction.on_commit`). Nothing is sent
+   for an order that was rolled back, and refreshing the confirmation page can never resend.
+5. The email contains the full order and two buttons: **Message customer on WhatsApp** (large, green) and
+   **Open order in dashboard**.
+6. The owner presses the WhatsApp button, reads the prepared draft, and presses **Send** inside WhatsApp.
+
+There is no WhatsApp Business API and no queue: this is an owner-clicked `wa.me` link and Django's own email
+framework, with `EMAIL_TIMEOUT` bounding a slow SMTP server.
+
+### Configuring the notification email
+
+* The **destination address** is set by the owner in **`/owner/settings/`** (`order_notification_email`). It is
+  never guessed from a superuser and never hardcoded. While it is empty, the dashboard shows a staff-only
+  warning and checkout still succeeds — orders are simply not emailed.
+* **SMTP credentials** come only from `EMAIL_URL` in the environment. `EMAIL_URL=consolemail://` prints emails
+  to the development terminal; production needs a real SMTP URL. Never commit credentials, app passwords or
+  tokens, and never commit `.env` — only `.env.example`, which holds placeholders.
+* `DEFAULT_FROM_EMAIL` should use the exact display name `rawnaq_accessories1`.
+* `SITE_URL` must be the real HTTPS domain, because the email builds its dashboard link from it.
+* The address is never shown to customers.
+
+### What the email is allowed to contain
+
+The dashboard link (`https://<site>/owner/orders/<uuid>/`) appears **only** in this private email and in the
+dashboard itself. It **requires a logged-in staff account**: anonymous visitors are sent to the login page and
+customers get "403 Forbidden". It is never shown on a customer page and never placed in a message addressed to
+a customer.
+
+If an order's phone number cannot be turned into a WhatsApp number, no button is rendered: the email and the
+dashboard show the raw number and a warning instead, and the order stays valid. Local (`0553003327`),
+international (`+972553003327`) and `00`-prefixed (`00972553003327`) formats all resolve to `972553003327`.
+
+### Delivery is not part of the total
+
+New orders always store `delivery_fee = 0` and `total = subtotal − discounts`. This is **not** "free
+delivery": the cost is still to be discussed. Customer and owner pages label the amount **Products total** /
+**مجموع المنتجات** and add a note that delivery will be confirmed on WhatsApp. Historical orders keep the
+delivery fee and total they were created with, and still display them.
+
+### Failure behaviour
+
+An email problem never affects the order. Failures are caught, the attempt is recorded on the order, and the
+log records only the event and the order number — never the recipient, the customer's name, phone, address,
+location or the message body. The dashboard shows *Sent* with a timestamp, *Not sent*, *Pending* or *not
+configured*, and offers a **staff-only, POST-only, CSRF-protected** resend that never touches status or stock.
 
 ## Future: official WhatsApp Business Platform integration
 
-Views only use the notifier interface in `orders/services/notifications.py`:
+Today the owner presses a `wa.me` link, which needs no Meta credentials and sends nothing automatically.
 
-```python
-class OrderNotifier(ABC):
-    def new_order(self, order, *, request=None) -> NotificationResult: ...
-```
+To have the server deliver the message itself later:
 
-To send owner alerts automatically later:
-1. Create a Meta Business account and a WhatsApp Business Platform (Cloud API) app. Register a sender phone number, and get a message **template** approved (for example "New order {{1}}, total {{2}}").
-2. Implement `CloudApiNotifier(OrderNotifier)`. It should POST to the Graph API `/{phone-number-id}/messages` endpoint with the template, using a system-user access token stored in an environment variable. It returns `NotificationResult(delivered_by_server=True, …)` and stores the returned message id.
-3. Run it from a background job (for example a small task queue, or a `transaction.on_commit` hook that enqueues the job) so checkout never waits on Meta. Add retries and handle status webhooks.
-4. Set `ORDER_NOTIFIER_BACKEND=orders.services.notifications.CloudApiNotifier`.
-5. Keep the click-to-chat button for customers who want to chat. Version 1 needs **no** Meta credentials.
+1. Create a Meta Business account and a WhatsApp Business Platform (Cloud API) app. Register a sender phone
+   number and get a message **template** approved (for example "New order {{1}}, total {{2}}").
+2. Add a sender alongside `orders/services/notifications.py` that POSTs to the Graph API
+   `/{phone-number-id}/messages` endpoint with that template, using a system-user access token from an
+   environment variable, and stores the returned message id.
+3. Call it from the same `transaction.on_commit` hook, or hand it to a background job so checkout never waits
+   on Meta. Add retries and handle status webhooks.
+4. Keep the owner email: it is the record the owner can search, and it works without Meta.
 
 ---
 
@@ -594,11 +633,13 @@ To send owner alerts automatically later:
 - [ ] **Logo spelling:** the supplied logo image appears to read **`Rawnaq_accessoris1`**, but the official business name is **`rawnaq_accessories1`**. Ask the owner whether to correct the logo artwork. The website itself renders the name as HTML text, so it is spelled correctly on the site.
 - [ ] **Logo file:** the original logo was not included in this version. Save it unmodified in `design/reference/`, then run `python manage.py prepare_logo_mark` to create the cropped face mark for the header (see `design/reference/README.md`). The current header mark is a neutral placeholder.
 - [x] **Business name:** settled as `rawnaq_accessories1`, used unchanged on Arabic and English pages, in the owner dashboard, in emails and in WhatsApp messages. To change it later, edit `core.constants.BUSINESS_NAME`, add a data migration for the `SiteSettings` row, and re-translate the few strings that interpolate `%(store)s` in `locale/ar/LC_MESSAGES/django.po`.
-- [ ] Confirm the delivery fee (demo: ₪20.00), the free-delivery threshold, and the delivery notice text.
+- [ ] Confirm the delivery-notice wording. Delivery is **not** charged at checkout: the owner agrees the cost and time with each customer on WhatsApp, so every new order totals products only.
 - [ ] Replace or delete the demo brands, products, images and promotions (all created by `seed_demo`). Turn off the demo sale banner.
 - [ ] Confirm the brand-verification status of every product with the owner.
 - [ ] Create the owner account with `createsuperuser`, using a strong unique password.
-- [ ] Configure production email and media storage, and complete the HTTPS and backup checklists above.
+- [ ] **Owner notification email:** set a real `EMAIL_URL` (SMTP) in the environment, set `DEFAULT_FROM_EMAIL` to `rawnaq_accessories1 <…>`, set `SITE_URL` to the real HTTPS domain, and enter the owner's address in **Owner → Store settings**. Place one test order and check the email arrives, its WhatsApp button opens the right chat, and its dashboard button asks for a staff login.
+- [ ] Confirm SMTP credentials live only in the environment and that `.env` was never committed.
+- [ ] Configure production media storage, and complete the HTTPS and backup checklists above.
 - [ ] Place a real test order end-to-end on the production domain, then cancel it.
 
 ---

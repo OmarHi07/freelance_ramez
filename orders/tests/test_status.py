@@ -142,8 +142,10 @@ def test_customer_cannot_change_status(customer_client, site_settings):
 
 def test_order_totals_are_consistent_in_database(site_settings):
     order = create_order([(make_product(price="12.34").variants.first(), 3)])
+    # The database constraint still covers the delivery term, which is now always zero.
     assert order.total == order.subtotal - order.discount_total + order.delivery_fee
-    assert Order.objects.get(pk=order.pk).total == Decimal("57.02")
+    assert order.delivery_fee == Decimal("0.00")
+    assert Order.objects.get(pk=order.pk).total == Decimal("37.02")
 
 
 def test_purge_order_locations_clears_finished_orders(site_settings):

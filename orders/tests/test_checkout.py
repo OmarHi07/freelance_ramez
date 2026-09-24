@@ -1,18 +1,22 @@
 import re
 from decimal import Decimal
-from urllib.parse import parse_qs, unquote, urlparse
+from urllib.parse import unquote, urlparse
 
 import pytest
-from django.urls import reverse
+from django.core import mail
+from django.urls import NoReverseMatch, reverse
 from django.utils import translation
 
 from cart.models import Cart, CartItem
 from catalog.models import DiscountType
 from conftest import make_product, make_promotion
-from core.constants import BUSINESS_NAME
 from orders.models import Order, OrderStatus
-from orders.services.notifications import ClickToChatNotifier
-from orders.services.whatsapp import build_whatsapp_url, customer_whatsapp_url, owner_order_url
+from orders.services.whatsapp import (
+    build_whatsapp_url,
+    customer_order_whatsapp_url,
+    customer_whatsapp_url,
+    owner_order_url,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -59,8 +63,8 @@ def test_checkout_calculates_totals_on_server(customer_client, customer, site_se
     assert response["Location"].endswith(url("orders:confirmation", pk=order.pk))
     assert order.subtotal == Decimal("80.00")
     assert order.discount_total == Decimal("20.00")
-    assert order.delivery_fee == Decimal("20.00")
-    assert order.total == Decimal("80.00")
+    assert order.delivery_fee == Decimal("0.00")
+    assert order.total == Decimal("60.00")  # subtotal minus discounts, no delivery
     assert order.status == OrderStatus.PENDING
     assert order.customer_phone == "0501234567"
     assert re.fullmatch(r"RNQ-\d{8}-[A-HJ-NP-Z2-9]{4}", order.number)
@@ -100,7 +104,7 @@ def test_order_item_snapshots_do_not_change_later(customer_client, customer, sit
     assert item.final_unit_price == Decimal("45.00")
     assert item.line_total == Decimal("90.00")
     assert item.variant is None and item.sku  # reference cleared, snapshot kept
-    assert order.total == Decimal("110.00")
+    assert order.total == Decimal("90.00")  # products only; delivery is agreed later
 
 
 def test_location_is_optional(customer_client, customer, site_settings):
@@ -173,39 +177,54 @@ def test_users_cannot_see_each_others_orders(client, customer, other_customer, s
     client.force_login(other_customer)
     for name in ("orders:detail", "orders:confirmation"):
         assert client.get(url(name, pk=order.pk)).status_code == 404
-    assert client.post(url("orders:whatsapp_opened", pk=order.pk)).status_code == 404
     assert order.number not in client.get(url("orders:list")).content.decode()
 
 
-def test_confirmation_page_and_whatsapp_link(customer_client, customer, site_settings):
+def main_content(html: str) -> str:
+    """Just the page body, without the shared header/footer contact links."""
+    return html.split("<main", 1)[1].split("</main>", 1)[0]
+
+
+def test_confirmation_page_has_no_customer_whatsapp_step(customer_client, customer, site_settings):
     fill_cart(customer, (make_product(price="30.00").variants.first(), 1))
     place_order(customer_client)
     order = Order.objects.get()
-    response = customer_client.get(url("orders:confirmation", pk=order.pk))
-    html = response.content.decode()
-    assert order.number in html
-    link = response.context["notification"].action_url
-    parsed = urlparse(link)
-    assert parsed.netloc == "wa.me" and parsed.path == "/972553003327"
-    text = parse_qs(parsed.query)["text"][0]
-    assert order.number in text and customer.full_name in text and "₪50.00" in text
-    assert f"https://shop.example.test/owner/orders/{order.pk}/" in text
-    assert response.context["notification"].delivered_by_server is False
+    html = customer_client.get(url("orders:confirmation", pk=order.pk)).content.decode()
+    body = main_content(html)
+
+    assert order.number in body
+    # The customer is told the owner will get in touch, and sends nothing.
+    assert "will contact you on WhatsApp" in body
+    assert "Send order via WhatsApp" not in html
+    assert "Next step" not in html
+    # No way to send the order from this page. (The site footer still lists the
+    # store's own WhatsApp as contact information, which is not an order action.)
+    assert "wa.me" not in body
+    assert "data-whatsapp-open" not in html
+    assert "data-record-url" not in html
+    # An owner dashboard URL must never reach a customer page.
+    assert "/owner/" not in html
+    assert str(order.pk) in body  # links to the customer's own order are fine
 
 
-def test_whatsapp_message_is_localized(customer, site_settings):
-    order = Order(
-        number="RNQ-20260921-AB12",
-        customer_name="Lina",
-        customer_email="l@example.test",
-        customer_phone="050",
-        total=Decimal("10.00"),
-        language="ar",
-    )
-    text = ClickToChatNotifier().new_order(order).message
-    assert f"طلب جديد من {BUSINESS_NAME}" in text and "RNQ-20260921-AB12" in text
-    order.language = "en"
-    assert f"New {BUSINESS_NAME} order" in ClickToChatNotifier().new_order(order).message
+def test_confirmation_is_a_plain_get_with_no_notification_side_effects(customer_client, customer, site_settings):
+    fill_cart(customer, (make_product().variants.first(), 1))
+    place_order(customer_client)
+    order = Order.objects.get()
+    mail.outbox.clear()
+
+    for _ in range(3):
+        assert customer_client.get(url("orders:confirmation", pk=order.pk)).status_code == 200
+    assert mail.outbox == []
+
+
+def test_retired_whatsapp_opened_endpoint_is_gone(customer_client, customer, site_settings):
+    fill_cart(customer, (make_product().variants.first(), 1))
+    place_order(customer_client)
+    order = Order.objects.get()
+    with pytest.raises(NoReverseMatch):
+        reverse("orders:whatsapp_opened", kwargs={"pk": order.pk})
+    assert customer_client.post(f"/en/orders/{order.pk}/whatsapp-opened/").status_code == 404
 
 
 def test_whatsapp_url_uses_international_number():
@@ -216,20 +235,23 @@ def test_whatsapp_url_uses_international_number():
     assert unquote(customer_whatsapp_url("+972 55 300 3327", "שלום")).endswith("שלום")
 
 
-def test_whatsapp_opened_is_recorded_once_and_not_called_sent(customer_client, customer, site_settings):
+def test_prepared_customer_message_never_contains_the_owner_url(customer, site_settings):
     fill_cart(customer, (make_product().variants.first(), 1))
-    place_order(customer_client)
-    order = Order.objects.get()
-    response = customer_client.post(url("orders:whatsapp_opened", pk=order.pk), headers={"X-Requested-With": "fetch"})
-    assert response.status_code == 204
-    order.refresh_from_db()
-    first = order.whatsapp_opened_at
-    assert first is not None
-    response = customer_client.post(url("orders:whatsapp_opened", pk=order.pk))
-    assert response.status_code == 302 and response["Location"].startswith("https://wa.me/972553003327")
-    order.refresh_from_db()
-    assert order.whatsapp_opened_at == first
-    assert not hasattr(order, "whatsapp_sent_at")
+    order = Order.objects.create(
+        customer=customer,
+        number="RNQ-20260921-ZZ99",
+        customer_name="Lina",
+        customer_email=customer.email,
+        customer_phone="0553003327",
+        subtotal=Decimal("10.00"),
+        discount_total=Decimal("0.00"),
+        delivery_fee=Decimal("0.00"),
+        total=Decimal("10.00"),
+        language="en",
+    )
+    text = unquote(urlparse(customer_order_whatsapp_url(order)).query)
+    assert "/owner/" not in text and "shop.example.test" not in text
+    assert "Order link" not in text
 
 
 def test_owner_link_requires_staff(client, customer, staff_user, site_settings):

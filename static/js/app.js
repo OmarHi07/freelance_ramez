@@ -1,20 +1,10 @@
-/* Rawnaq Accessories — small progressive enhancements. Everything works without JavaScript. */
+/* rawnaq_accessories1 — small progressive enhancements. Everything works without JavaScript. */
 (function () {
   "use strict";
 
   function onReady(fn) {
     if (document.readyState !== "loading") fn();
     else document.addEventListener("DOMContentLoaded", fn);
-  }
-
-  function getCsrfToken() {
-    var body = document.body;
-    try {
-      var headers = JSON.parse(body.getAttribute("hx-headers") || "{}");
-      return headers["X-CSRFToken"] || "";
-    } catch (e) {
-      return "";
-    }
   }
 
   /* ---------------------------------------------------------------- Toasts */
@@ -99,23 +89,6 @@
     });
   }
 
-  /* ---------------------------------------------------------------- WhatsApp open tracking */
-  function initWhatsApp() {
-    document.querySelectorAll("[data-whatsapp-open]").forEach(function (link) {
-      link.addEventListener("click", function () {
-        var url = link.dataset.recordUrl;
-        if (!url || !window.fetch) return;
-        // Records only that the button was pressed; it cannot know whether a message was sent.
-        fetch(url, {
-          method: "POST",
-          credentials: "same-origin",
-          keepalive: true,
-          headers: { "X-CSRFToken": getCsrfToken(), "X-Requested-With": "fetch" }
-        }).catch(function () { /* non-blocking */ });
-      });
-    });
-  }
-
   /* ---------------------------------------------------------------- Filters (open on desktop) */
   function initFilters() {
     var details = document.querySelector("details.filters");
@@ -140,7 +113,6 @@
     initToasts();
     initGallery();
     initBuyBox();
-    initWhatsApp();
     initFilters();
     initRadioCards();
   });

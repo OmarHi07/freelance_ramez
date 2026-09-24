@@ -1,0 +1,1 @@
+{% load i18n rawnaq %}{% business_name as store %}{% blocktranslate with number=order.number %}New order {{ number }} · {{ store }}{% endblocktranslate %}

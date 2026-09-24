@@ -5,23 +5,16 @@
 <section class="section container narrow">
   <div class="card confirmation">
     <span class="confirmation__icon">{% icon "check-badge" %}</span>
-    <h1 class="page-title">{% translate "Thank you! Your order is saved." %}</h1>
+    <h1 class="page-title">{% translate "Your order has been received" %}</h1>
+    <p class="page-lead">
+      {% translate "The store owner will contact you on WhatsApp to confirm your order, the payment method, the delivery cost and the delivery time. You do not need to send anything now." %}
+    </p>
     <dl class="confirmation__facts">
       <div><dt>{% translate "Order number" %}</dt><dd class="order-number" dir="ltr">{{ order.number }}</dd></div>
-      <div><dt>{% translate "Total" %}</dt><dd><bdi>{{ order.total|money }}</bdi></dd></div>
+      <div><dt>{% translate "Products total" %}</dt><dd><bdi>{{ order.items_total|money }}</bdi></dd></div>
       <div><dt>{% translate "Status" %}</dt><dd><span class="status status--{{ order.status|lower }}">{{ order.get_status_display }}</span></dd></div>
     </dl>
-    <div class="confirmation__next">
-      <h2 class="confirmation__subtitle">{% translate "Next step: send your order on WhatsApp" %}</h2>
-      <p>{% blocktranslate with store=business_name %}The button opens WhatsApp with a ready message to <span lang="en" dir="ltr">{{ store }}</span>. Please press Send inside WhatsApp so we can confirm your order quickly.{% endblocktranslate %}</p>
-      {% if notification.action_url %}
-      <a class="button button--large button--whatsapp" href="{{ notification.action_url }}" target="_blank" rel="noopener noreferrer"
-         data-whatsapp-open data-record-url="{% url 'orders:whatsapp_opened' order.pk %}">
-        {% icon "chat" %}<span>{% translate "Send order via WhatsApp" %}</span>
-      </a>
-      {% endif %}
-      <p class="muted small">{% translate "Opening WhatsApp does not send anything automatically. Your order is already saved in your account either way." %}</p>
-    </div>
+    <p class="muted small">{% translate "Delivery is not included in this total and will be confirmed with you on WhatsApp." %}</p>
     <div class="confirmation__links">
       <a class="button button--ghost" href="{% url 'orders:detail' order.pk %}">{% translate "View order status" %}</a>
       <a class="button button--ghost" href="{% url 'core:home' %}">{% translate "Continue shopping" %}</a>

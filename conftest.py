@@ -43,8 +43,10 @@ def uploaded_image(name: str = "photo.png", fmt: str = "PNG", **kwargs) -> Simpl
 @pytest.fixture
 def site_settings(db):
     obj = SiteSettings.load()
-    obj.default_delivery_fee = Decimal("20.00")
+    # Checkout never adds delivery; the owner agrees it on WhatsApp afterwards.
+    obj.default_delivery_fee = Decimal("0.00")
     obj.free_delivery_threshold = None
+    obj.order_notification_email = "owner-inbox@example.test"
     obj.save()
     return obj
 

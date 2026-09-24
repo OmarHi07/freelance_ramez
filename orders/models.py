@@ -26,7 +26,12 @@ MONEY = {"max_digits": 10, "decimal_places": 2}
 
 
 class Order(TimeStampedModel):
-    """Authoritative order record. WhatsApp text is only a notification."""
+    """Authoritative order record.
+
+    The customer submits everything on the website and never sends a message.
+    Once the order commits, the owner is emailed and starts the WhatsApp
+    conversation from that email or from the dashboard.
+    """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     number = models.CharField(_("order number"), max_length=24, unique=True, editable=False)
@@ -67,7 +72,13 @@ class Order(TimeStampedModel):
     customer_notes = models.TextField(_("customer notes"), blank=True, max_length=500)
     internal_notes = models.TextField(_("internal notes"), blank=True)
     language = models.CharField(_("language"), max_length=5, default="ar")
-    whatsapp_opened_at = models.DateTimeField(_("WhatsApp opened at"), null=True, blank=True)
+    # Legacy: the customer used to open WhatsApp themselves. Kept so historical
+    # orders do not lose data; it plays no part in the current flow.
+    whatsapp_opened_at = models.DateTimeField(_("WhatsApp opened at (legacy)"), null=True, blank=True, editable=False)
+    owner_notification_attempted_at = models.DateTimeField(
+        _("owner notified: last attempt"), null=True, blank=True, editable=False
+    )
+    owner_notification_sent_at = models.DateTimeField(_("owner notified: sent"), null=True, blank=True, editable=False)
     stock_deducted_at = models.DateTimeField(_("stock deducted at"), null=True, blank=True, editable=False)
     stock_restored_at = models.DateTimeField(_("stock restored at"), null=True, blank=True, editable=False)
 
@@ -147,6 +158,13 @@ class Order(TimeStampedModel):
     @property
     def is_open(self) -> bool:
         return self.status not in (OrderStatus.DELIVERED, OrderStatus.CANCELLED)
+
+    @property
+    def owner_notification_failed(self) -> bool:
+        """An attempt was made but no message left the server."""
+        if self.owner_notification_attempted_at is None:
+            return False
+        return self.owner_notification_sent_at is None
 
 
 class OrderItem(LocalizedFieldsMixin, models.Model):

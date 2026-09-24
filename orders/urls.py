@@ -9,5 +9,4 @@ urlpatterns = [
     path("checkout/", views.checkout, name="checkout"),
     path("<uuid:pk>/", views.order_detail, name="detail"),
     path("<uuid:pk>/confirmation/", views.confirmation, name="confirmation"),
-    path("<uuid:pk>/whatsapp-opened/", views.whatsapp_opened, name="whatsapp_opened"),
 ]

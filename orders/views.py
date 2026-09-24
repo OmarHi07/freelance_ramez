@@ -3,18 +3,16 @@ from __future__ import annotations
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
-from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.http import require_http_methods
 
 from accounts.models import Address
 from cart import services as cart_services
 from orders.forms import ADDRESS_FIELDS, CheckoutForm
 from orders.models import Order, OrderStatus
 from orders.services.creation import CheckoutError, DeliveryDetails, SharedLocation, create_order_from_cart
-from orders.services.notifications import get_notifier, record_whatsapp_opened
 from orders.services.status import PROGRESS_STEPS
 
 ORDERS_PAGE_SIZE = 10
@@ -93,23 +91,13 @@ def _customer_order(request, pk) -> Order:
 
 @login_required
 def confirmation(request, pk):
-    order = _customer_order(request, pk)
-    notification = get_notifier().new_order(order, request=request)
-    return render(request, "orders/confirmation.html", {"order": order, "notification": notification})
+    """Read-only thank-you page.
 
-
-@login_required
-@require_POST
-def whatsapp_opened(request, pk):
-    """Record that the customer pressed the WhatsApp button (not that a message was sent)."""
+    It has no side effects at all: the owner was already emailed when the order
+    committed, so refreshing this page can never send anything.
+    """
     order = _customer_order(request, pk)
-    record_whatsapp_opened(order)
-    if request.headers.get("X-Requested-With") == "fetch":
-        return HttpResponse(status=204)
-    notification = get_notifier().new_order(order, request=request)
-    if notification.action_url:
-        return redirect(notification.action_url)
-    return redirect("orders:confirmation", pk=order.pk)
+    return render(request, "orders/confirmation.html", {"order": order})
 
 
 @login_required

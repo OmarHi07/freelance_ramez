@@ -217,13 +217,15 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 vars().update(env.email_url("EMAIL_URL", default="consolemail://"))
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=f"{BUSINESS_NAME} <no-reply@localhost>")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+# Bounds a slow or unreachable SMTP server so the owner notification, which is
+# sent inline after the checkout transaction commits, cannot hang a worker.
+EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=10)
 
 # ---------------------------------------------------------------------------
 # Store behaviour
 # ---------------------------------------------------------------------------
 LOW_STOCK_THRESHOLD = env.int("LOW_STOCK_THRESHOLD", default=3)
 MAX_CART_LINE_QUANTITY = 10
-ORDER_NOTIFIER_BACKEND = env("ORDER_NOTIFIER_BACKEND", default="orders.services.notifications.ClickToChatNotifier")
 ANONYMOUS_CART_MAX_AGE_DAYS = 30
 
 # ---------------------------------------------------------------------------

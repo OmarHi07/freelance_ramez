@@ -1,9 +1,7 @@
 {% load i18n rawnaq %}<dl class="totals">
   <div><dt>{% translate "Subtotal" %}</dt><dd><bdi>{{ totals.subtotal|money }}</bdi></dd></div>
   {% if totals.discount_total %}<div class="totals__discount"><dt>{% translate "Discounts" %}</dt><dd><bdi>−{{ totals.discount_total|money }}</bdi></dd></div>{% endif %}
-  <div><dt>{% translate "Delivery" %}</dt><dd>{% if totals.free_delivery_applied %}{% translate "Free" %}{% else %}<bdi>{{ totals.delivery_fee|money }}</bdi>{% endif %}</dd></div>
-  <div class="totals__grand"><dt>{% translate "Total" %}</dt><dd><bdi>{{ totals.total|money }}</bdi></dd></div>
+  <div class="totals__grand"><dt>{% translate "Products total" %}</dt><dd><bdi>{{ totals.total|money }}</bdi></dd></div>
 </dl>
-{% if site_settings.free_delivery_threshold and not totals.free_delivery_applied %}
-<p class="totals__hint">{% icon "truck" %} {% blocktranslate with amount=site_settings.free_delivery_threshold|money %}Free delivery on orders from {{ amount }}.{% endblocktranslate %}</p>
-{% endif %}
+{# Delivery is quoted per order on WhatsApp, so it is never added here and is never called free. #}
+<p class="totals__hint">{% icon "truck" %} {% translate "Delivery is not included in this total and will be confirmed with you on WhatsApp." %}</p>

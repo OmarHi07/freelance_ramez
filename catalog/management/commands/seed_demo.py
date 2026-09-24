@@ -235,6 +235,9 @@ class Command(BaseCommand):
         if not settings_obj.delivery_notice_en and not settings_obj.delivery_notice_ar:
             settings_obj.delivery_notice_en = "Delivery details and timing are confirmed with you on WhatsApp."
             settings_obj.delivery_notice_ar = "نؤكّد معك تفاصيل التوصيل وموعده عبر واتساب."
+        # Delivery is agreed per order on WhatsApp, so checkout charges nothing.
+        settings_obj.default_delivery_fee = Decimal("0.00")
+        settings_obj.free_delivery_threshold = None
         settings_obj.save()
 
         brands = {}

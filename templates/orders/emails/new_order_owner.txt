@@ -1,0 +1,31 @@
+{% load i18n rawnaq %}{% business_name as store %}{% autoescape off %}{% blocktranslate %}New order for {{ store }}{% endblocktranslate %}
+
+{% translate "Order number" %}: {{ order.number }}
+{% translate "Placed on" %}: {{ order.created_at|date:"j M Y, H:i" }}
+{% translate "Status" %}: {{ order.get_status_display }}
+
+--- {% translate "Customer" %} ---
+{% translate "Name" %}: {{ order.customer_name }}
+{% translate "Phone" %}: {{ order.customer_phone }}
+{% translate "Email" %}: {{ order.customer_email }}
+{% translate "Address" %}: {{ order.address_one_line }}{% if order.landmark %}
+{% translate "Landmark or delivery notes" %}: {{ order.landmark }}{% endif %}{% if order.customer_notes %}
+{% translate "Customer notes" %}: {{ order.customer_notes }}{% endif %}{% if order.has_location %}
+{% translate "Shared location" %}: {{ order.google_maps_url }}{% endif %}
+
+--- {% translate "Items" %} ---
+{% for item in items %}{{ item.quantity }} x {{ item.product_name }}{% if item.variant_name %} ({{ item.variant_name }}){% endif %}
+  {% translate "Unit price" %}: {{ item.final_unit_price|money }}{% if item.unit_discount %} ({% translate "was" %} {{ item.original_unit_price|money }}, {% translate "discount" %} -{{ item.unit_discount|money }}){% endif %}
+  {% translate "Line total" %}: {{ item.line_total|money }}
+{% endfor %}
+{% translate "Products total" %}: {{ products_total|money }}
+{% translate "Delivery is not included in this total. Agree it with the customer on WhatsApp." %}
+
+--- {% translate "Next steps" %} ---
+{% if whatsapp_url %}{% translate "Message the customer on WhatsApp (the draft is prepared, you still press Send):" %}
+{{ whatsapp_url }}
+{% else %}{% blocktranslate with phone=order.customer_phone %}WhatsApp could not be opened for this phone number: {{ phone }}. Please contact the customer another way.{% endblocktranslate %}
+{% endif %}
+{% translate "Open the order in your dashboard (staff login required):" %}
+{{ owner_url }}
+{% endautoescape %}

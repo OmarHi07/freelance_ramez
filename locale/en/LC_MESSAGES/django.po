@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rawnaq-accessories 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 17:30+0300\n"
+"POT-Creation-Date: 2026-09-24 19:32+0300\n"
 "PO-Revision-Date: 2026-09-21 17:00+0300\n"
 "Last-Translator: rawnaq_accessories1\n"
 "Language-Team: rawnaq_accessories1\n"
@@ -55,6 +55,10 @@ msgid "The two passwords do not match."
 msgstr ""
 
 #: .\accounts\forms.py:75 .\templates\accounts\profile.html:13
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:11
+#: .\templates\orders\emails\new_order_owner.html:30
+#: .\templates\orders\emails\new_order_owner.txt:10
 msgid "Email"
 msgstr ""
 
@@ -103,7 +107,7 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: .\accounts\models.py:89 .\cart\models.py:26 .\orders\models.py:39
+#: .\accounts\models.py:89 .\cart\models.py:26 .\orders\models.py:44
 msgid "customer"
 msgstr ""
 
@@ -115,27 +119,27 @@ msgstr ""
 msgid "For example: Home, Work"
 msgstr ""
 
-#: .\accounts\models.py:91 .\orders\models.py:46
+#: .\accounts\models.py:91 .\orders\models.py:51
 msgid "city / town"
 msgstr ""
 
-#: .\accounts\models.py:92 .\orders\models.py:47
+#: .\accounts\models.py:92 .\orders\models.py:52
 msgid "street"
 msgstr ""
 
-#: .\accounts\models.py:93 .\orders\models.py:48
+#: .\accounts\models.py:93 .\orders\models.py:53
 msgid "building / house number"
 msgstr ""
 
-#: .\accounts\models.py:94 .\orders\models.py:49
+#: .\accounts\models.py:94 .\orders\models.py:54
 msgid "apartment"
 msgstr ""
 
-#: .\accounts\models.py:95 .\orders\models.py:50
+#: .\accounts\models.py:95 .\orders\models.py:55
 msgid "postal code"
 msgstr ""
 
-#: .\accounts\models.py:96 .\orders\models.py:51
+#: .\accounts\models.py:96 .\orders\models.py:56
 msgid "landmark or delivery notes"
 msgstr ""
 
@@ -151,7 +155,7 @@ msgstr ""
 msgid "addresses"
 msgstr ""
 
-#: .\accounts\models.py:116 .\orders\models.py:137
+#: .\accounts\models.py:116 .\orders\models.py:152
 #, python-format
 msgid "Apt. %(apartment)s"
 msgstr ""
@@ -194,11 +198,11 @@ msgstr ""
 msgid "carts"
 msgstr ""
 
-#: .\cart\models.py:41 .\orders\models.py:165
+#: .\cart\models.py:41 .\orders\models.py:187
 msgid "variant"
 msgstr ""
 
-#: .\cart\models.py:43 .\orders\models.py:177
+#: .\cart\models.py:43 .\orders\models.py:199
 msgid "quantity"
 msgstr ""
 
@@ -349,7 +353,7 @@ msgid "display order"
 msgstr ""
 
 #: .\catalog\models.py:60 .\catalog\models.py:133 .\catalog\models.py:404
-#: .\orders\models.py:174
+#: .\orders\models.py:196
 msgid "brand"
 msgstr ""
 
@@ -410,7 +414,7 @@ msgid "featured"
 msgstr ""
 
 #: .\catalog\models.py:164 .\catalog\models.py:233 .\catalog\models.py:316
-#: .\catalog\models.py:415 .\orders\models.py:157
+#: .\catalog\models.py:415 .\orders\models.py:179
 msgid "product"
 msgstr ""
 
@@ -506,7 +510,7 @@ msgstr ""
 msgid "Entire store"
 msgstr ""
 
-#: .\catalog\models.py:378 .\dashboard\forms.py:498
+#: .\catalog\models.py:378 .\dashboard\forms.py:496
 #: .\templates\catalog\product_detail.html:104
 #: .\templates\dashboard\brands\list.html:12
 #: .\templates\dashboard\brands\list.html:16
@@ -561,7 +565,7 @@ msgid ""
 "priority, the biggest discount is applied."
 msgstr ""
 
-#: .\catalog\models.py:432 .\orders\models.py:175
+#: .\catalog\models.py:432 .\orders\models.py:197
 msgid "promotion"
 msgstr ""
 
@@ -621,7 +625,7 @@ msgstr ""
 msgid "created at"
 msgstr ""
 
-#: .\core\models.py:17 .\core\models.py:62
+#: .\core\models.py:17 .\core\models.py:72
 msgid "updated at"
 msgstr ""
 
@@ -646,49 +650,65 @@ msgstr ""
 msgid "WhatsApp number (as displayed)"
 msgstr ""
 
-#: .\core\models.py:40 .\dashboard\forms.py:522
+#: .\core\models.py:40 .\dashboard\forms.py:520
 msgid "Instagram URL"
 msgstr ""
 
 #: .\core\models.py:42
+msgid "email address for new-order notifications"
+msgstr ""
+
+#: .\core\models.py:45
+msgid ""
+"Every new order is emailed here, with the customer's details and a WhatsApp "
+"button. Leave it empty to turn the notifications off; orders are still saved "
+"either way. This address is never shown to customers."
+msgstr ""
+
+#: .\core\models.py:51
 msgid "default delivery fee"
 msgstr ""
 
-#: .\core\models.py:49
+#: .\core\models.py:56
+msgid ""
+"Not used: delivery is agreed with each customer on WhatsApp after the order."
+msgstr ""
+
+#: .\core\models.py:59
 msgid "free-delivery threshold"
 msgstr ""
 
-#: .\core\models.py:55
+#: .\core\models.py:65
 msgid ""
 "Orders at or above this amount (after discounts) get free delivery. Leave "
 "empty to disable."
 msgstr ""
 
-#: .\core\models.py:57
+#: .\core\models.py:67
 msgid "delivery notice (Arabic)"
 msgstr ""
 
-#: .\core\models.py:58
+#: .\core\models.py:68
 msgid "delivery notice (English)"
 msgstr ""
 
-#: .\core\models.py:59
+#: .\core\models.py:69
 msgid "sale banner text (Arabic)"
 msgstr ""
 
-#: .\core\models.py:60
+#: .\core\models.py:70
 msgid "sale banner text (English)"
 msgstr ""
 
-#: .\core\models.py:61
+#: .\core\models.py:71
 msgid "show sale banner"
 msgstr ""
 
-#: .\core\models.py:65 .\core\models.py:66
+#: .\core\models.py:75 .\core\models.py:76
 msgid "site settings"
 msgstr ""
 
-#: .\core\models.py:77
+#: .\core\models.py:87
 msgid "Site settings"
 msgstr ""
 
@@ -783,7 +803,7 @@ msgstr ""
 msgid "Main picture"
 msgstr ""
 
-#: .\dashboard\forms.py:108 .\dashboard\forms.py:367
+#: .\dashboard\forms.py:108 .\dashboard\forms.py:365
 msgid "Square pictures look best on product cards and in the gallery."
 msgstr ""
 
@@ -804,78 +824,78 @@ msgstr ""
 msgid "Square picture used as the round brand badge."
 msgstr ""
 
-#: .\dashboard\forms.py:188
+#: .\dashboard\forms.py:187
 msgid ""
 "Background picture for this brand page. Brand cards use the brand colours "
 "instead."
 msgstr ""
 
-#: .\dashboard\forms.py:211
+#: .\dashboard\forms.py:209
 msgid "Square picture used wherever this category is shown."
 msgstr ""
 
-#: .\dashboard\forms.py:215
+#: .\dashboard\forms.py:213
 msgid "Add images"
 msgstr ""
 
-#: .\dashboard\forms.py:248
+#: .\dashboard\forms.py:246
 #, python-format
 msgid ""
 "JPEG, PNG or WebP, up to %(size)s MB each. You can select several files."
 msgstr ""
 
-#: .\dashboard\forms.py:262
+#: .\dashboard\forms.py:260
 msgid "Standard / قياسي"
 msgstr ""
 
-#: .\dashboard\forms.py:263
+#: .\dashboard\forms.py:261
 msgid "Custom option / خيار مخصص"
 msgstr ""
 
-#: .\dashboard\forms.py:276
+#: .\dashboard\forms.py:274
 msgid "Option type"
 msgstr ""
 
-#: .\dashboard\forms.py:281
+#: .\dashboard\forms.py:279
 msgid ""
 "Choose “Standard” when the product has only one option. The names are filled "
 "in for you."
 msgstr ""
 
-#: .\dashboard\forms.py:344
+#: .\dashboard\forms.py:342
 msgid "Enter the Arabic option name, or switch to “Standard”."
 msgstr ""
 
-#: .\dashboard\forms.py:346
+#: .\dashboard\forms.py:344
 msgid "Enter the English option name, or switch to “Standard”."
 msgstr ""
 
-#: .\dashboard\forms.py:373
+#: .\dashboard\forms.py:371
 msgid "Replace picture"
 msgstr ""
 
-#: .\dashboard\forms.py:374
+#: .\dashboard\forms.py:372
 msgid "Leave empty to keep the current picture."
 msgstr ""
 
-#: .\dashboard\forms.py:390
+#: .\dashboard\forms.py:388
 msgid "Choose only one primary image."
 msgstr ""
 
-#: .\dashboard\forms.py:411
+#: .\dashboard\forms.py:409
 msgid "A product needs at least one active variant (for example “Standard”)."
 msgstr ""
 
-#: .\dashboard\forms.py:463 .\dashboard\forms.py:495 .\dashboard\forms.py:509
+#: .\dashboard\forms.py:461 .\dashboard\forms.py:493 .\dashboard\forms.py:507
 #: .\templates\dashboard\customers\list.html:8
 msgid "Search"
 msgstr ""
 
-#: .\dashboard\forms.py:465
+#: .\dashboard\forms.py:463
 msgid "Order number, name, phone or email"
 msgstr ""
 
-#: .\dashboard\forms.py:468 .\dashboard\forms.py:501
+#: .\dashboard\forms.py:466 .\dashboard\forms.py:499
 #: .\templates\dashboard\brands\list.html:12
 #: .\templates\dashboard\brands\list.html:20
 #: .\templates\dashboard\categories\list.html:12
@@ -886,222 +906,238 @@ msgstr ""
 #: .\templates\dashboard\products\list.html:27
 #: .\templates\dashboard\promotions\list.html:13
 #: .\templates\dashboard\promotions\list.html:22
-#: .\templates\orders\confirmation.html:12
+#: .\templates\orders\confirmation.html:15
+#: .\templates\orders\emails\new_order_owner.txt:5
 msgid "Status"
 msgstr ""
 
-#: .\dashboard\forms.py:468
+#: .\dashboard\forms.py:466
 msgid "All statuses"
 msgstr ""
 
-#: .\dashboard\forms.py:470 .\templates\includes\price.html:2
+#: .\dashboard\forms.py:468 .\templates\includes\price.html:2
 msgid "From"
 msgstr ""
 
-#: .\dashboard\forms.py:471
+#: .\dashboard\forms.py:469
 msgid "To"
 msgstr ""
 
-#: .\dashboard\forms.py:475
+#: .\dashboard\forms.py:473
 msgid "New status"
 msgstr ""
 
-#: .\dashboard\forms.py:476
+#: .\dashboard\forms.py:474
 msgid "Note (optional)"
 msgstr ""
 
-#: .\dashboard\forms.py:495
+#: .\dashboard\forms.py:493
 msgid "Name or SKU"
 msgstr ""
 
-#: .\dashboard\forms.py:498 .\templates\core\home.html:39
+#: .\dashboard\forms.py:496 .\templates\core\home.html:39
 #: .\templates\includes\footer.html:27
 msgid "All brands"
 msgstr ""
 
-#: .\dashboard\forms.py:503
+#: .\dashboard\forms.py:501
 msgid "All"
 msgstr ""
 
-#: .\dashboard\forms.py:503 .\templates\dashboard\brands\list.html:20
+#: .\dashboard\forms.py:501 .\templates\dashboard\brands\list.html:20
 #: .\templates\dashboard\categories\list.html:20
 #: .\templates\dashboard\products\list.html:27
 msgid "Active"
 msgstr ""
 
-#: .\dashboard\forms.py:503 .\templates\dashboard\brands\list.html:20
+#: .\dashboard\forms.py:501 .\templates\dashboard\brands\list.html:20
 #: .\templates\dashboard\categories\list.html:20
 #: .\templates\dashboard\products\list.html:27
 #: .\templates\dashboard\stock\_row.html:2
 msgid "Hidden"
 msgstr ""
 
-#: .\dashboard\forms.py:503
+#: .\dashboard\forms.py:501
 msgid "Low stock"
 msgstr ""
 
-#: .\dashboard\forms.py:509
+#: .\dashboard\forms.py:507
 msgid "Name, email or phone"
 msgstr ""
 
-#: .\dashboard\views.py:150 .\dashboard\views.py:157
+#: .\dashboard\views.py:161
+msgid "The order email was sent again."
+msgstr ""
+
+#: .\dashboard\views.py:165
+msgid ""
+"No notification email address is set. Add one under Store settings, then try "
+"again."
+msgstr ""
+
+#: .\dashboard\views.py:168
+msgid "The email could not be sent. Check the email settings and try again."
+msgstr ""
+
+#: .\dashboard\views.py:179 .\dashboard\views.py:186
 msgid "That status change is not allowed for this order."
 msgstr ""
 
-#: .\dashboard\views.py:161
+#: .\dashboard\views.py:190
 #, python-format
 msgid "Not enough stock to confirm this order. Check these SKUs: %(skus)s"
 msgstr ""
 
-#: .\dashboard\views.py:166
+#: .\dashboard\views.py:195
 #, python-format
 msgid "Order status updated to “%(status)s”."
 msgstr ""
 
-#: .\dashboard\views.py:179
+#: .\dashboard\views.py:208
 msgid "Internal notes saved."
 msgstr ""
 
-#: .\dashboard\views.py:181
+#: .\dashboard\views.py:210
 msgid "The notes could not be saved."
 msgstr ""
 
-#: .\dashboard\views.py:200
+#: .\dashboard\views.py:229
 msgid "Saved."
 msgstr ""
 
-#: .\dashboard\views.py:211
+#: .\dashboard\views.py:240
 msgid "This item is still in use and cannot be deleted. Hide it instead."
 msgstr ""
 
-#: .\dashboard\views.py:212
+#: .\dashboard\views.py:241
 msgid "Deleted."
 msgstr ""
 
-#: .\dashboard\views.py:252 .\dashboard\views.py:261
+#: .\dashboard\views.py:281 .\dashboard\views.py:290
 msgid "Brand saved."
 msgstr ""
 
-#: .\dashboard\views.py:253 .\templates\dashboard\brands\list.html:7
+#: .\dashboard\views.py:282 .\templates\dashboard\brands\list.html:7
 #: .\templates\dashboard\brands\list.html:32
 msgid "New brand"
 msgstr ""
 
-#: .\dashboard\views.py:262
+#: .\dashboard\views.py:291
 msgid "Edit brand"
 msgstr ""
 
-#: .\dashboard\views.py:268
+#: .\dashboard\views.py:297
 msgid ""
 "This brand still has products. Move or delete them first, or hide the brand."
 msgstr ""
 
-#: .\dashboard\views.py:269
+#: .\dashboard\views.py:298
 msgid "Brand deleted."
 msgstr ""
 
-#: .\dashboard\views.py:274
+#: .\dashboard\views.py:303
 #, python-format
 msgid "This brand has %(count)s products, so it cannot be deleted."
 msgstr ""
 
-#: .\dashboard\views.py:275
+#: .\dashboard\views.py:304
 msgid "Promotions that target this brand will also be deleted."
 msgstr ""
 
-#: .\dashboard\views.py:295 .\dashboard\views.py:304
+#: .\dashboard\views.py:324 .\dashboard\views.py:333
 msgid "Category saved."
 msgstr ""
 
-#: .\dashboard\views.py:296 .\templates\dashboard\categories\list.html:7
+#: .\dashboard\views.py:325 .\templates\dashboard\categories\list.html:7
 #: .\templates\dashboard\categories\list.html:31
 msgid "New category"
 msgstr ""
 
-#: .\dashboard\views.py:305
+#: .\dashboard\views.py:334
 msgid "Edit category"
 msgstr ""
 
-#: .\dashboard\views.py:311
+#: .\dashboard\views.py:340
 msgid "Category deleted."
 msgstr ""
 
-#: .\dashboard\views.py:315
+#: .\dashboard\views.py:344
 msgid ""
 "Products stay in the store but will no longer be listed in this category."
 msgstr ""
 
-#: .\dashboard\views.py:316
+#: .\dashboard\views.py:345
 msgid "Promotions that target this category will also be deleted."
 msgstr ""
 
-#: .\dashboard\views.py:407
+#: .\dashboard\views.py:436
 msgid "Product saved."
 msgstr ""
 
-#: .\dashboard\views.py:412
+#: .\dashboard\views.py:441
 msgid "Please correct the errors below."
 msgstr ""
 
-#: .\dashboard\views.py:433 .\templates\dashboard\products\list.html:7
+#: .\dashboard\views.py:462 .\templates\dashboard\products\list.html:7
 #: .\templates\dashboard\products\list.html:38
 msgid "New product"
 msgstr ""
 
-#: .\dashboard\views.py:437
+#: .\dashboard\views.py:466
 msgid "Edit product"
 msgstr ""
 
-#: .\dashboard\views.py:446
+#: .\dashboard\views.py:475
 msgid "Product deleted."
 msgstr ""
 
-#: .\dashboard\views.py:450
+#: .\dashboard\views.py:479
 msgid "Its variants, images and product-specific promotions will be deleted."
 msgstr ""
 
-#: .\dashboard\views.py:451
+#: .\dashboard\views.py:480
 msgid "Past orders keep their saved names and prices."
 msgstr ""
 
-#: .\dashboard\views.py:452
+#: .\dashboard\views.py:481
 msgid "Tip: untick “Active” to hide a product without deleting it."
 msgstr ""
 
-#: .\dashboard\views.py:497
+#: .\dashboard\views.py:526
 msgid "Stock updated."
 msgstr ""
 
-#: .\dashboard\views.py:499
+#: .\dashboard\views.py:528
 msgid "Enter a stock quantity of 0 or more."
 msgstr ""
 
-#: .\dashboard\views.py:535 .\dashboard\views.py:544
+#: .\dashboard\views.py:564 .\dashboard\views.py:573
 msgid "Promotion saved."
 msgstr ""
 
-#: .\dashboard\views.py:536 .\templates\dashboard\promotions\list.html:7
+#: .\dashboard\views.py:565 .\templates\dashboard\promotions\list.html:7
 #: .\templates\dashboard\promotions\list.html:38
 msgid "New promotion"
 msgstr ""
 
-#: .\dashboard\views.py:545
+#: .\dashboard\views.py:574
 msgid "Edit promotion"
 msgstr ""
 
-#: .\dashboard\views.py:551
+#: .\dashboard\views.py:580
 msgid "Promotion deleted."
 msgstr ""
 
-#: .\dashboard\views.py:554
+#: .\dashboard\views.py:583
 msgid "Prices return to normal immediately. Existing orders are not affected."
 msgstr ""
 
-#: .\dashboard\views.py:610
+#: .\dashboard\views.py:639
 msgid "Store settings saved."
 msgstr ""
 
-#: .\dashboard\views.py:611 .\templates\dashboard\base.html:44
+#: .\dashboard\views.py:640 .\templates\dashboard\base.html:44
+#: .\templates\dashboard\orders\detail.html:108
 msgid "Store settings"
 msgstr ""
 
@@ -1118,7 +1154,7 @@ msgstr ""
 msgid "Enter a new address"
 msgstr ""
 
-#: .\orders\forms.py:26 .\templates\dashboard\orders\detail.html:83
+#: .\orders\forms.py:26 .\templates\dashboard\orders\detail.html:95
 #: .\templates\orders\checkout.html:16
 msgid "Delivery address"
 msgstr ""
@@ -1167,7 +1203,7 @@ msgstr ""
 msgid "This field is required."
 msgstr ""
 
-#: .\orders\models.py:16
+#: .\orders\models.py:16 .\templates\dashboard\orders\detail.html:114
 msgid "Pending"
 msgstr ""
 
@@ -1195,209 +1231,236 @@ msgstr ""
 msgid "Cancelled"
 msgstr ""
 
-#: .\orders\models.py:32
+#: .\orders\models.py:37
 msgid "order number"
 msgstr ""
 
-#: .\orders\models.py:42
+#: .\orders\models.py:47
 msgid "customer name"
 msgstr ""
 
-#: .\orders\models.py:43
+#: .\orders\models.py:48
 msgid "customer email"
 msgstr ""
 
-#: .\orders\models.py:44
+#: .\orders\models.py:49
 msgid "customer phone"
 msgstr ""
 
-#: .\orders\models.py:53
+#: .\orders\models.py:58
 msgid "latitude"
 msgstr ""
 
-#: .\orders\models.py:54
+#: .\orders\models.py:59
 msgid "longitude"
 msgstr ""
 
-#: .\orders\models.py:56
+#: .\orders\models.py:61
 msgid "location accuracy (m)"
 msgstr ""
 
-#: .\orders\models.py:58
+#: .\orders\models.py:63
 msgid "location consent given at"
 msgstr ""
 
-#: .\orders\models.py:60
+#: .\orders\models.py:65
 msgid "subtotal"
 msgstr ""
 
-#: .\orders\models.py:61
+#: .\orders\models.py:66
 msgid "discount total"
 msgstr ""
 
-#: .\orders\models.py:62
+#: .\orders\models.py:67
 msgid "delivery fee"
 msgstr ""
 
-#: .\orders\models.py:63
+#: .\orders\models.py:68
 msgid "total"
 msgstr ""
 
-#: .\orders\models.py:65
+#: .\orders\models.py:70
 msgid "status"
 msgstr ""
 
-#: .\orders\models.py:67
+#: .\orders\models.py:72
 msgid "customer notes"
 msgstr ""
 
-#: .\orders\models.py:68
+#: .\orders\models.py:73
 msgid "internal notes"
 msgstr ""
 
-#: .\orders\models.py:69
+#: .\orders\models.py:74
 msgid "language"
 msgstr ""
 
-#: .\orders\models.py:70
-msgid "WhatsApp opened at"
+#: .\orders\models.py:78
+msgid "WhatsApp opened at (legacy)"
 msgstr ""
 
-#: .\orders\models.py:71
+#: .\orders\models.py:81
+msgid "owner notified: last attempt"
+msgstr ""
+
+#: .\orders\models.py:84
+msgid "owner notified: sent"
+msgstr ""
+
+#: .\orders\models.py:86
 msgid "stock deducted at"
 msgstr ""
 
-#: .\orders\models.py:72
+#: .\orders\models.py:87
 msgid "stock restored at"
 msgstr ""
 
-#: .\orders\models.py:75 .\orders\models.py:155 .\orders\models.py:216
+#: .\orders\models.py:90 .\orders\models.py:177 .\orders\models.py:238
 msgid "order"
 msgstr ""
 
-#: .\orders\models.py:76
+#: .\orders\models.py:91
 msgid "orders"
 msgstr ""
 
-#: .\orders\models.py:170
+#: .\orders\models.py:192
 msgid "product name (Arabic)"
 msgstr ""
 
-#: .\orders\models.py:171
+#: .\orders\models.py:193
 msgid "product name (English)"
 msgstr ""
 
-#: .\orders\models.py:172
+#: .\orders\models.py:194
 msgid "variant (Arabic)"
 msgstr ""
 
-#: .\orders\models.py:173
+#: .\orders\models.py:195
 msgid "variant (English)"
 msgstr ""
 
-#: .\orders\models.py:176 .\templates\dashboard\orders\detail.html:19
+#: .\orders\models.py:198 .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:24
 #: .\templates\dashboard\stock\_row.html:4
 #: .\templates\dashboard\stock\list.html:14
 msgid "SKU"
 msgstr ""
 
-#: .\orders\models.py:178
+#: .\orders\models.py:200
 msgid "original unit price"
 msgstr ""
 
-#: .\orders\models.py:179
+#: .\orders\models.py:201
 msgid "discount per unit"
 msgstr ""
 
-#: .\orders\models.py:180
+#: .\orders\models.py:202
 msgid "final unit price"
 msgstr ""
 
-#: .\orders\models.py:181
+#: .\orders\models.py:203
 msgid "line total"
 msgstr ""
 
-#: .\orders\models.py:184
+#: .\orders\models.py:206
 msgid "order item"
 msgstr ""
 
-#: .\orders\models.py:185
+#: .\orders\models.py:207
 msgid "order items"
 msgstr ""
 
-#: .\orders\models.py:217
+#: .\orders\models.py:239
 msgid "from"
 msgstr ""
 
-#: .\orders\models.py:218
+#: .\orders\models.py:240
 msgid "to"
 msgstr ""
 
-#: .\orders\models.py:225
+#: .\orders\models.py:247
 msgid "changed by"
 msgstr ""
 
-#: .\orders\models.py:227
+#: .\orders\models.py:249
 msgid "note"
 msgstr ""
 
-#: .\orders\models.py:228
+#: .\orders\models.py:250
 msgid "changed at"
 msgstr ""
 
-#: .\orders\models.py:231
+#: .\orders\models.py:253
 msgid "status change"
 msgstr ""
 
-#: .\orders\models.py:232
+#: .\orders\models.py:254
 msgid "status history"
 msgstr ""
 
-#: .\orders\services\whatsapp.py:62
+#: .\orders\services\whatsapp.py:108
 #, python-format
-msgid "New %(store)s order"
+msgid "Hello %(name)s 🌸"
 msgstr ""
 
-#: .\orders\services\whatsapp.py:63
+#: .\orders\services\whatsapp.py:110
+#, python-format
+msgid "Thank you for your order from %(store)s."
+msgstr ""
+
+#: .\orders\services\whatsapp.py:112
 #, python-format
 msgid "Order number: %(number)s"
 msgstr ""
 
-#: .\orders\services\whatsapp.py:64
+#: .\orders\services\whatsapp.py:113
 #, python-format
-msgid "Customer: %(name)s"
+msgid "Products total: %(total)s"
 msgstr ""
 
-#: .\orders\services\whatsapp.py:65
-#, python-format
-msgid "Total: %(total)s"
+#: .\orders\services\whatsapp.py:114
+msgid "Delivery is not included yet."
 msgstr ""
 
-#: .\orders\services\whatsapp.py:66
-#, python-format
-msgid "Order link (staff only): %(url)s"
+#: .\orders\services\whatsapp.py:116
+msgid "Which payment method do you prefer?"
 msgstr ""
 
-#: .\orders\views.py:26
+#: .\orders\services\whatsapp.py:117
+msgid "• Cash"
+msgstr ""
+
+#: .\orders\services\whatsapp.py:118
+msgid "• Bit"
+msgstr ""
+
+#: .\orders\services\whatsapp.py:119
+msgid "• Bank transfer"
+msgstr ""
+
+#: .\orders\services\whatsapp.py:121
+msgid "We will also confirm the delivery cost and delivery time with you here."
+msgstr ""
+
+#: .\orders\views.py:24
 #, python-format
 msgid "Some items are no longer available: %(names)s. Please review your cart."
 msgstr ""
 
-#: .\orders\views.py:28
+#: .\orders\views.py:26
 #, python-format
 msgid "Not enough stock for: %(names)s. Please review your cart."
 msgstr ""
 
-#: .\orders\views.py:30 .\orders\views.py:39
+#: .\orders\views.py:28 .\orders\views.py:37
 msgid "Your cart is empty."
 msgstr ""
 
-#: .\orders\views.py:31
+#: .\orders\views.py:29
 msgid "We could not place your order. Please try again."
 msgstr ""
 
-#: .\orders\views.py:44
+#: .\orders\views.py:42
 msgid "Some items in your cart changed. Please review it before checking out."
 msgstr ""
 
@@ -1500,6 +1563,8 @@ msgid "My addresses"
 msgstr ""
 
 #: .\templates\accounts\address_list.html:17
+#: .\templates\orders\emails\new_order_owner.html:31
+#: .\templates\orders\emails\new_order_owner.txt:11
 msgid "Address"
 msgstr ""
 
@@ -1695,7 +1760,7 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: .\templates\accounts\profile.html:19 .\templates\dashboard\overview.html:15
+#: .\templates\accounts\profile.html:19 .\templates\dashboard\overview.html:21
 msgid "Recent orders"
 msgstr ""
 
@@ -1780,6 +1845,8 @@ msgstr ""
 #: .\templates\cart\partials\cart_body.html:41
 #: .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:27
+#: .\templates\orders\emails\new_order_owner.html:47
+#: .\templates\orders\emails\new_order_owner.txt:19
 msgid "Line total"
 msgstr ""
 
@@ -1825,29 +1892,22 @@ msgid "Discounts"
 msgstr ""
 
 #: .\templates\cart\partials\totals.html:4
-#: .\templates\dashboard\orders\detail.html:35
-#: .\templates\orders\order_detail.html:40
-#: .\templates\orders\order_detail.html:46
-msgid "Delivery"
-msgstr ""
-
-#: .\templates\cart\partials\totals.html:4
-#: .\templates\orders\order_detail.html:40
-msgid "Free"
-msgstr ""
-
-#: .\templates\cart\partials\totals.html:5
 #: .\templates\dashboard\orders\_table.html:2
 #: .\templates\dashboard\orders\_table.html:10
-#: .\templates\dashboard\orders\detail.html:36
-#: .\templates\orders\confirmation.html:11
-#: .\templates\orders\order_detail.html:41
-msgid "Total"
+#: .\templates\dashboard\orders\detail.html:35
+#: .\templates\orders\confirmation.html:14
+#: .\templates\orders\emails\new_order_owner.html:65
+#: .\templates\orders\emails\new_order_owner.txt:21
+#: .\templates\orders\order_detail.html:40
+msgid "Products total"
 msgstr ""
 
-#: .\templates\cart\partials\totals.html:8
-#, python-format
-msgid "Free delivery on orders from %(amount)s."
+#: .\templates\cart\partials\totals.html:7
+#: .\templates\orders\confirmation.html:17
+#: .\templates\orders\order_detail.html:47
+msgid ""
+"Delivery is not included in this total and will be confirmed with you on "
+"WhatsApp."
 msgstr ""
 
 #: .\templates\catalog\brand_detail.html:10
@@ -2091,7 +2151,7 @@ msgstr ""
 #: .\templates\dashboard\base.html:43
 #: .\templates\dashboard\customers\list.html:3
 #: .\templates\dashboard\customers\list.html:5
-#: .\templates\dashboard\overview.html:10
+#: .\templates\dashboard\overview.html:16
 msgid "Customers"
 msgstr ""
 
@@ -2172,7 +2232,6 @@ msgid "Contact"
 msgstr ""
 
 #: .\templates\dashboard\customers\detail.html:21
-#: .\templates\dashboard\orders\detail.html:78
 msgid "Message on WhatsApp"
 msgstr ""
 
@@ -2196,6 +2255,8 @@ msgstr ""
 
 #: .\templates\dashboard\customers\list.html:13
 #: .\templates\dashboard\customers\list.html:17
+#: .\templates\orders\emails\new_order_owner.html:28
+#: .\templates\orders\emails\new_order_owner.txt:8
 msgid "Name"
 msgstr ""
 
@@ -2253,7 +2314,9 @@ msgstr ""
 
 #: .\templates\dashboard\orders\_table.html:2
 #: .\templates\dashboard\orders\_table.html:7
-#: .\templates\dashboard\orders\detail.html:74
+#: .\templates\dashboard\orders\detail.html:81
+#: .\templates\orders\emails\new_order_owner.html:26
+#: .\templates\orders\emails\new_order_owner.txt:7
 msgid "Customer"
 msgstr ""
 
@@ -2262,33 +2325,29 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: .\templates\dashboard\orders\_table.html:2
 #: .\templates\dashboard\orders\_table.html:11
-#: .\templates\includes\footer.html:19
-msgid "WhatsApp"
+#: .\templates\dashboard\orders\detail.html:110
+msgid "Sent"
 msgstr ""
 
 #: .\templates\dashboard\orders\_table.html:11
-msgid "Opened"
+msgid "Not sent"
 msgstr ""
 
 #: .\templates\dashboard\orders\detail.html:6
-#: .\templates\dashboard\overview.html:15
+#: .\templates\dashboard\overview.html:21
 msgid "All orders"
 msgstr ""
 
 #: .\templates\dashboard\orders\detail.html:11
-#: .\templates\orders\order_detail.html:61
+#: .\templates\orders\order_detail.html:65
 #, python-format
 msgid "Placed on %(date)s"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:11
-#, python-format
-msgid "Customer opened WhatsApp on %(date)s"
-msgstr ""
-
 #: .\templates\dashboard\orders\detail.html:17
+#: .\templates\orders\emails\new_order_owner.html:41
+#: .\templates\orders\emails\new_order_owner.txt:16
 #: .\templates\orders\order_detail.html:26
 msgid "Items"
 msgstr ""
@@ -2299,75 +2358,137 @@ msgstr ""
 #: .\templates\dashboard\products\list.html:23
 #: .\templates\dashboard\stock\_row.html:2
 #: .\templates\dashboard\stock\list.html:14
+#: .\templates\orders\emails\new_order_owner.html:44
 msgid "Product"
 msgstr ""
 
 #: .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:25
+#: .\templates\orders\emails\new_order_owner.html:45
 msgid "Qty"
 msgstr ""
 
 #: .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:26
+#: .\templates\orders\emails\new_order_owner.html:46
+#: .\templates\orders\emails\new_order_owner.txt:18
 msgid "Unit price"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:41
+#: .\templates\dashboard\orders\detail.html:38
+msgid "Delivery (charged at the time)"
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:39
+#: .\templates\orders\order_detail.html:44
+msgid "Total"
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:43
+msgid ""
+"Delivery is not included. Agree the delivery cost and time with the customer "
+"on WhatsApp."
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:48
 msgid "Status history"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:47
+#: .\templates\dashboard\orders\detail.html:54
 msgid "Order placed"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:59
+#: .\templates\dashboard\orders\detail.html:66
 msgid "Update status"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:65
+#: .\templates\dashboard\orders\detail.html:72
 msgid "Save status"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:67
+#: .\templates\dashboard\orders\detail.html:74
 msgid ""
 "Stock is reduced once when you confirm the order, and restored once if a "
 "confirmed order is cancelled."
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:69
+#: .\templates\dashboard\orders\detail.html:76
 msgid "This order is closed. Its status can no longer change."
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:79
-msgid "Customer profile"
+#: .\templates\dashboard\orders\detail.html:86
+#: .\templates\orders\emails\new_order_owner.html:79
+msgid "Message customer on WhatsApp"
 msgstr ""
 
 #: .\templates\dashboard\orders\detail.html:87
+msgid ""
+"Opens a chat with a ready message about payment and delivery. You still "
+"press Send in WhatsApp."
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:89
+#, python-format
+msgid ""
+"WhatsApp cannot be opened for %(phone)s. Please contact the customer another "
+"way."
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:91
+msgid "Customer profile"
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:99
 msgid "Open location in Google Maps"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:88
+#: .\templates\dashboard\orders\detail.html:100
 #, python-format
 msgid "Location shared with consent on %(date)s"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:89
+#: .\templates\dashboard\orders\detail.html:101
 msgid "No location shared."
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:90
+#: .\templates\dashboard\orders\detail.html:102
+#: .\templates\orders\emails\new_order_owner.html:33
+#: .\templates\orders\emails\new_order_owner.txt:13
 msgid "Customer notes"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:94
+#: .\templates\dashboard\orders\detail.html:106
+msgid "Order email"
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:108
+msgid "No notification address is set, so no email was sent."
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:112
+#, python-format
+msgid "Not sent. Last tried on %(date)s."
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:118
+msgid "Resend owner email"
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:120
+msgid ""
+"Sends this order to your notification address again. It never changes the "
+"order status or stock."
+msgstr ""
+
+#: .\templates\dashboard\orders\detail.html:124
 msgid "Internal notes"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:98
+#: .\templates\dashboard\orders\detail.html:128
 msgid "Save notes"
 msgstr ""
 
-#: .\templates\dashboard\orders\detail.html:100
+#: .\templates\dashboard\orders\detail.html:130
 msgid "Only staff can see these notes."
 msgstr ""
 
@@ -2381,44 +2502,54 @@ msgstr ""
 msgid "Welcome, %(name)s"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:7
+#: .\templates\dashboard\overview.html:8
+msgid ""
+"You will not be emailed about new orders yet, because no notification "
+"address is set."
+msgstr ""
+
+#: .\templates\dashboard\overview.html:9
+msgid "Add one under Store settings"
+msgstr ""
+
+#: .\templates\dashboard\overview.html:13
 msgid "New orders"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:7
+#: .\templates\dashboard\overview.html:13
 msgid "Pending or received"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:8
+#: .\templates\dashboard\overview.html:14
 msgid "Active products"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:9
+#: .\templates\dashboard\overview.html:15
 msgid "Low-stock variants"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:9
+#: .\templates\dashboard\overview.html:15
 #, python-format
 msgid "%(low_stock_threshold)s or fewer left"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:11
+#: .\templates\dashboard\overview.html:17
 msgid "Sales, last 7 days"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:11
+#: .\templates\dashboard\overview.html:17
 msgid "Confirmed orders onward"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:12
+#: .\templates\dashboard\overview.html:18
 msgid "Sales, last 30 days"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:19 .\templates\orders\order_list.html:26
+#: .\templates\dashboard\overview.html:25 .\templates\orders\order_list.html:26
 msgid "No orders yet"
 msgstr ""
 
-#: .\templates\dashboard\overview.html:19
+#: .\templates\dashboard\overview.html:25
 msgid "New orders will appear here as soon as customers check out."
 msgstr ""
 
@@ -2641,6 +2772,10 @@ msgstr ""
 msgid "Instagram"
 msgstr ""
 
+#: .\templates\includes\footer.html:19
+msgid "WhatsApp"
+msgstr ""
+
 #: .\templates\includes\footer.html:25
 msgid "Shop"
 msgstr ""
@@ -2814,42 +2949,133 @@ msgid "Order received"
 msgstr ""
 
 #: .\templates\orders\confirmation.html:8
-msgid "Thank you! Your order is saved."
+msgid "Your order has been received"
 msgstr ""
 
 #: .\templates\orders\confirmation.html:10
+msgid ""
+"The store owner will contact you on WhatsApp to confirm your order, the "
+"payment method, the delivery cost and the delivery time. You do not need to "
+"send anything now."
+msgstr ""
+
+#: .\templates\orders\confirmation.html:13
+#: .\templates\orders\emails\new_order_owner.txt:3
 msgid "Order number"
 msgstr ""
 
-#: .\templates\orders\confirmation.html:15
-msgid "Next step: send your order on WhatsApp"
-msgstr ""
-
-#: .\templates\orders\confirmation.html:16
-#, python-format
-msgid ""
-"The button opens WhatsApp with a ready message to <span lang=\"en\" "
-"dir=\"ltr\">%(store)s</span>. Please press Send inside WhatsApp so we can "
-"confirm your order quickly."
-msgstr ""
-
-#: .\templates\orders\confirmation.html:20
-#: .\templates\orders\order_detail.html:58
-msgid "Send order via WhatsApp"
-msgstr ""
-
-#: .\templates\orders\confirmation.html:23
-msgid ""
-"Opening WhatsApp does not send anything automatically. Your order is already "
-"saved in your account either way."
-msgstr ""
-
-#: .\templates\orders\confirmation.html:26
+#: .\templates\orders\confirmation.html:19
 msgid "View order status"
 msgstr ""
 
-#: .\templates\orders\confirmation.html:27
+#: .\templates\orders\confirmation.html:20
 msgid "Continue shopping"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:6
+#, python-format
+msgid "New order %(number)s"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:19
+msgid "New order"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:29
+#: .\templates\orders\emails\new_order_owner.txt:9
+#: .\templates\orders\order_detail.html:54
+msgid "Phone"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:32
+#: .\templates\orders\emails\new_order_owner.txt:12
+msgid "Landmark or delivery notes"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:34
+#: .\templates\orders\emails\new_order_owner.txt:14
+msgid "Shared location"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:34
+msgid "Open in Google Maps"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:70
+msgid ""
+"Delivery is not included in this total. Agree the delivery cost and time "
+"with the customer on WhatsApp."
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:82
+msgid ""
+"The message is prepared for you. Nothing is sent until you press Send inside "
+"WhatsApp."
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:86
+#: .\templates\orders\emails\new_order_owner.txt:27
+#, python-format
+msgid ""
+"WhatsApp could not be opened for this phone number: %(phone)s. Please "
+"contact the customer another way."
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:95
+msgid "Open order in dashboard"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:97
+msgid "You need to be logged in as staff to open it."
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.html:104
+#, python-format
+msgid ""
+"This notification was sent by %(store)s because a new order was placed. The "
+"address it goes to can be changed under Store settings."
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:1
+#, python-format
+msgid "New order for %(store)s"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:4
+msgid "Placed on"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:18
+msgid "was"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:18
+msgid "discount"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:22
+msgid ""
+"Delivery is not included in this total. Agree it with the customer on "
+"WhatsApp."
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:24
+msgid "Next steps"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:25
+msgid ""
+"Message the customer on WhatsApp (the draft is prepared, you still press "
+"Send):"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner.txt:29
+msgid "Open the order in your dashboard (staff login required):"
+msgstr ""
+
+#: .\templates\orders\emails\new_order_owner_subject.txt:1
+#, python-format
+msgid "New order %(number)s · %(store)s"
 msgstr ""
 
 #: .\templates\orders\order_detail.html:3
@@ -2862,27 +3088,31 @@ msgid "Order progress"
 msgstr ""
 
 #: .\templates\orders\order_detail.html:22
-msgid "This order was cancelled. Contact us on WhatsApp if you have questions."
+msgid ""
+"This order was cancelled. Reply to us on WhatsApp if you have questions."
 msgstr ""
 
-#: .\templates\orders\order_detail.html:49
-msgid "Phone"
+#: .\templates\orders\order_detail.html:43
+#: .\templates\orders\order_detail.html:51
+msgid "Delivery"
 msgstr ""
 
-#: .\templates\orders\order_detail.html:50
+#: .\templates\orders\order_detail.html:55
 msgid "You shared your location with this order."
 msgstr ""
 
-#: .\templates\orders\order_detail.html:51
+#: .\templates\orders\order_detail.html:56
 msgid "Your notes"
 msgstr ""
 
-#: .\templates\orders\order_detail.html:56
-msgid "Need to follow up?"
+#: .\templates\orders\order_detail.html:61
+msgid "What happens next?"
 msgstr ""
 
-#: .\templates\orders\order_detail.html:57
-msgid "Message us on WhatsApp with your order number."
+#: .\templates\orders\order_detail.html:62
+msgid ""
+"The store owner will contact you on WhatsApp to confirm the payment method, "
+"the delivery cost and the delivery time. You do not need to send anything."
 msgstr ""
 
 #: .\templates\orders\order_list.html:27

@@ -4,6 +4,10 @@ Totals are always recalculated on the server from current catalogue data and
 active promotions. Nothing submitted by the browser is trusted except the
 customer's own contact/address input. Stock is *not* reduced here: it is
 reduced once when the owner confirms the order (see ``status.py``).
+
+No delivery fee is added: the owner agrees it with the customer on WhatsApp
+afterwards, so every new order stores ``delivery_fee = 0``. Once the order
+commits, the owner is emailed (see ``notifications.py``).
 """
 
 from __future__ import annotations
@@ -20,6 +24,7 @@ from cart.services import cart_items_queryset
 from catalog.services.pricing import price_lines
 from core.models import get_site_settings
 from orders.models import Order, OrderItem, OrderStatus, OrderStatusHistory
+from orders.services.notifications import schedule_new_order_email
 from orders.services.numbers import unique_order_number
 
 logger = logging.getLogger("rawnaq.orders")
@@ -154,6 +159,9 @@ def create_order_from_cart(
         )
         OrderStatusHistory.objects.create(order=order, from_status="", to_status=OrderStatus.PENDING)
         CartItem.objects.filter(cart=locked).delete()
+        # Fires only once this transaction commits, so a rolled-back checkout
+        # sends nothing and the customer never waits on SMTP to see the page.
+        schedule_new_order_email(order, request=request)
 
     logger.info("Order created", extra={"event": "order_created", "order_number": order.number})
     return order

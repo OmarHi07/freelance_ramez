@@ -1,5 +1,5 @@
 {% load i18n rawnaq %}<table class="table table--stack">
-  <thead><tr><th scope="col">{% translate "Order" %}</th><th scope="col">{% translate "Customer" %}</th><th scope="col">{% translate "Date" %}</th><th scope="col">{% translate "Status" %}</th><th scope="col">{% translate "Total" %}</th><th scope="col">{% translate "WhatsApp" %}</th></tr></thead>
+  <thead><tr><th scope="col">{% translate "Order" %}</th><th scope="col">{% translate "Customer" %}</th><th scope="col">{% translate "Date" %}</th><th scope="col">{% translate "Status" %}</th><th scope="col">{% translate "Products total" %}</th><th scope="col">{% translate "Email" %}</th></tr></thead>
   <tbody>
     {% for order in orders %}
       <tr>
@@ -7,8 +7,8 @@
         <td data-label="{% translate 'Customer' %}">{{ order.customer_name }}</td>
         <td data-label="{% translate 'Date' %}">{{ order.created_at|date:"j M, H:i" }}</td>
         <td data-label="{% translate 'Status' %}"><span class="status status--{{ order.status|lower }}">{{ order.get_status_display }}</span></td>
-        <td data-label="{% translate 'Total' %}"><bdi>{{ order.total|money }}</bdi></td>
-        <td data-label="{% translate 'WhatsApp' %}">{% if order.whatsapp_opened_at %}<span class="chip chip--soft">{% translate "Opened" %}</span>{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td data-label="{% translate 'Products total' %}"><bdi>{{ order.items_total|money }}</bdi></td>
+        <td data-label="{% translate 'Email' %}">{% if order.owner_notification_sent_at %}<span class="chip chip--success">{% translate "Sent" %}</span>{% elif order.owner_notification_failed %}<span class="chip chip--warning">{% translate "Not sent" %}</span>{% else %}<span class="muted">—</span>{% endif %}</td>
       </tr>
     {% endfor %}
   </tbody>

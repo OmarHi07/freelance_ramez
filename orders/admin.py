@@ -27,7 +27,7 @@ class OrderStatusHistoryInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     """Technical fallback. Use the owner dashboard for status changes so stock stays consistent."""
 
-    list_display = ("number", "customer_name", "status", "total", "created_at", "whatsapp_opened_at")
+    list_display = ("number", "customer_name", "status", "total", "created_at", "owner_notification_sent_at")
     list_filter = ("status", "created_at")
     search_fields = ("number", "customer_name", "customer_email", "customer_phone")
     date_hierarchy = "created_at"

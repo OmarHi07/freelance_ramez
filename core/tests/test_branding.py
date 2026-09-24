@@ -1,6 +1,7 @@
 """The official business name is `rawnaq_accessories1`, everywhere, in both languages."""
 
 import re
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -13,7 +14,7 @@ from conftest import PASSWORD, make_brand, make_product, make_user
 from core.constants import BUSINESS_NAME
 from core.models import SiteSettings
 from orders.models import Order
-from orders.services.notifications import ClickToChatNotifier
+from orders.services.whatsapp import customer_message
 
 pytestmark = pytest.mark.django_db
 
@@ -106,16 +107,18 @@ def test_email_sender_display_name_uses_the_official_name():
 
 
 @pytest.mark.parametrize("language", ["ar", "en"])
-def test_whatsapp_order_message_uses_the_official_name(site_settings, language):
+def test_whatsapp_message_to_the_customer_uses_the_official_name(site_settings, language):
     order = Order(
         number="RNQ-20260921-AB12",
         customer_name="Lina",
         customer_email="l@example.test",
-        customer_phone="050",
-        total="10.00",
+        customer_phone="0553003327",
+        subtotal=Decimal("10.00"),
+        discount_total=Decimal("0.00"),
+        total=Decimal("10.00"),
         language=language,
     )
-    message = ClickToChatNotifier().new_order(order).message
+    message = customer_message(order)
     assert BUSINESS_NAME in message
     assert_no_obsolete_names(message, f"WhatsApp message ({language})")
 

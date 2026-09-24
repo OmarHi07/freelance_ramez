@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rawnaq-accessories 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 17:30+0300\n"
+"POT-Creation-Date: 2026-09-24 19:32+0300\n"
 "PO-Revision-Date: 2026-09-21 17:00+0300\n"
 "Last-Translator: rawnaq_accessories1\n"
 "Language-Team: rawnaq_accessories1\n"
@@ -56,6 +56,10 @@ msgid "The two passwords do not match."
 msgstr "كلمتا المرور غير متطابقتين."
 
 #: .\accounts\forms.py:75 .\templates\accounts\profile.html:13
+#: .\templates\dashboard\orders\_table.html:2
+#: .\templates\dashboard\orders\_table.html:11
+#: .\templates\orders\emails\new_order_owner.html:30
+#: .\templates\orders\emails\new_order_owner.txt:10
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
@@ -104,7 +108,7 @@ msgstr "مستخدم"
 msgid "users"
 msgstr "المستخدمون"
 
-#: .\accounts\models.py:89 .\cart\models.py:26 .\orders\models.py:39
+#: .\accounts\models.py:89 .\cart\models.py:26 .\orders\models.py:44
 msgid "customer"
 msgstr "الزبونة"
 
@@ -116,27 +120,27 @@ msgstr "التسمية"
 msgid "For example: Home, Work"
 msgstr "مثال: البيت، العمل"
 
-#: .\accounts\models.py:91 .\orders\models.py:46
+#: .\accounts\models.py:91 .\orders\models.py:51
 msgid "city / town"
 msgstr "المدينة / البلدة"
 
-#: .\accounts\models.py:92 .\orders\models.py:47
+#: .\accounts\models.py:92 .\orders\models.py:52
 msgid "street"
 msgstr "الشارع"
 
-#: .\accounts\models.py:93 .\orders\models.py:48
+#: .\accounts\models.py:93 .\orders\models.py:53
 msgid "building / house number"
 msgstr "رقم البناية / البيت"
 
-#: .\accounts\models.py:94 .\orders\models.py:49
+#: .\accounts\models.py:94 .\orders\models.py:54
 msgid "apartment"
 msgstr "الشقة"
 
-#: .\accounts\models.py:95 .\orders\models.py:50
+#: .\accounts\models.py:95 .\orders\models.py:55
 msgid "postal code"
 msgstr "الرمز البريدي"
 
-#: .\accounts\models.py:96 .\orders\models.py:51
+#: .\accounts\models.py:96 .\orders\models.py:56
 msgid "landmark or delivery notes"
 msgstr "علامة مميّزة أو ملاحظات للتوصيل"
 
@@ -152,7 +156,7 @@ msgstr "عنوان"
 msgid "addresses"
 msgstr "العناوين"
 
-#: .\accounts\models.py:116 .\orders\models.py:137
+#: .\accounts\models.py:116 .\orders\models.py:152
 #, python-format
 msgid "Apt. %(apartment)s"
 msgstr "شقة %(apartment)s"
@@ -195,11 +199,11 @@ msgstr "سلة"
 msgid "carts"
 msgstr "السلال"
 
-#: .\cart\models.py:41 .\orders\models.py:165
+#: .\cart\models.py:41 .\orders\models.py:187
 msgid "variant"
 msgstr "الخيار"
 
-#: .\cart\models.py:43 .\orders\models.py:177
+#: .\cart\models.py:43 .\orders\models.py:199
 msgid "quantity"
 msgstr "الكمية"
 
@@ -350,7 +354,7 @@ msgid "display order"
 msgstr "ترتيب العرض"
 
 #: .\catalog\models.py:60 .\catalog\models.py:133 .\catalog\models.py:404
-#: .\orders\models.py:174
+#: .\orders\models.py:196
 msgid "brand"
 msgstr "الماركة"
 
@@ -411,7 +415,7 @@ msgid "featured"
 msgstr "مميّز"
 
 #: .\catalog\models.py:164 .\catalog\models.py:233 .\catalog\models.py:316
-#: .\catalog\models.py:415 .\orders\models.py:157
+#: .\catalog\models.py:415 .\orders\models.py:179
 msgid "product"
 msgstr "المنتج"
 
@@ -507,7 +511,7 @@ msgstr "مبلغ ثابت (₪)"
 msgid "Entire store"
 msgstr "المتجر بالكامل"
 
-#: .\catalog\models.py:378 .\dashboard\forms.py:498
+#: .\catalog\models.py:378 .\dashboard\forms.py:496
 #: .\templates\catalog\product_detail.html:104
 #: .\templates\dashboard\brands\list.html:12
 #: .\templates\dashboard\brands\list.html:16
@@ -564,7 +568,7 @@ msgstr ""
 "عند انطباق أكثر من عرض على القطعة، يُطبَّق العرض ذو الأولوية الأعلى. وعند "
 "تساوي الأولوية، يُطبَّق الخصم الأكبر."
 
-#: .\catalog\models.py:432 .\orders\models.py:175
+#: .\catalog\models.py:432 .\orders\models.py:197
 msgid "promotion"
 msgstr "العرض"
 
@@ -626,7 +630,7 @@ msgstr ""
 msgid "created at"
 msgstr "تاريخ الإنشاء"
 
-#: .\core\models.py:17 .\core\models.py:62
+#: .\core\models.py:17 .\core\models.py:72
 msgid "updated at"
 msgstr "آخر تحديث"
 
@@ -651,19 +655,38 @@ msgstr "أرقام فقط مع رمز الدولة، يُستخدم في روا�
 msgid "WhatsApp number (as displayed)"
 msgstr "رقم واتساب (كما يظهر للزبائن)"
 
-#: .\core\models.py:40 .\dashboard\forms.py:522
+#: .\core\models.py:40 .\dashboard\forms.py:520
 msgid "Instagram URL"
 msgstr "رابط إنستغرام"
 
 #: .\core\models.py:42
+msgid "email address for new-order notifications"
+msgstr "البريد الإلكتروني لإشعارات الطلبات الجديدة"
+
+#: .\core\models.py:45
+msgid ""
+"Every new order is emailed here, with the customer's details and a WhatsApp "
+"button. Leave it empty to turn the notifications off; orders are still saved"
+" either way. This address is never shown to customers."
+msgstr ""
+"يصلك كل طلب جديد على هذا البريد، مع بيانات الزبونة وزر لفتح واتساب. اتركيه "
+"فارغًا لإيقاف الإشعارات؛ وتُحفظ الطلبات في الحالتين. لا يظهر هذا البريد "
+"للزبائن أبدًا."
+
+#: .\core\models.py:51
 msgid "default delivery fee"
 msgstr "رسوم التوصيل الافتراضية"
 
-#: .\core\models.py:49
+#: .\core\models.py:56
+msgid ""
+"Not used: delivery is agreed with each customer on WhatsApp after the order."
+msgstr "غير مستخدم: يُتفق على التوصيل مع كل زبونة عبر واتساب بعد الطلب."
+
+#: .\core\models.py:59
 msgid "free-delivery threshold"
 msgstr "حدّ التوصيل المجاني"
 
-#: .\core\models.py:55
+#: .\core\models.py:65
 msgid ""
 "Orders at or above this amount (after discounts) get free delivery. Leave "
 "empty to disable."
@@ -671,31 +694,31 @@ msgstr ""
 "الطلبات التي تبلغ هذا المبلغ أو أكثر (بعد الخصم) توصيلها مجاني. اتركيه "
 "فارغًا للإلغاء."
 
-#: .\core\models.py:57
+#: .\core\models.py:67
 msgid "delivery notice (Arabic)"
 msgstr "ملاحظة التوصيل (بالعربية)"
 
-#: .\core\models.py:58
+#: .\core\models.py:68
 msgid "delivery notice (English)"
 msgstr "ملاحظة التوصيل (بالإنجليزية)"
 
-#: .\core\models.py:59
+#: .\core\models.py:69
 msgid "sale banner text (Arabic)"
 msgstr "نص شريط العروض (بالعربية)"
 
-#: .\core\models.py:60
+#: .\core\models.py:70
 msgid "sale banner text (English)"
 msgstr "نص شريط العروض (بالإنجليزية)"
 
-#: .\core\models.py:61
+#: .\core\models.py:71
 msgid "show sale banner"
 msgstr "إظهار شريط العروض"
 
-#: .\core\models.py:65 .\core\models.py:66
+#: .\core\models.py:75 .\core\models.py:76
 msgid "site settings"
 msgstr "إعدادات المتجر"
 
-#: .\core\models.py:77
+#: .\core\models.py:87
 msgid "Site settings"
 msgstr "إعدادات المتجر"
 
@@ -749,7 +772,6 @@ msgid "Zoom in"
 msgstr "تكبير"
 
 #: .\dashboard\forms.py:57
-#| msgid "Log out"
 msgid "Zoom out"
 msgstr "تصغير"
 
@@ -792,7 +814,7 @@ msgstr "إزالة"
 msgid "Main picture"
 msgstr "الصورة الرئيسية"
 
-#: .\dashboard\forms.py:108 .\dashboard\forms.py:367
+#: .\dashboard\forms.py:108 .\dashboard\forms.py:365
 msgid "Square pictures look best on product cards and in the gallery."
 msgstr "الصور المربّعة تظهر بأفضل شكل في بطاقات المنتجات ومعرض الصور."
 
@@ -813,7 +835,7 @@ msgstr "الصورة العريضة التي تظهر في خلفية أعلى �
 msgid "Square picture used as the round brand badge."
 msgstr "صورة مربّعة تُستخدم كشعار دائري للماركة."
 
-#: .\dashboard\forms.py:188
+#: .\dashboard\forms.py:187
 msgid ""
 "Background picture for this brand page. Brand cards use the brand colours "
 "instead."
@@ -821,75 +843,74 @@ msgstr ""
 "صورة خلفية صفحة هذه الماركة. أما بطاقات الماركات فتستخدم ألوان الماركة بدلًا"
 " من الصورة."
 
-#: .\dashboard\forms.py:211
+#: .\dashboard\forms.py:209
 msgid "Square picture used wherever this category is shown."
 msgstr "صورة مربّعة تُستخدم أينما ظهرت هذه الفئة."
 
-#: .\dashboard\forms.py:215
+#: .\dashboard\forms.py:213
 msgid "Add images"
 msgstr "إضافة صور"
 
-#: .\dashboard\forms.py:248
+#: .\dashboard\forms.py:246
 #, python-format
 msgid ""
 "JPEG, PNG or WebP, up to %(size)s MB each. You can select several files."
 msgstr ""
 "JPEG أو PNG أو WebP، حتى %(size)s ميغابايت لكل صورة. يمكنك اختيار عدة ملفات."
 
-#: .\dashboard\forms.py:262
+#: .\dashboard\forms.py:260
 msgid "Standard / قياسي"
 msgstr "قياسي / Standard"
 
-#: .\dashboard\forms.py:263
+#: .\dashboard\forms.py:261
 msgid "Custom option / خيار مخصص"
 msgstr "خيار مخصص / Custom option"
 
-#: .\dashboard\forms.py:276
+#: .\dashboard\forms.py:274
 msgid "Option type"
 msgstr "نوع الخيار"
 
-#: .\dashboard\forms.py:281
+#: .\dashboard\forms.py:279
 msgid ""
 "Choose “Standard” when the product has only one option. The names are filled"
 " in for you."
 msgstr ""
 "اختاري «قياسي» عندما يكون للمنتج خيار واحد فقط، وسنملأ الأسماء نيابةً عنكِ."
 
-#: .\dashboard\forms.py:344
+#: .\dashboard\forms.py:342
 msgid "Enter the Arabic option name, or switch to “Standard”."
 msgstr "أدخلي اسم الخيار بالعربية، أو بدّلي إلى «قياسي»."
 
-#: .\dashboard\forms.py:346
+#: .\dashboard\forms.py:344
 msgid "Enter the English option name, or switch to “Standard”."
 msgstr "أدخلي اسم الخيار بالإنجليزية، أو بدّلي إلى «قياسي»."
 
-#: .\dashboard\forms.py:373
+#: .\dashboard\forms.py:371
 msgid "Replace picture"
 msgstr "استبدال الصورة"
 
-#: .\dashboard\forms.py:374
-#| msgid "Leave empty to use the product's regular price."
+#: .\dashboard\forms.py:372
 msgid "Leave empty to keep the current picture."
 msgstr "اتركيه فارغًا للإبقاء على الصورة الحالية."
 
-#: .\dashboard\forms.py:390
+#: .\dashboard\forms.py:388
 msgid "Choose only one primary image."
 msgstr "اختاري صورة رئيسية واحدة فقط."
 
-#: .\dashboard\forms.py:411
+#: .\dashboard\forms.py:409
 msgid "A product needs at least one active variant (for example “Standard”)."
 msgstr "يحتاج المنتج إلى خيار مفعّل واحد على الأقل (مثل «قياسي»)."
 
-#: .\dashboard\forms.py:463 .\dashboard\forms.py:495 .\dashboard\forms.py:509
+#: .\dashboard\forms.py:461 .\dashboard\forms.py:493 .\dashboard\forms.py:507
 #: .\templates\dashboard\customers\list.html:8
 msgid "Search"
 msgstr "بحث"
 
-#: .\dashboard\forms.py:465
+#: .\dashboard\forms.py:463
 msgid "Order number, name, phone or email"
 msgstr "رقم الطلب أو الاسم أو الهاتف أو البريد"
 
-#: .\dashboard\forms.py:468 .\dashboard\forms.py:501
+#: .\dashboard\forms.py:466 .\dashboard\forms.py:499
 #: .\templates\dashboard\brands\list.html:12
 #: .\templates\dashboard\brands\list.html:20
 #: .\templates\dashboard\categories\list.html:12
@@ -900,223 +921,240 @@ msgstr "رقم الطلب أو الاسم أو الهاتف أو البريد"
 #: .\templates\dashboard\products\list.html:27
 #: .\templates\dashboard\promotions\list.html:13
 #: .\templates\dashboard\promotions\list.html:22
-#: .\templates\orders\confirmation.html:12
+#: .\templates\orders\confirmation.html:15
+#: .\templates\orders\emails\new_order_owner.txt:5
 msgid "Status"
 msgstr "الحالة"
 
-#: .\dashboard\forms.py:468
+#: .\dashboard\forms.py:466
 msgid "All statuses"
 msgstr "كل الحالات"
 
-#: .\dashboard\forms.py:470 .\templates\includes\price.html:2
+#: .\dashboard\forms.py:468 .\templates\includes\price.html:2
 msgid "From"
 msgstr "من"
 
-#: .\dashboard\forms.py:471
+#: .\dashboard\forms.py:469
 msgid "To"
 msgstr "إلى"
 
-#: .\dashboard\forms.py:475
+#: .\dashboard\forms.py:473
 msgid "New status"
 msgstr "الحالة الجديدة"
 
-#: .\dashboard\forms.py:476
+#: .\dashboard\forms.py:474
 msgid "Note (optional)"
 msgstr "ملاحظة (اختياري)"
 
-#: .\dashboard\forms.py:495
+#: .\dashboard\forms.py:493
 msgid "Name or SKU"
 msgstr "الاسم أو رمز المنتج"
 
-#: .\dashboard\forms.py:498 .\templates\core\home.html:39
+#: .\dashboard\forms.py:496 .\templates\core\home.html:39
 #: .\templates\includes\footer.html:27
 msgid "All brands"
 msgstr "كل الماركات"
 
-#: .\dashboard\forms.py:503
+#: .\dashboard\forms.py:501
 msgid "All"
 msgstr "الكل"
 
-#: .\dashboard\forms.py:503 .\templates\dashboard\brands\list.html:20
+#: .\dashboard\forms.py:501 .\templates\dashboard\brands\list.html:20
 #: .\templates\dashboard\categories\list.html:20
 #: .\templates\dashboard\products\list.html:27
 msgid "Active"
 msgstr "مفعّل"
 
-#: .\dashboard\forms.py:503 .\templates\dashboard\brands\list.html:20
+#: .\dashboard\forms.py:501 .\templates\dashboard\brands\list.html:20
 #: .\templates\dashboard\categories\list.html:20
 #: .\templates\dashboard\products\list.html:27
 #: .\templates\dashboard\stock\_row.html:2
 msgid "Hidden"
 msgstr "مخفي"
 
-#: .\dashboard\forms.py:503
+#: .\dashboard\forms.py:501
 msgid "Low stock"
 msgstr "مخزون منخفض"
 
-#: .\dashboard\forms.py:509
+#: .\dashboard\forms.py:507
 msgid "Name, email or phone"
 msgstr "الاسم أو البريد أو الهاتف"
 
-#: .\dashboard\views.py:150 .\dashboard\views.py:157
+#: .\dashboard\views.py:161
+msgid "The order email was sent again."
+msgstr "تم إرسال بريد الطلب مرة أخرى."
+
+#: .\dashboard\views.py:165
+msgid ""
+"No notification email address is set. Add one under Store settings, then try"
+" again."
+msgstr ""
+"لم يتم ضبط بريد للإشعارات. أضيفيه من إعدادات المتجر ثم أعيدي المحاولة."
+
+#: .\dashboard\views.py:168
+msgid "The email could not be sent. Check the email settings and try again."
+msgstr "تعذّر إرسال البريد. تحقّقي من إعدادات البريد وأعيدي المحاولة."
+
+#: .\dashboard\views.py:179 .\dashboard\views.py:186
 msgid "That status change is not allowed for this order."
 msgstr "لا يمكن تغيير حالة هذا الطلب بهذا الشكل."
 
-#: .\dashboard\views.py:161
+#: .\dashboard\views.py:190
 #, python-format
 msgid "Not enough stock to confirm this order. Check these SKUs: %(skus)s"
 msgstr "المخزون غير كافٍ لتأكيد هذا الطلب. تحقّقي من هذه الرموز: %(skus)s"
 
-#: .\dashboard\views.py:166
+#: .\dashboard\views.py:195
 #, python-format
 msgid "Order status updated to “%(status)s”."
 msgstr "تم تحديث حالة الطلب إلى «%(status)s»."
 
-#: .\dashboard\views.py:179
+#: .\dashboard\views.py:208
 msgid "Internal notes saved."
 msgstr "تم حفظ الملاحظات الداخلية."
 
-#: .\dashboard\views.py:181
+#: .\dashboard\views.py:210
 msgid "The notes could not be saved."
 msgstr "تعذّر حفظ الملاحظات."
 
-#: .\dashboard\views.py:200
+#: .\dashboard\views.py:229
 msgid "Saved."
 msgstr "تم الحفظ."
 
-#: .\dashboard\views.py:211
+#: .\dashboard\views.py:240
 msgid "This item is still in use and cannot be deleted. Hide it instead."
 msgstr "هذا العنصر ما زال مستخدمًا ولا يمكن حذفه. يمكنك إخفاؤه بدلًا من ذلك."
 
-#: .\dashboard\views.py:212
+#: .\dashboard\views.py:241
 msgid "Deleted."
 msgstr "تم الحذف."
 
-#: .\dashboard\views.py:252 .\dashboard\views.py:261
+#: .\dashboard\views.py:281 .\dashboard\views.py:290
 msgid "Brand saved."
 msgstr "تم حفظ الماركة."
 
-#: .\dashboard\views.py:253 .\templates\dashboard\brands\list.html:7
+#: .\dashboard\views.py:282 .\templates\dashboard\brands\list.html:7
 #: .\templates\dashboard\brands\list.html:32
 msgid "New brand"
 msgstr "ماركة جديدة"
 
-#: .\dashboard\views.py:262
+#: .\dashboard\views.py:291
 msgid "Edit brand"
 msgstr "تعديل الماركة"
 
-#: .\dashboard\views.py:268
+#: .\dashboard\views.py:297
 msgid ""
 "This brand still has products. Move or delete them first, or hide the brand."
 msgstr ""
 "ما زالت لهذه الماركة منتجات. انقليها أو احذفيها أولًا، أو أخفي الماركة."
 
-#: .\dashboard\views.py:269
+#: .\dashboard\views.py:298
 msgid "Brand deleted."
 msgstr "تم حذف الماركة."
 
-#: .\dashboard\views.py:274
+#: .\dashboard\views.py:303
 #, python-format
 msgid "This brand has %(count)s products, so it cannot be deleted."
 msgstr "لهذه الماركة %(count)s منتجات، لذلك لا يمكن حذفها."
 
-#: .\dashboard\views.py:275
+#: .\dashboard\views.py:304
 msgid "Promotions that target this brand will also be deleted."
 msgstr "ستُحذف أيضًا العروض الخاصة بهذه الماركة."
 
-#: .\dashboard\views.py:295 .\dashboard\views.py:304
+#: .\dashboard\views.py:324 .\dashboard\views.py:333
 msgid "Category saved."
 msgstr "تم حفظ الفئة."
 
-#: .\dashboard\views.py:296 .\templates\dashboard\categories\list.html:7
+#: .\dashboard\views.py:325 .\templates\dashboard\categories\list.html:7
 #: .\templates\dashboard\categories\list.html:31
 msgid "New category"
 msgstr "فئة جديدة"
 
-#: .\dashboard\views.py:305
+#: .\dashboard\views.py:334
 msgid "Edit category"
 msgstr "تعديل الفئة"
 
-#: .\dashboard\views.py:311
+#: .\dashboard\views.py:340
 msgid "Category deleted."
 msgstr "تم حذف الفئة."
 
-#: .\dashboard\views.py:315
+#: .\dashboard\views.py:344
 msgid ""
 "Products stay in the store but will no longer be listed in this category."
 msgstr "تبقى المنتجات في المتجر لكنها لن تظهر ضمن هذه الفئة."
 
-#: .\dashboard\views.py:316
+#: .\dashboard\views.py:345
 msgid "Promotions that target this category will also be deleted."
 msgstr "ستُحذف أيضًا العروض الخاصة بهذه الفئة."
 
-#: .\dashboard\views.py:407
+#: .\dashboard\views.py:436
 msgid "Product saved."
 msgstr "تم حفظ المنتج."
 
-#: .\dashboard\views.py:412
+#: .\dashboard\views.py:441
 msgid "Please correct the errors below."
 msgstr "يُرجى تصحيح الأخطاء أدناه."
 
-#: .\dashboard\views.py:433 .\templates\dashboard\products\list.html:7
+#: .\dashboard\views.py:462 .\templates\dashboard\products\list.html:7
 #: .\templates\dashboard\products\list.html:38
 msgid "New product"
 msgstr "منتج جديد"
 
-#: .\dashboard\views.py:437
+#: .\dashboard\views.py:466
 msgid "Edit product"
 msgstr "تعديل المنتج"
 
-#: .\dashboard\views.py:446
+#: .\dashboard\views.py:475
 msgid "Product deleted."
 msgstr "تم حذف المنتج."
 
-#: .\dashboard\views.py:450
+#: .\dashboard\views.py:479
 msgid "Its variants, images and product-specific promotions will be deleted."
 msgstr "ستُحذف خياراته وصوره والعروض الخاصة به."
 
-#: .\dashboard\views.py:451
+#: .\dashboard\views.py:480
 msgid "Past orders keep their saved names and prices."
 msgstr "تحتفظ الطلبات السابقة بالأسماء والأسعار المحفوظة فيها."
 
-#: .\dashboard\views.py:452
+#: .\dashboard\views.py:481
 msgid "Tip: untick “Active” to hide a product without deleting it."
 msgstr "نصيحة: ألغي تحديد «مفعّل» لإخفاء المنتج دون حذفه."
 
-#: .\dashboard\views.py:497
+#: .\dashboard\views.py:526
 msgid "Stock updated."
 msgstr "تم تحديث المخزون."
 
-#: .\dashboard\views.py:499
+#: .\dashboard\views.py:528
 msgid "Enter a stock quantity of 0 or more."
 msgstr "أدخلي كمية مخزون تساوي 0 أو أكثر."
 
-#: .\dashboard\views.py:535 .\dashboard\views.py:544
+#: .\dashboard\views.py:564 .\dashboard\views.py:573
 msgid "Promotion saved."
 msgstr "تم حفظ العرض."
 
-#: .\dashboard\views.py:536 .\templates\dashboard\promotions\list.html:7
+#: .\dashboard\views.py:565 .\templates\dashboard\promotions\list.html:7
 #: .\templates\dashboard\promotions\list.html:38
 msgid "New promotion"
 msgstr "عرض جديد"
 
-#: .\dashboard\views.py:545
+#: .\dashboard\views.py:574
 msgid "Edit promotion"
 msgstr "تعديل العرض"
 
-#: .\dashboard\views.py:551
+#: .\dashboard\views.py:580
 msgid "Promotion deleted."
 msgstr "تم حذف العرض."
 
-#: .\dashboard\views.py:554
+#: .\dashboard\views.py:583
 msgid "Prices return to normal immediately. Existing orders are not affected."
 msgstr "تعود الأسعار إلى طبيعتها فورًا. لا تتأثر الطلبات الحالية."
 
-#: .\dashboard\views.py:610
+#: .\dashboard\views.py:639
 msgid "Store settings saved."
 msgstr "تم حفظ إعدادات المتجر."
 
-#: .\dashboard\views.py:611 .\templates\dashboard\base.html:44
+#: .\dashboard\views.py:640 .\templates\dashboard\base.html:44
+#: .\templates\dashboard\orders\detail.html:108
 msgid "Store settings"
 msgstr "إعدادات المتجر"
 
@@ -1133,7 +1171,7 @@ msgstr "الطلبات"
 msgid "Enter a new address"
 msgstr "إدخال عنوان جديد"
 
-#: .\orders\forms.py:26 .\templates\dashboard\orders\detail.html:83
+#: .\orders\forms.py:26 .\templates\dashboard\orders\detail.html:95
 #: .\templates\orders\checkout.html:16
 msgid "Delivery address"
 msgstr "عنوان التوصيل"
@@ -1182,7 +1220,7 @@ msgstr "ملاحظات على الطلب (اختياري)"
 msgid "This field is required."
 msgstr "هذا الحقل مطلوب."
 
-#: .\orders\models.py:16
+#: .\orders\models.py:16 .\templates\dashboard\orders\detail.html:114
 msgid "Pending"
 msgstr "قيد الانتظار"
 
@@ -1210,210 +1248,242 @@ msgstr "تم التوصيل"
 msgid "Cancelled"
 msgstr "ملغى"
 
-#: .\orders\models.py:32
+#: .\orders\models.py:37
 msgid "order number"
 msgstr "رقم الطلب"
 
-#: .\orders\models.py:42
+#: .\orders\models.py:47
 msgid "customer name"
 msgstr "اسم الزبونة"
 
-#: .\orders\models.py:43
+#: .\orders\models.py:48
 msgid "customer email"
 msgstr "بريد الزبونة"
 
-#: .\orders\models.py:44
+#: .\orders\models.py:49
 msgid "customer phone"
 msgstr "هاتف الزبونة"
 
-#: .\orders\models.py:53
+#: .\orders\models.py:58
 msgid "latitude"
 msgstr "خط العرض"
 
-#: .\orders\models.py:54
+#: .\orders\models.py:59
 msgid "longitude"
 msgstr "خط الطول"
 
-#: .\orders\models.py:56
+#: .\orders\models.py:61
 msgid "location accuracy (m)"
 msgstr "دقة الموقع (م)"
 
-#: .\orders\models.py:58
+#: .\orders\models.py:63
 msgid "location consent given at"
 msgstr "وقت الموافقة على مشاركة الموقع"
 
-#: .\orders\models.py:60
+#: .\orders\models.py:65
 msgid "subtotal"
 msgstr "المجموع الفرعي"
 
-#: .\orders\models.py:61
+#: .\orders\models.py:66
 msgid "discount total"
 msgstr "مجموع الخصومات"
 
-#: .\orders\models.py:62
+#: .\orders\models.py:67
 msgid "delivery fee"
 msgstr "رسوم التوصيل"
 
-#: .\orders\models.py:63
+#: .\orders\models.py:68
 msgid "total"
 msgstr "الإجمالي"
 
-#: .\orders\models.py:65
+#: .\orders\models.py:70
 msgid "status"
 msgstr "الحالة"
 
-#: .\orders\models.py:67
+#: .\orders\models.py:72
 msgid "customer notes"
 msgstr "ملاحظات الزبونة"
 
-#: .\orders\models.py:68
+#: .\orders\models.py:73
 msgid "internal notes"
 msgstr "ملاحظات داخلية"
 
-#: .\orders\models.py:69
+#: .\orders\models.py:74
 msgid "language"
 msgstr "اللغة"
 
-#: .\orders\models.py:70
-msgid "WhatsApp opened at"
-msgstr "وقت فتح واتساب"
+#: .\orders\models.py:78
+#| msgid "WhatsApp opened at"
+msgid "WhatsApp opened at (legacy)"
+msgstr "وقت فتح واتساب (قديم)"
 
-#: .\orders\models.py:71
+#: .\orders\models.py:81
+msgid "owner notified: last attempt"
+msgstr "إشعار المالكة: آخر محاولة"
+
+#: .\orders\models.py:84
+msgid "owner notified: sent"
+msgstr "إشعار المالكة: تم الإرسال"
+
+#: .\orders\models.py:86
 msgid "stock deducted at"
 msgstr "وقت خصم المخزون"
 
-#: .\orders\models.py:72
+#: .\orders\models.py:87
 msgid "stock restored at"
 msgstr "وقت إرجاع المخزون"
 
-#: .\orders\models.py:75 .\orders\models.py:155 .\orders\models.py:216
+#: .\orders\models.py:90 .\orders\models.py:177 .\orders\models.py:238
 msgid "order"
 msgstr "الطلب"
 
-#: .\orders\models.py:76
+#: .\orders\models.py:91
 msgid "orders"
 msgstr "الطلبات"
 
-#: .\orders\models.py:170
+#: .\orders\models.py:192
 msgid "product name (Arabic)"
 msgstr "اسم المنتج (بالعربية)"
 
-#: .\orders\models.py:171
+#: .\orders\models.py:193
 msgid "product name (English)"
 msgstr "اسم المنتج (بالإنجليزية)"
 
-#: .\orders\models.py:172
+#: .\orders\models.py:194
 msgid "variant (Arabic)"
 msgstr "الخيار (بالعربية)"
 
-#: .\orders\models.py:173
+#: .\orders\models.py:195
 msgid "variant (English)"
 msgstr "الخيار (بالإنجليزية)"
 
-#: .\orders\models.py:176 .\templates\dashboard\orders\detail.html:19
+#: .\orders\models.py:198 .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:24
 #: .\templates\dashboard\stock\_row.html:4
 #: .\templates\dashboard\stock\list.html:14
 msgid "SKU"
 msgstr "رمز المنتج (SKU)"
 
-#: .\orders\models.py:178
+#: .\orders\models.py:200
 msgid "original unit price"
 msgstr "سعر القطعة الأصلي"
 
-#: .\orders\models.py:179
+#: .\orders\models.py:201
 msgid "discount per unit"
 msgstr "الخصم على القطعة"
 
-#: .\orders\models.py:180
+#: .\orders\models.py:202
 msgid "final unit price"
 msgstr "سعر القطعة النهائي"
 
-#: .\orders\models.py:181
+#: .\orders\models.py:203
 msgid "line total"
 msgstr "مجموع السطر"
 
-#: .\orders\models.py:184
+#: .\orders\models.py:206
 msgid "order item"
 msgstr "عنصر الطلب"
 
-#: .\orders\models.py:185
+#: .\orders\models.py:207
 msgid "order items"
 msgstr "عناصر الطلب"
 
-#: .\orders\models.py:217
+#: .\orders\models.py:239
 msgid "from"
 msgstr "من"
 
-#: .\orders\models.py:218
+#: .\orders\models.py:240
 msgid "to"
 msgstr "إلى"
 
-#: .\orders\models.py:225
+#: .\orders\models.py:247
 msgid "changed by"
 msgstr "بواسطة"
 
-#: .\orders\models.py:227
+#: .\orders\models.py:249
 msgid "note"
 msgstr "ملاحظة"
 
-#: .\orders\models.py:228
+#: .\orders\models.py:250
 msgid "changed at"
 msgstr "وقت التغيير"
 
-#: .\orders\models.py:231
+#: .\orders\models.py:253
 msgid "status change"
 msgstr "تغيير الحالة"
 
-#: .\orders\models.py:232
+#: .\orders\models.py:254
 msgid "status history"
 msgstr "سجلّ الحالات"
 
-#: .\orders\services\whatsapp.py:62
+#: .\orders\services\whatsapp.py:108
 #, python-format
-msgid "New %(store)s order"
-msgstr "طلب جديد من %(store)s"
+#| msgid "Hello, %(name)s"
+msgid "Hello %(name)s 🌸"
+msgstr "مرحباً %(name)s 🌸"
 
-#: .\orders\services\whatsapp.py:63
+#: .\orders\services\whatsapp.py:110
+#, python-format
+#| msgid "Thank you! Your order is saved."
+msgid "Thank you for your order from %(store)s."
+msgstr "شكراً لطلبك من %(store)s."
+
+#: .\orders\services\whatsapp.py:112
 #, python-format
 msgid "Order number: %(number)s"
 msgstr "رقم الطلب: %(number)s"
 
-#: .\orders\services\whatsapp.py:64
+#: .\orders\services\whatsapp.py:113
 #, python-format
-msgid "Customer: %(name)s"
-msgstr "الاسم: %(name)s"
+#| msgid "Total: %(total)s"
+msgid "Products total: %(total)s"
+msgstr "قيمة المنتجات: %(total)s"
 
-#: .\orders\services\whatsapp.py:65
-#, python-format
-msgid "Total: %(total)s"
-msgstr "المجموع: %(total)s"
+#: .\orders\services\whatsapp.py:114
+msgid "Delivery is not included yet."
+msgstr "رسوم التوصيل غير مشمولة بعد."
 
-#: .\orders\services\whatsapp.py:66
-#, python-format
-msgid "Order link (staff only): %(url)s"
-msgstr "رابط الطلب (للإدارة فقط): %(url)s"
+#: .\orders\services\whatsapp.py:116
+msgid "Which payment method do you prefer?"
+msgstr "ما طريقة الدفع المناسبة لك؟"
 
-#: .\orders\views.py:26
+#: .\orders\services\whatsapp.py:117
+msgid "• Cash"
+msgstr "• نقداً"
+
+#: .\orders\services\whatsapp.py:118
+msgid "• Bit"
+msgstr "• Bit"
+
+#: .\orders\services\whatsapp.py:119
+msgid "• Bank transfer"
+msgstr "• تحويل بنكي"
+
+#: .\orders\services\whatsapp.py:121
+msgid ""
+"We will also confirm the delivery cost and delivery time with you here."
+msgstr "سنؤكد معك أيضاً رسوم التوصيل وموعده عبر هذه المحادثة."
+
+#: .\orders\views.py:24
 #, python-format
 msgid ""
 "Some items are no longer available: %(names)s. Please review your cart."
 msgstr "بعض القطع لم تعد متوفّرة: %(names)s. يُرجى مراجعة سلتك."
 
-#: .\orders\views.py:28
+#: .\orders\views.py:26
 #, python-format
 msgid "Not enough stock for: %(names)s. Please review your cart."
 msgstr "المخزون غير كافٍ لـ: %(names)s. يُرجى مراجعة سلتك."
 
-#: .\orders\views.py:30 .\orders\views.py:39
+#: .\orders\views.py:28 .\orders\views.py:37
 msgid "Your cart is empty."
 msgstr "سلتك فارغة."
 
-#: .\orders\views.py:31
+#: .\orders\views.py:29
 msgid "We could not place your order. Please try again."
 msgstr "تعذّر إتمام طلبك. يُرجى المحاولة مرة أخرى."
 
-#: .\orders\views.py:44
+#: .\orders\views.py:42
 msgid "Some items in your cart changed. Please review it before checking out."
 msgstr "تغيّرت بعض القطع في سلتك. يُرجى مراجعتها قبل إتمام الطلب."
 
@@ -1517,6 +1587,8 @@ msgid "My addresses"
 msgstr "عناويني"
 
 #: .\templates\accounts\address_list.html:17
+#: .\templates\orders\emails\new_order_owner.html:31
+#: .\templates\orders\emails\new_order_owner.txt:11
 msgid "Address"
 msgstr "العنوان"
 
@@ -1719,7 +1791,7 @@ msgstr "مرحبًا، %(name)s"
 msgid "Save changes"
 msgstr "حفظ التغييرات"
 
-#: .\templates\accounts\profile.html:19 .\templates\dashboard\overview.html:15
+#: .\templates\accounts\profile.html:19 .\templates\dashboard\overview.html:21
 msgid "Recent orders"
 msgstr "أحدث الطلبات"
 
@@ -1809,6 +1881,8 @@ msgstr "زيادة الكمية"
 #: .\templates\cart\partials\cart_body.html:41
 #: .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:27
+#: .\templates\orders\emails\new_order_owner.html:47
+#: .\templates\orders\emails\new_order_owner.txt:19
 msgid "Line total"
 msgstr "مجموع السطر"
 
@@ -1855,30 +1929,24 @@ msgid "Discounts"
 msgstr "الخصومات"
 
 #: .\templates\cart\partials\totals.html:4
-#: .\templates\dashboard\orders\detail.html:35
-#: .\templates\orders\order_detail.html:40
-#: .\templates\orders\order_detail.html:46
-msgid "Delivery"
-msgstr "التوصيل"
-
-#: .\templates\cart\partials\totals.html:4
-#: .\templates\orders\order_detail.html:40
-msgid "Free"
-msgstr "مجاني"
-
-#: .\templates\cart\partials\totals.html:5
 #: .\templates\dashboard\orders\_table.html:2
 #: .\templates\dashboard\orders\_table.html:10
-#: .\templates\dashboard\orders\detail.html:36
-#: .\templates\orders\confirmation.html:11
-#: .\templates\orders\order_detail.html:41
-msgid "Total"
-msgstr "الإجمالي"
+#: .\templates\dashboard\orders\detail.html:35
+#: .\templates\orders\confirmation.html:14
+#: .\templates\orders\emails\new_order_owner.html:65
+#: .\templates\orders\emails\new_order_owner.txt:21
+#: .\templates\orders\order_detail.html:40
+#| msgid "Products"
+msgid "Products total"
+msgstr "مجموع المنتجات"
 
-#: .\templates\cart\partials\totals.html:8
-#, python-format
-msgid "Free delivery on orders from %(amount)s."
-msgstr "توصيل مجاني للطلبات من %(amount)s."
+#: .\templates\cart\partials\totals.html:7
+#: .\templates\orders\confirmation.html:17
+#: .\templates\orders\order_detail.html:47
+msgid ""
+"Delivery is not included in this total and will be confirmed with you on "
+"WhatsApp."
+msgstr "رسوم التوصيل غير مشمولة في المجموع وسيتم تأكيدها معك عبر واتساب."
 
 #: .\templates\catalog\brand_detail.html:10
 #: .\templates\catalog\product_detail.html:9
@@ -2087,7 +2155,6 @@ msgid "Delivery details are confirmed with you after you order."
 msgstr "نؤكّد معك تفاصيل التوصيل بعد الطلب."
 
 #: .\templates\dashboard\_crop_field.html:8
-#| msgid "Current offer"
 msgid "Current picture"
 msgstr "الصورة الحالية"
 
@@ -2134,7 +2201,7 @@ msgstr "العروض"
 #: .\templates\dashboard\base.html:43
 #: .\templates\dashboard\customers\list.html:3
 #: .\templates\dashboard\customers\list.html:5
-#: .\templates\dashboard\overview.html:10
+#: .\templates\dashboard\overview.html:16
 msgid "Customers"
 msgstr "الزبائن"
 
@@ -2215,7 +2282,6 @@ msgid "Contact"
 msgstr "التواصل"
 
 #: .\templates\dashboard\customers\detail.html:21
-#: .\templates\dashboard\orders\detail.html:78
 msgid "Message on WhatsApp"
 msgstr "مراسلة عبر واتساب"
 
@@ -2239,6 +2305,8 @@ msgstr "لا توجد عناوين محفوظة."
 
 #: .\templates\dashboard\customers\list.html:13
 #: .\templates\dashboard\customers\list.html:17
+#: .\templates\orders\emails\new_order_owner.html:28
+#: .\templates\orders\emails\new_order_owner.txt:8
 msgid "Name"
 msgstr "الاسم"
 
@@ -2301,7 +2369,9 @@ msgstr "جرّبي بحثًا أو حالة مختلفة."
 
 #: .\templates\dashboard\orders\_table.html:2
 #: .\templates\dashboard\orders\_table.html:7
-#: .\templates\dashboard\orders\detail.html:74
+#: .\templates\dashboard\orders\detail.html:81
+#: .\templates\orders\emails\new_order_owner.html:26
+#: .\templates\orders\emails\new_order_owner.txt:7
 msgid "Customer"
 msgstr "الزبونة"
 
@@ -2310,33 +2380,30 @@ msgstr "الزبونة"
 msgid "Date"
 msgstr "التاريخ"
 
-#: .\templates\dashboard\orders\_table.html:2
 #: .\templates\dashboard\orders\_table.html:11
-#: .\templates\includes\footer.html:19
-msgid "WhatsApp"
-msgstr "واتساب"
+#: .\templates\dashboard\orders\detail.html:110
+msgid "Sent"
+msgstr "أُرسل"
 
 #: .\templates\dashboard\orders\_table.html:11
-msgid "Opened"
-msgstr "فُتح"
+#| msgid "Not now"
+msgid "Not sent"
+msgstr "لم يُرسل"
 
 #: .\templates\dashboard\orders\detail.html:6
-#: .\templates\dashboard\overview.html:15
+#: .\templates\dashboard\overview.html:21
 msgid "All orders"
 msgstr "كل الطلبات"
 
 #: .\templates\dashboard\orders\detail.html:11
-#: .\templates\orders\order_detail.html:61
+#: .\templates\orders\order_detail.html:65
 #, python-format
 msgid "Placed on %(date)s"
 msgstr "تم الطلب في %(date)s"
 
-#: .\templates\dashboard\orders\detail.html:11
-#, python-format
-msgid "Customer opened WhatsApp on %(date)s"
-msgstr "فتحت الزبونة واتساب في %(date)s"
-
 #: .\templates\dashboard\orders\detail.html:17
+#: .\templates\orders\emails\new_order_owner.html:41
+#: .\templates\orders\emails\new_order_owner.txt:16
 #: .\templates\orders\order_detail.html:26
 msgid "Items"
 msgstr "القطع"
@@ -2347,36 +2414,55 @@ msgstr "القطع"
 #: .\templates\dashboard\products\list.html:23
 #: .\templates\dashboard\stock\_row.html:2
 #: .\templates\dashboard\stock\list.html:14
+#: .\templates\orders\emails\new_order_owner.html:44
 msgid "Product"
 msgstr "المنتج"
 
 #: .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:25
+#: .\templates\orders\emails\new_order_owner.html:45
 msgid "Qty"
 msgstr "الكمية"
 
 #: .\templates\dashboard\orders\detail.html:19
 #: .\templates\dashboard\orders\detail.html:26
+#: .\templates\orders\emails\new_order_owner.html:46
+#: .\templates\orders\emails\new_order_owner.txt:18
 msgid "Unit price"
 msgstr "سعر القطعة"
 
-#: .\templates\dashboard\orders\detail.html:41
+#: .\templates\dashboard\orders\detail.html:38
+msgid "Delivery (charged at the time)"
+msgstr "التوصيل (كما احتُسب وقتها)"
+
+#: .\templates\dashboard\orders\detail.html:39
+#: .\templates\orders\order_detail.html:44
+msgid "Total"
+msgstr "الإجمالي"
+
+#: .\templates\dashboard\orders\detail.html:43
+msgid ""
+"Delivery is not included. Agree the delivery cost and time with the customer"
+" on WhatsApp."
+msgstr "التوصيل غير مشمول. اتفقي مع الزبونة على رسومه وموعده عبر واتساب."
+
+#: .\templates\dashboard\orders\detail.html:48
 msgid "Status history"
 msgstr "سجلّ الحالات"
 
-#: .\templates\dashboard\orders\detail.html:47
+#: .\templates\dashboard\orders\detail.html:54
 msgid "Order placed"
 msgstr "تم إنشاء الطلب"
 
-#: .\templates\dashboard\orders\detail.html:59
+#: .\templates\dashboard\orders\detail.html:66
 msgid "Update status"
 msgstr "تحديث الحالة"
 
-#: .\templates\dashboard\orders\detail.html:65
+#: .\templates\dashboard\orders\detail.html:72
 msgid "Save status"
 msgstr "حفظ الحالة"
 
-#: .\templates\dashboard\orders\detail.html:67
+#: .\templates\dashboard\orders\detail.html:74
 msgid ""
 "Stock is reduced once when you confirm the order, and restored once if a "
 "confirmed order is cancelled."
@@ -2384,40 +2470,91 @@ msgstr ""
 "يُخصم المخزون مرة واحدة عند تأكيد الطلب، ويُعاد مرة واحدة إذا أُلغي طلب "
 "مؤكَّد."
 
-#: .\templates\dashboard\orders\detail.html:69
+#: .\templates\dashboard\orders\detail.html:76
 msgid "This order is closed. Its status can no longer change."
 msgstr "هذا الطلب مغلق ولا يمكن تغيير حالته."
 
-#: .\templates\dashboard\orders\detail.html:79
+#: .\templates\dashboard\orders\detail.html:86
+#: .\templates\orders\emails\new_order_owner.html:79
+#| msgid "Message on WhatsApp"
+msgid "Message customer on WhatsApp"
+msgstr "مراسلة الزبونة عبر واتساب"
+
+#: .\templates\dashboard\orders\detail.html:87
+msgid ""
+"Opens a chat with a ready message about payment and delivery. You still "
+"press Send in WhatsApp."
+msgstr ""
+"يفتح محادثة برسالة جاهزة عن الدفع والتوصيل. ويبقى عليكِ الضغط على «إرسال» "
+"داخل واتساب."
+
+#: .\templates\dashboard\orders\detail.html:89
+#, python-format
+msgid ""
+"WhatsApp cannot be opened for %(phone)s. Please contact the customer another"
+" way."
+msgstr ""
+"تعذّر فتح واتساب للرقم %(phone)s. يُرجى التواصل مع الزبونة بطريقة أخرى."
+
+#: .\templates\dashboard\orders\detail.html:91
 msgid "Customer profile"
 msgstr "ملف الزبونة"
 
-#: .\templates\dashboard\orders\detail.html:87
+#: .\templates\dashboard\orders\detail.html:99
 msgid "Open location in Google Maps"
 msgstr "فتح الموقع في خرائط Google"
 
-#: .\templates\dashboard\orders\detail.html:88
+#: .\templates\dashboard\orders\detail.html:100
 #, python-format
 msgid "Location shared with consent on %(date)s"
 msgstr "تمت مشاركة الموقع بموافقة الزبونة في %(date)s"
 
-#: .\templates\dashboard\orders\detail.html:89
+#: .\templates\dashboard\orders\detail.html:101
 msgid "No location shared."
 msgstr "لم تتم مشاركة موقع."
 
-#: .\templates\dashboard\orders\detail.html:90
+#: .\templates\dashboard\orders\detail.html:102
+#: .\templates\orders\emails\new_order_owner.html:33
+#: .\templates\orders\emails\new_order_owner.txt:13
 msgid "Customer notes"
 msgstr "ملاحظات الزبونة"
 
-#: .\templates\dashboard\orders\detail.html:94
+#: .\templates\dashboard\orders\detail.html:106
+#| msgid "Order summary"
+msgid "Order email"
+msgstr "بريد الطلب"
+
+#: .\templates\dashboard\orders\detail.html:108
+msgid "No notification address is set, so no email was sent."
+msgstr "لم يتم ضبط بريد للإشعارات، لذلك لم يُرسل أي بريد."
+
+#: .\templates\dashboard\orders\detail.html:112
+#, python-format
+msgid "Not sent. Last tried on %(date)s."
+msgstr "لم يُرسل. آخر محاولة في %(date)s."
+
+#: .\templates\dashboard\orders\detail.html:118
+#| msgid "customer email"
+msgid "Resend owner email"
+msgstr "إعادة إرسال بريد الطلب"
+
+#: .\templates\dashboard\orders\detail.html:120
+msgid ""
+"Sends this order to your notification address again. It never changes the "
+"order status or stock."
+msgstr ""
+"يُعيد إرسال هذا الطلب إلى بريد الإشعارات. ولا يغيّر حالة الطلب أو المخزون "
+"إطلاقاً."
+
+#: .\templates\dashboard\orders\detail.html:124
 msgid "Internal notes"
 msgstr "ملاحظات داخلية"
 
-#: .\templates\dashboard\orders\detail.html:98
+#: .\templates\dashboard\orders\detail.html:128
 msgid "Save notes"
 msgstr "حفظ الملاحظات"
 
-#: .\templates\dashboard\orders\detail.html:100
+#: .\templates\dashboard\orders\detail.html:130
 msgid "Only staff can see these notes."
 msgstr "هذه الملاحظات تظهر لفريق الإدارة فقط."
 
@@ -2431,45 +2568,56 @@ msgstr "تصفية"
 msgid "Welcome, %(name)s"
 msgstr "أهلًا، %(name)s"
 
-#: .\templates\dashboard\overview.html:7
+#: .\templates\dashboard\overview.html:8
+msgid ""
+"You will not be emailed about new orders yet, because no notification "
+"address is set."
+msgstr "لن تصلك رسائل عن الطلبات الجديدة بعد، لأنه لم يتم ضبط بريد للإشعارات."
+
+#: .\templates\dashboard\overview.html:9
+#| msgid "Store settings"
+msgid "Add one under Store settings"
+msgstr "أضيفيه من إعدادات المتجر"
+
+#: .\templates\dashboard\overview.html:13
 msgid "New orders"
 msgstr "طلبات جديدة"
 
-#: .\templates\dashboard\overview.html:7
+#: .\templates\dashboard\overview.html:13
 msgid "Pending or received"
 msgstr "قيد الانتظار أو تم الاستلام"
 
-#: .\templates\dashboard\overview.html:8
+#: .\templates\dashboard\overview.html:14
 msgid "Active products"
 msgstr "المنتجات المفعّلة"
 
-#: .\templates\dashboard\overview.html:9
+#: .\templates\dashboard\overview.html:15
 msgid "Low-stock variants"
 msgstr "خيارات مخزونها منخفض"
 
-#: .\templates\dashboard\overview.html:9
+#: .\templates\dashboard\overview.html:15
 #, python-format
 msgid "%(low_stock_threshold)s or fewer left"
 msgstr "بقي %(low_stock_threshold)s أو أقل"
 
-#: .\templates\dashboard\overview.html:11
+#: .\templates\dashboard\overview.html:17
 msgid "Sales, last 7 days"
 msgstr "المبيعات، آخر 7 أيام"
 
-#: .\templates\dashboard\overview.html:11
+#: .\templates\dashboard\overview.html:17
 msgid "Confirmed orders onward"
 msgstr "الطلبات المؤكَّدة وما بعدها"
 
-#: .\templates\dashboard\overview.html:12
+#: .\templates\dashboard\overview.html:18
 msgid "Sales, last 30 days"
 msgstr "المبيعات، آخر 30 يومًا"
 
-#: .\templates\dashboard\overview.html:19
+#: .\templates\dashboard\overview.html:25
 #: .\templates\orders\order_list.html:26
 msgid "No orders yet"
 msgstr "لا توجد طلبات بعد"
 
-#: .\templates\dashboard\overview.html:19
+#: .\templates\dashboard\overview.html:25
 msgid "New orders will appear here as soon as customers check out."
 msgstr "ستظهر الطلبات الجديدة هنا فور إتمام الزبائن لطلباتهم."
 
@@ -2523,9 +2671,6 @@ msgid "Images"
 msgstr "الصور"
 
 #: .\templates\dashboard\products\form.html:87
-#| msgid ""
-#| "Lower display order numbers appear first. The primary image is used on "
-#| "product cards."
 msgid ""
 "Lower display order numbers appear first. The main picture is used on "
 "product cards. “Adjust crop” reframes a picture you already uploaded."
@@ -2709,6 +2854,10 @@ msgstr "تواصلي معنا"
 msgid "Instagram"
 msgstr "إنستغرام"
 
+#: .\templates\includes\footer.html:19
+msgid "WhatsApp"
+msgstr "واتساب"
+
 #: .\templates\includes\footer.html:25
 msgid "Shop"
 msgstr "التسوّق"
@@ -2888,47 +3037,155 @@ msgid "Order received"
 msgstr "تم استلام الطلب"
 
 #: .\templates\orders\confirmation.html:8
-msgid "Thank you! Your order is saved."
-msgstr "شكرًا لكِ! تم حفظ طلبك."
+#| msgid "Order received"
+msgid "Your order has been received"
+msgstr "تم استلام طلبك بنجاح"
 
 #: .\templates\orders\confirmation.html:10
+msgid ""
+"The store owner will contact you on WhatsApp to confirm your order, the "
+"payment method, the delivery cost and the delivery time. You do not need to "
+"send anything now."
+msgstr ""
+"ستتواصل معك صاحبة المتجر عبر واتساب لتأكيد الطلب، طريقة الدفع، رسوم التوصيل "
+"وموعده. لا تحتاجين إلى إرسال أي شيء الآن."
+
+#: .\templates\orders\confirmation.html:13
+#: .\templates\orders\emails\new_order_owner.txt:3
 msgid "Order number"
 msgstr "رقم الطلب"
 
-#: .\templates\orders\confirmation.html:15
-msgid "Next step: send your order on WhatsApp"
-msgstr "الخطوة التالية: أرسلي طلبك عبر واتساب"
-
-#: .\templates\orders\confirmation.html:16
-#, python-format
-msgid ""
-"The button opens WhatsApp with a ready message to <span lang=\"en\" "
-"dir=\"ltr\">%(store)s</span>. Please press Send inside WhatsApp so we can "
-"confirm your order quickly."
-msgstr ""
-"يفتح الزر واتساب مع رسالة جاهزة إلى <span lang=\"en\" "
-"dir=\"ltr\">%(store)s</span>. يُرجى الضغط على «إرسال» داخل واتساب لنؤكّد "
-"طلبك بسرعة."
-
-#: .\templates\orders\confirmation.html:20
-#: .\templates\orders\order_detail.html:58
-msgid "Send order via WhatsApp"
-msgstr "إرسال الطلب عبر واتساب"
-
-#: .\templates\orders\confirmation.html:23
-msgid ""
-"Opening WhatsApp does not send anything automatically. Your order is already"
-" saved in your account either way."
-msgstr ""
-"فتح واتساب لا يرسل أي شيء تلقائيًا. طلبك محفوظ في حسابك في كل الأحوال."
-
-#: .\templates\orders\confirmation.html:26
+#: .\templates\orders\confirmation.html:19
 msgid "View order status"
 msgstr "عرض حالة الطلب"
 
-#: .\templates\orders\confirmation.html:27
+#: .\templates\orders\confirmation.html:20
 msgid "Continue shopping"
 msgstr "متابعة التسوّق"
+
+#: .\templates\orders\emails\new_order_owner.html:6
+#, python-format
+#| msgid "Order %(number)s"
+msgid "New order %(number)s"
+msgstr "طلب جديد %(number)s"
+
+#: .\templates\orders\emails\new_order_owner.html:19
+#| msgid "New orders"
+msgid "New order"
+msgstr "طلب جديد"
+
+#: .\templates\orders\emails\new_order_owner.html:29
+#: .\templates\orders\emails\new_order_owner.txt:9
+#: .\templates\orders\order_detail.html:54
+msgid "Phone"
+msgstr "الهاتف"
+
+#: .\templates\orders\emails\new_order_owner.html:32
+#: .\templates\orders\emails\new_order_owner.txt:12
+#| msgid "landmark or delivery notes"
+msgid "Landmark or delivery notes"
+msgstr "علامة مميّزة أو ملاحظات للتوصيل"
+
+#: .\templates\orders\emails\new_order_owner.html:34
+#: .\templates\orders\emails\new_order_owner.txt:14
+#| msgid "Remove location"
+msgid "Shared location"
+msgstr "الموقع الذي شاركته"
+
+#: .\templates\orders\emails\new_order_owner.html:34
+#| msgid "Open location in Google Maps"
+msgid "Open in Google Maps"
+msgstr "فتح في خرائط Google"
+
+#: .\templates\orders\emails\new_order_owner.html:70
+msgid ""
+"Delivery is not included in this total. Agree the delivery cost and time "
+"with the customer on WhatsApp."
+msgstr ""
+"رسوم التوصيل غير مشمولة في هذا المجموع. اتفقي مع الزبونة على الرسوم والموعد "
+"عبر واتساب."
+
+#: .\templates\orders\emails\new_order_owner.html:82
+msgid ""
+"The message is prepared for you. Nothing is sent until you press Send inside"
+" WhatsApp."
+msgstr "الرسالة جاهزة لكِ. ولا يُرسل شيء حتى تضغطي «إرسال» داخل واتساب."
+
+#: .\templates\orders\emails\new_order_owner.html:86
+#: .\templates\orders\emails\new_order_owner.txt:27
+#, python-format
+msgid ""
+"WhatsApp could not be opened for this phone number: %(phone)s. Please "
+"contact the customer another way."
+msgstr ""
+"تعذّر فتح واتساب لهذا الرقم: %(phone)s. يُرجى التواصل مع الزبونة بطريقة "
+"أخرى."
+
+#: .\templates\orders\emails\new_order_owner.html:95
+#| msgid "Owner dashboard"
+msgid "Open order in dashboard"
+msgstr "فتح الطلب في لوحة التحكم"
+
+#: .\templates\orders\emails\new_order_owner.html:97
+msgid "You need to be logged in as staff to open it."
+msgstr "يلزم تسجيل الدخول كإدارة لفتحه."
+
+#: .\templates\orders\emails\new_order_owner.html:104
+#, python-format
+msgid ""
+"This notification was sent by %(store)s because a new order was placed. The "
+"address it goes to can be changed under Store settings."
+msgstr ""
+"أُرسل هذا الإشعار من %(store)s لأن طلباً جديداً قد وصل. ويمكن تغيير البريد "
+"الذي يصل إليه من إعدادات المتجر."
+
+#: .\templates\orders\emails\new_order_owner.txt:1
+#, python-format
+#| msgid "New %(store)s order"
+msgid "New order for %(store)s"
+msgstr "طلب جديد لـ %(store)s"
+
+#: .\templates\orders\emails\new_order_owner.txt:4
+#| msgid "Place order"
+msgid "Placed on"
+msgstr "تاريخ الطلب"
+
+#: .\templates\orders\emails\new_order_owner.txt:18
+msgid "was"
+msgstr "كان"
+
+#: .\templates\orders\emails\new_order_owner.txt:18
+#| msgid "Discount"
+msgid "discount"
+msgstr "خصم"
+
+#: .\templates\orders\emails\new_order_owner.txt:22
+msgid ""
+"Delivery is not included in this total. Agree it with the customer on "
+"WhatsApp."
+msgstr ""
+"رسوم التوصيل غير مشمولة في هذا المجموع. اتفقي عليها مع الزبونة عبر واتساب."
+
+#: .\templates\orders\emails\new_order_owner.txt:24
+msgid "Next steps"
+msgstr "الخطوات التالية"
+
+#: .\templates\orders\emails\new_order_owner.txt:25
+msgid ""
+"Message the customer on WhatsApp (the draft is prepared, you still press "
+"Send):"
+msgstr ""
+"راسلي الزبونة عبر واتساب (الرسالة جاهزة، ويبقى عليكِ الضغط على «إرسال»):"
+
+#: .\templates\orders\emails\new_order_owner.txt:29
+msgid "Open the order in your dashboard (staff login required):"
+msgstr "افتحي الطلب في لوحة التحكم (يتطلّب تسجيل دخول الإدارة):"
+
+#: .\templates\orders\emails\new_order_owner_subject.txt:1
+#, python-format
+#| msgid "Order %(number)s"
+msgid "New order %(number)s · %(store)s"
+msgstr "طلب جديد %(number)s · %(store)s"
 
 #: .\templates\orders\order_detail.html:3
 #, python-format
@@ -2940,33 +3197,90 @@ msgid "Order progress"
 msgstr "مراحل الطلب"
 
 #: .\templates\orders\order_detail.html:22
+#| msgid ""
+#| "This order was cancelled. Contact us on WhatsApp if you have questions."
 msgid ""
-"This order was cancelled. Contact us on WhatsApp if you have questions."
-msgstr "تم إلغاء هذا الطلب. تواصلي معنا عبر واتساب إذا كان لديكِ أي سؤال."
+"This order was cancelled. Reply to us on WhatsApp if you have questions."
+msgstr "تم إلغاء هذا الطلب. ردّي علينا عبر واتساب إذا كان لديكِ أي سؤال."
 
-#: .\templates\orders\order_detail.html:49
-msgid "Phone"
-msgstr "الهاتف"
+#: .\templates\orders\order_detail.html:43
+#: .\templates\orders\order_detail.html:51
+msgid "Delivery"
+msgstr "التوصيل"
 
-#: .\templates\orders\order_detail.html:50
+#: .\templates\orders\order_detail.html:55
 msgid "You shared your location with this order."
 msgstr "شاركتِ موقعك مع هذا الطلب."
 
-#: .\templates\orders\order_detail.html:51
+#: .\templates\orders\order_detail.html:56
 msgid "Your notes"
 msgstr "ملاحظاتك"
 
-#: .\templates\orders\order_detail.html:56
-msgid "Need to follow up?"
-msgstr "تحتاجين إلى متابعة؟"
+#: .\templates\orders\order_detail.html:61
+msgid "What happens next?"
+msgstr "ما الخطوة التالية؟"
 
-#: .\templates\orders\order_detail.html:57
-msgid "Message us on WhatsApp with your order number."
-msgstr "راسلينا عبر واتساب مع رقم طلبك."
+#: .\templates\orders\order_detail.html:62
+msgid ""
+"The store owner will contact you on WhatsApp to confirm the payment method, "
+"the delivery cost and the delivery time. You do not need to send anything."
+msgstr ""
+"ستتواصل معك صاحبة المتجر عبر واتساب لتأكيد طريقة الدفع ورسوم التوصيل وموعده."
+" لا تحتاجين إلى إرسال أي شيء."
 
 #: .\templates\orders\order_list.html:27
 msgid "When you place an order it will appear here with its status."
 msgstr "عند إتمام أي طلب، سيظهر هنا مع حالته."
+
+#, python-format
+#~ msgid "Customer: %(name)s"
+#~ msgstr "الاسم: %(name)s"
+
+#, python-format
+#~ msgid "Order link (staff only): %(url)s"
+#~ msgstr "رابط الطلب (للإدارة فقط): %(url)s"
+
+#~ msgid "Free"
+#~ msgstr "مجاني"
+
+#, python-format
+#~ msgid "Free delivery on orders from %(amount)s."
+#~ msgstr "توصيل مجاني للطلبات من %(amount)s."
+
+#~ msgid "Opened"
+#~ msgstr "فُتح"
+
+#, python-format
+#~ msgid "Customer opened WhatsApp on %(date)s"
+#~ msgstr "فتحت الزبونة واتساب في %(date)s"
+
+#~ msgid "Next step: send your order on WhatsApp"
+#~ msgstr "الخطوة التالية: أرسلي طلبك عبر واتساب"
+
+#, python-format
+#~ msgid ""
+#~ "The button opens WhatsApp with a ready message to <span lang=\"en\" "
+#~ "dir=\"ltr\">%(store)s</span>. Please press Send inside WhatsApp so we can "
+#~ "confirm your order quickly."
+#~ msgstr ""
+#~ "يفتح الزر واتساب مع رسالة جاهزة إلى <span lang=\"en\" "
+#~ "dir=\"ltr\">%(store)s</span>. يُرجى الضغط على «إرسال» داخل واتساب لنؤكّد "
+#~ "طلبك بسرعة."
+
+#~ msgid "Send order via WhatsApp"
+#~ msgstr "إرسال الطلب عبر واتساب"
+
+#~ msgid ""
+#~ "Opening WhatsApp does not send anything automatically. Your order is already"
+#~ " saved in your account either way."
+#~ msgstr ""
+#~ "فتح واتساب لا يرسل أي شيء تلقائيًا. طلبك محفوظ في حسابك في كل الأحوال."
+
+#~ msgid "Need to follow up?"
+#~ msgstr "تحتاجين إلى متابعة؟"
+
+#~ msgid "Message us on WhatsApp with your order number."
+#~ msgstr "راسلينا عبر واتساب مع رقم طلبك."
 
 #~ msgid "New Rawnaq order"
 #~ msgstr "طلب جديد من رونق"

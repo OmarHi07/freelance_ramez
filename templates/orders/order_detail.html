@@ -19,7 +19,7 @@
     {% endfor %}
   </ol>
   {% else %}
-    <p class="alert alert--warning">{% icon "info" %}<span>{% translate "This order was cancelled. Contact us on WhatsApp if you have questions." %}</span></p>
+    <p class="alert alert--warning">{% icon "info" %}<span>{% translate "This order was cancelled. Reply to us on WhatsApp if you have questions." %}</span></p>
   {% endif %}
 
   <div class="card">
@@ -37,9 +37,14 @@
     <dl class="totals">
       <div><dt>{% translate "Subtotal" %}</dt><dd><bdi>{{ order.subtotal|money }}</bdi></dd></div>
       {% if order.discount_total %}<div class="totals__discount"><dt>{% translate "Discounts" %}</dt><dd><bdi>−{{ order.discount_total|money }}</bdi></dd></div>{% endif %}
-      <div><dt>{% translate "Delivery" %}</dt><dd>{% if order.delivery_fee %}<bdi>{{ order.delivery_fee|money }}</bdi>{% else %}{% translate "Free" %}{% endif %}</dd></div>
-      <div class="totals__grand"><dt>{% translate "Total" %}</dt><dd><bdi>{{ order.total|money }}</bdi></dd></div>
+      <div{% if not order.delivery_fee %} class="totals__grand"{% endif %}><dt>{% translate "Products total" %}</dt><dd><bdi>{{ order.items_total|money }}</bdi></dd></div>
+      {% if order.delivery_fee %}
+        {# Older order: keep showing the delivery fee that was actually charged. #}
+        <div><dt>{% translate "Delivery" %}</dt><dd><bdi>{{ order.delivery_fee|money }}</bdi></dd></div>
+        <div class="totals__grand"><dt>{% translate "Total" %}</dt><dd><bdi>{{ order.total|money }}</bdi></dd></div>
+      {% endif %}
     </dl>
+    {% if not order.delivery_fee %}<p class="muted small">{% translate "Delivery is not included in this total and will be confirmed with you on WhatsApp." %}</p>{% endif %}
   </div>
 
   <div class="card">
@@ -53,9 +58,8 @@
 
   {% if order.is_open %}
   <div class="card">
-    <h2 class="card__title">{% translate "Need to follow up?" %}</h2>
-    <p class="muted">{% translate "Message us on WhatsApp with your order number." %}</p>
-    <a class="button button--whatsapp" href="{% url 'orders:confirmation' order.pk %}">{% icon "chat" %}<span>{% translate "Send order via WhatsApp" %}</span></a>
+    <h2 class="card__title">{% translate "What happens next?" %}</h2>
+    <p class="muted">{% translate "The store owner will contact you on WhatsApp to confirm the payment method, the delivery cost and the delivery time. You do not need to send anything." %}</p>
   </div>
   {% endif %}
   <p class="muted small">{% blocktranslate with date=order.created_at|date:"j M Y, H:i" %}Placed on {{ date }}{% endblocktranslate %}</p>

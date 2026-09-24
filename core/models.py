@@ -38,12 +38,22 @@ class SiteSettings(LocalizedFieldsMixin, models.Model):
         _("WhatsApp number (as displayed)"), max_length=20, default=constants.WHATSAPP_DISPLAY_NUMBER
     )
     instagram_url = models.URLField(_("Instagram URL"), default=constants.INSTAGRAM_URL)
+    order_notification_email = models.EmailField(
+        _("email address for new-order notifications"),
+        blank=True,
+        help_text=_(
+            "Every new order is emailed here, with the customer's details and a WhatsApp button. "
+            "Leave it empty to turn the notifications off; orders are still saved either way. "
+            "This address is never shown to customers."
+        ),
+    )
     default_delivery_fee = models.DecimalField(
         _("default delivery fee"),
         max_digits=8,
         decimal_places=2,
         default=constants.DEFAULT_DELIVERY_FEE,
         validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_("Not used: delivery is agreed with each customer on WhatsApp after the order."),
     )
     free_delivery_threshold = models.DecimalField(
         _("free-delivery threshold"),

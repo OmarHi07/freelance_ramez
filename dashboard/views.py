@@ -39,8 +39,9 @@ from dashboard.forms import (
 )
 from dashboard.permissions import StaffRequiredMixin
 from orders.models import Order, OrderStatus
+from orders.services.notifications import owner_notification_address, send_new_order_email
 from orders.services.status import InsufficientStock, InvalidTransition, transition_order
-from orders.services.whatsapp import customer_whatsapp_url
+from orders.services.whatsapp import customer_order_whatsapp_url, customer_whatsapp_url
 
 PAGE_SIZE = 20
 SALES_STATUSES = [OrderStatus.CONFIRMED, OrderStatus.PREPARING, OrderStatus.OUT_FOR_DELIVERY, OrderStatus.DELIVERED]
@@ -77,6 +78,7 @@ class OverviewView(StaffRequiredMixin, TemplateView):
                 )["total"],
                 "recent_orders": Order.objects.order_by("-created_at")[:8],
                 "low_stock_threshold": settings.LOW_STOCK_THRESHOLD,
+                "owner_notification_email": owner_notification_address(self.request),
             }
         )
         return context
@@ -136,8 +138,35 @@ class OrderDetailView(StaffRequiredMixin, DetailView):
         order = self.object
         context["status_form"] = kwargs.get("status_form") or OrderStatusForm(order=order)
         context["notes_form"] = kwargs.get("notes_form") or OrderNotesForm(instance=order)
-        context["customer_whatsapp_url"] = customer_whatsapp_url(order.customer_phone)
+        # Opens a chat with this customer, prefilled with the payment/delivery
+        # draft. Empty when the stored number cannot be dialled on WhatsApp.
+        context["customer_whatsapp_url"] = customer_order_whatsapp_url(order)
+        context["owner_notification_email"] = owner_notification_address(self.request)
         return context
+
+
+class OrderResendNotificationView(StaffRequiredMixin, View):
+    """Re-send the owner notification email for one order.
+
+    POST-only and staff-only, so it cannot be triggered by a link, a customer
+    or a cross-site form. It never touches the order status or its stock.
+    """
+
+    http_method_names = ["post"]
+
+    def post(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+        result = send_new_order_email(order, request=request)
+        if result.sent:
+            messages.success(request, _("The order email was sent again."))
+        elif result.not_configured:
+            messages.error(
+                request,
+                _("No notification email address is set. Add one under Store settings, then try again."),
+            )
+        else:
+            messages.error(request, _("The email could not be sent. Check the email settings and try again."))
+        return redirect("dashboard:order_detail", pk=order.pk)
 
 
 class OrderStatusUpdateView(StaffRequiredMixin, View):

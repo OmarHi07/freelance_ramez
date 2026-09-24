@@ -76,7 +76,7 @@ def test_customers_get_403_everywhere(customer_client, ids):
 
 
 def test_staff_can_open_every_page(staff_client, ids):
-    post_only = {"order_status", "order_notes", "stock_update"}
+    post_only = {"order_status", "order_notes", "order_resend_email", "stock_update"}
     for name, target in all_dashboard_urls(ids):
         response = staff_client.get(target)
         if name in post_only:
@@ -359,6 +359,8 @@ def test_site_settings_update(staff_client, site_settings):
         "whatsapp_number": "972553003327",
         "whatsapp_display_number": "0553003327",
         "instagram_url": f"https://www.instagram.com/{BUSINESS_NAME}/",
+        "order_notification_email": "owner@example.test",
+        # Delivery fields are no longer part of this form; posting them is ignored.
         "default_delivery_fee": "25.00",
         "free_delivery_threshold": "200",
         "sale_banner_enabled": "on",
@@ -367,7 +369,8 @@ def test_site_settings_update(staff_client, site_settings):
     }
     assert staff_client.post(url("settings"), data).status_code == 302
     site_settings.refresh_from_db()
-    assert site_settings.default_delivery_fee == Decimal("25.00")
+    assert site_settings.order_notification_email == "owner@example.test"
+    assert site_settings.default_delivery_fee == Decimal("0.00")
     data["whatsapp_number"] = "+972 55"
     response = staff_client.post(url("settings"), data)
     assert "whatsapp_number" in response.context["form"].errors

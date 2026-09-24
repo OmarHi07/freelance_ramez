@@ -7,7 +7,7 @@ from core.models import SiteSettings
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     formfield_overrides = {models.URLField: {"assume_scheme": "https"}}
-    list_display = ("store_name_en", "store_name_ar", "whatsapp_number", "default_delivery_fee", "sale_banner_enabled")
+    list_display = ("store_name_en", "order_notification_email", "whatsapp_number", "sale_banner_enabled")
 
     def has_add_permission(self, request):
         return not SiteSettings.objects.exists()

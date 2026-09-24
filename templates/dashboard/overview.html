@@ -3,6 +3,12 @@
 {% block title %}{% translate "Overview" %}{% endblock %}
 {% block content %}
 <div class="dash-head"><h1 class="dash-title">{% blocktranslate with name=user.get_short_name %}Welcome, {{ name }}{% endblocktranslate %}</h1></div>
+{% if not owner_notification_email %}
+  <p class="alert alert--warning">{% icon "alert" %}<span>
+    {% translate "You will not be emailed about new orders yet, because no notification address is set." %}
+    <a href="{% url 'dashboard:settings' %}">{% translate "Add one under Store settings" %}</a>.
+  </span></p>
+{% endif %}
 <ul class="stat-grid">
   <li><a class="stat-card stat-card--accent" href="{% url 'dashboard:order_list' %}?status=PENDING"><span class="stat-card__label">{% translate "New orders" %}</span><span class="stat-card__value">{{ new_orders }}</span><span class="stat-card__hint">{% translate "Pending or received" %}</span></a></li>
   <li><a class="stat-card" href="{% url 'dashboard:product_list' %}?state=active"><span class="stat-card__label">{% translate "Active products" %}</span><span class="stat-card__value">{{ active_products }}</span></a></li>

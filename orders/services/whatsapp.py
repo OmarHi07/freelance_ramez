@@ -1,8 +1,11 @@
-"""WhatsApp click-to-chat message generation.
+"""WhatsApp click-to-chat links, used by the owner only.
 
-The website only *opens* WhatsApp with a prefilled message; it cannot know
-whether the customer actually pressed send. The database order remains the
-authoritative record.
+The customer never opens WhatsApp. After an order is placed the owner gets an
+email with a button that opens a chat **with that customer**, carrying a
+prepared message about payment and delivery. Nothing is sent automatically:
+the owner reads the draft and presses Send inside WhatsApp.
+
+Nothing here may leak a dashboard URL into a message addressed to a customer.
 """
 
 from __future__ import annotations
@@ -20,6 +23,7 @@ from core.formatting import format_money
 from orders.models import Order
 
 WA_BASE_URL = "https://wa.me/"
+DEFAULT_COUNTRY_CODE = "972"  # Israel
 
 
 def normalize_international_number(number: str) -> str:
@@ -29,8 +33,44 @@ def normalize_international_number(number: str) -> str:
     return digits
 
 
+def to_international(phone: str) -> str:
+    """Turn a number the customer typed into digits WhatsApp accepts.
+
+    Handles the shapes customers actually use::
+
+        0553003327     -> 972553003327   (local, leading zero dropped)
+        +972553003327  -> 972553003327
+        00972553003327 -> 972553003327
+        972553003327   -> 972553003327
+
+    Returns ``""`` when no usable number can be built, so callers can hide the
+    button instead of producing a broken link.
+    """
+    digits = re.sub(r"\D", "", phone or "")
+    if not digits:
+        return ""
+    if digits.startswith("00"):
+        digits = digits[2:]
+    elif digits.startswith("0"):
+        digits = DEFAULT_COUNTRY_CODE + digits[1:]
+    try:
+        return normalize_international_number(digits)
+    except ValueError:
+        return ""
+
+
 def build_whatsapp_url(international_number: str, message: str) -> str:
     return f"{WA_BASE_URL}{normalize_international_number(international_number)}?text={quote(message, safe='')}"
+
+
+def customer_whatsapp_url(phone: str, message: str = "") -> str:
+    """``wa.me`` link for a customer number, or ``""`` when it cannot be built."""
+    number = to_international(phone)
+    if not number:
+        return ""
+    url = f"{WA_BASE_URL}{number}"
+    # quote() percent-encodes the whole Unicode message, emoji and Arabic included.
+    return f"{url}?text={quote(message, safe='')}" if message else url
 
 
 def _strip_language_prefix(path: str) -> str:
@@ -44,8 +84,9 @@ def _strip_language_prefix(path: str) -> str:
 def owner_order_url(order: Order, request=None) -> str:
     """Absolute, language-neutral URL of the order in the owner dashboard.
 
-    The page itself requires a logged-in staff account; knowing the URL is
-    never enough to see the order.
+    Only ever used inside the private owner notification email and the owner
+    dashboard. The page itself requires a logged-in staff account, so knowing
+    the URL is never enough to see the order.
     """
     path = _strip_language_prefix(reverse("dashboard:order_detail", kwargs={"pk": order.pk}))
     if settings.SITE_URL:
@@ -55,29 +96,37 @@ def owner_order_url(order: Order, request=None) -> str:
     return path
 
 
-def build_order_message(order: Order, owner_url: str, language: str | None = None) -> str:
-    language = language or order.language or settings.LANGUAGE_CODE
-    with translation.override(language):
+def customer_message(order: Order) -> str:
+    """The draft the owner sends to the customer, in the order's language.
+
+    It opens the conversation about payment and delivery. It deliberately
+    contains no dashboard URL and no internal notes.
+    """
+    language = order.language or settings.LANGUAGE_CODE
+    with translation.override("en" if language.startswith("en") else "ar"):
         lines = [
-            _("New %(store)s order") % {"store": BUSINESS_NAME},
+            _("Hello %(name)s 🌸") % {"name": order.customer_name},
+            "",
+            _("Thank you for your order from %(store)s.") % {"store": BUSINESS_NAME},
+            "",
             _("Order number: %(number)s") % {"number": order.number},
-            _("Customer: %(name)s") % {"name": order.customer_name},
-            _("Total: %(total)s") % {"total": format_money(order.total)},
-            _("Order link (staff only): %(url)s") % {"url": owner_url},
+            _("Products total: %(total)s") % {"total": format_money(order.items_total)},
+            _("Delivery is not included yet."),
+            "",
+            _("Which payment method do you prefer?"),
+            _("• Cash"),
+            _("• Bit"),
+            _("• Bank transfer"),
+            "",
+            _("We will also confirm the delivery cost and delivery time with you here."),
         ]
     return "\n".join(lines)
 
 
-def customer_whatsapp_url(phone: str, message: str = "") -> str:
-    """wa.me link to message a customer from the dashboard (Israeli local numbers supported)."""
-    digits = re.sub(r"\D", "", phone or "")
-    if digits.startswith("00"):
-        digits = digits[2:]
-    elif digits.startswith("0"):
-        digits = "972" + digits[1:]
-    try:
-        number = normalize_international_number(digits)
-    except ValueError:
-        return ""
-    url = f"{WA_BASE_URL}{number}"
-    return f"{url}?text={quote(message, safe='')}" if message else url
+def customer_order_whatsapp_url(order: Order) -> str:
+    """Chat with this order's customer, prefilled with the payment/delivery draft.
+
+    Empty when the stored phone number cannot be turned into a WhatsApp number;
+    callers then show the raw number and a warning instead of a dead button.
+    """
+    return customer_whatsapp_url(order.customer_phone, customer_message(order))

@@ -18,6 +18,7 @@ urlpatterns = [
     path("orders/<uuid:pk>/", staff(views.OrderDetailView), name="order_detail"),
     path("orders/<uuid:pk>/status/", staff(views.OrderStatusUpdateView), name="order_status"),
     path("orders/<uuid:pk>/notes/", staff(views.OrderNotesUpdateView), name="order_notes"),
+    path("orders/<uuid:pk>/resend-email/", staff(views.OrderResendNotificationView), name="order_resend_email"),
     # Products
     path("products/", staff(views.ProductListView), name="product_list"),
     path("products/new/", staff(views.ProductCreateView), name="product_create"),
