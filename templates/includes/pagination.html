@@ -1,0 +1,11 @@
+{% load i18n rawnaq %}{% if page_obj.has_other_pages %}
+<nav class="pagination" aria-label="{% translate 'Pagination' %}">
+  {% if page_obj.has_previous %}
+    <a class="button button--ghost" href="{% querystring page=page_obj.previous_page_number %}" rel="prev">{% icon "chevron" "icon icon--flip" %}<span>{% translate "Previous" %}</span></a>
+  {% else %}<span class="button button--ghost is-disabled" aria-disabled="true">{% icon "chevron" "icon icon--flip" %}<span>{% translate "Previous" %}</span></span>{% endif %}
+  <span class="pagination__status">{% blocktranslate with current=page_obj.number total=page_obj.paginator.num_pages %}Page {{ current }} of {{ total }}{% endblocktranslate %}</span>
+  {% if page_obj.has_next %}
+    <a class="button button--ghost" href="{% querystring page=page_obj.next_page_number %}" rel="next"><span>{% translate "Next" %}</span>{% icon "chevron" "icon icon--dir" %}</a>
+  {% else %}<span class="button button--ghost is-disabled" aria-disabled="true"><span>{% translate "Next" %}</span>{% icon "chevron" "icon icon--dir" %}</span>{% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,24 @@
+{% load static i18n rawnaq %}
+<article class="product-card">
+  <a class="product-card__link" href="{{ product.get_absolute_url }}">
+    <div class="product-card__media">
+      {% with image=product.primary_image %}
+        {% if image %}
+          <img src="{{ image.thumbnail_url }}" alt="{{ image.alt_text }}" loading="lazy" decoding="async" width="600" height="600">
+        {% else %}
+          <img src="{% static 'img/placeholder-product.svg' %}" alt="" loading="lazy" decoding="async" width="600" height="600">
+        {% endif %}
+      {% endwith %}
+      <div class="product-card__flags">
+        {% if product.quote.has_discount %}<span class="flag flag--sale"><bdi>-{{ product.quote.percent_off }}%</bdi></span>{% endif %}
+        {% if not product.is_in_stock %}<span class="flag flag--muted">{% translate "Sold out" %}</span>{% elif product.is_low_stock %}<span class="flag flag--soft">{% translate "Only a few left" %}</span>{% endif %}
+      </div>
+    </div>
+    <div class="product-card__body">
+      {% if not hide_brand %}<p class="product-card__brand">{{ product.brand.name }}</p>{% endif %}
+      <h3 class="product-card__title">{{ product.name }}</h3>
+      {% include "includes/price.html" with quote=product.quote from_price=product.price_varies %}
+      {% include "includes/verification_badge.html" with status=product.verification_status compact=True %}
+    </div>
+  </a>
+</article>

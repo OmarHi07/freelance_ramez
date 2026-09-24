@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Django
+staticfiles/
+media/
+*.sqlite3
+*.log
+
+# Logo crop helper output
+design/reference/logo-crop-preview.png
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local databases
+db.sqlite3
+db.sqlite3-journal
+
+# Logs
+logs/
+
+# Generated archives and backups
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+*.bak
+*.backup
+*.orig
+*~

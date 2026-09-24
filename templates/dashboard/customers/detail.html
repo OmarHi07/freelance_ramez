@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{{ customer.full_name|default:customer.email }}{% endblock %}
+{% block content %}
+<div class="dash-head">
+  <a class="link-more" href="{% url 'dashboard:customer_list' %}">{% icon "chevron" "icon icon--flip" %}{% translate "All customers" %}</a>
+  <h1 class="dash-title">{{ customer.full_name|default:customer.email }}</h1>
+</div>
+<div class="dash-columns">
+  <div class="dash-columns__main">
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Orders" %}</h2>
+      {% if orders %}{% include "dashboard/orders/_table.html" %}{% else %}<p class="muted">{% translate "No orders yet." %}</p>{% endif %}
+    </section>
+  </div>
+  <div class="dash-columns__side">
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Contact" %}</h2>
+      <p><a href="mailto:{{ customer.email }}" dir="ltr">{{ customer.email }}</a></p>
+      {% if customer.phone %}<p><a href="tel:{{ customer.phone }}" dir="ltr">{{ customer.phone }}</a></p>{% endif %}
+      {% if customer_whatsapp_url %}<a class="button button--whatsapp button--small" href="{{ customer_whatsapp_url }}" target="_blank" rel="noopener noreferrer">{% icon "chat" %}<span>{% translate "Message on WhatsApp" %}</span></a>{% endif %}
+      <p class="muted small">{% blocktranslate with date=customer.date_joined|date:"j M Y" %}Joined {{ date }}{% endblocktranslate %}{% if not customer.is_active %} · {% translate "Inactive account" %}{% endif %}</p>
+    </section>
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Saved addresses" %}</h2>
+      {% for address in customer.addresses.all %}
+        <p>{% if address.label %}<strong>{{ address.label }}</strong>: {% endif %}{{ address.one_line }}{% if address.is_default %} <span class="chip chip--soft">{% translate "Default" %}</span>{% endif %}</p>
+      {% empty %}<p class="muted">{% translate "No saved addresses." %}</p>{% endfor %}
+    </section>
+  </div>
+</div>
+{% endblock %}

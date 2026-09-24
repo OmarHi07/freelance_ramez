@@ -1,0 +1,30 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="dash-head">
+  {% if back_url_name %}<a class="link-more" href="{% url back_url_name %}">{% icon "chevron" "icon icon--flip" %}{% translate "Back" %}</a>{% endif %}
+  <h1 class="dash-title">{{ title }}{% if object.pk and object.name %} · {{ object.name }}{% endif %}</h1>
+</div>
+<form class="dash-card dash-form" method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {% include "includes/form_errors.html" %}
+  <div class="form-grid">
+    {% for field in form %}
+      {% if field.name == "logo" or field.name == "banner_image" or field.name == "image" %}
+        <div class="field image-field form-grid__wide">
+          {% include "includes/form_field.html" %}
+          {% if field.value and field.value.url %}<img class="image-field__preview" src="{{ field.value.url }}" alt="" loading="lazy">{% endif %}
+          <img class="image-field__preview" data-preview-for="{{ field.auto_id }}" alt="" hidden>
+        </div>
+      {% else %}
+        {% include "includes/form_field.html" %}
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="form-actions">
+    <button class="button" type="submit">{% translate "Save" %}</button>
+    {% if back_url_name %}<a class="button button--ghost" href="{% url back_url_name %}">{% translate "Cancel" %}</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

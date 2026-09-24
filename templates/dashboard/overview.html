@@ -1,0 +1,23 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Overview" %}{% endblock %}
+{% block content %}
+<div class="dash-head"><h1 class="dash-title">{% blocktranslate with name=user.get_short_name %}Welcome, {{ name }}{% endblocktranslate %}</h1></div>
+<ul class="stat-grid">
+  <li><a class="stat-card stat-card--accent" href="{% url 'dashboard:order_list' %}?status=PENDING"><span class="stat-card__label">{% translate "New orders" %}</span><span class="stat-card__value">{{ new_orders }}</span><span class="stat-card__hint">{% translate "Pending or received" %}</span></a></li>
+  <li><a class="stat-card" href="{% url 'dashboard:product_list' %}?state=active"><span class="stat-card__label">{% translate "Active products" %}</span><span class="stat-card__value">{{ active_products }}</span></a></li>
+  <li><a class="stat-card{% if low_stock %} stat-card--warning{% endif %}" href="{% url 'dashboard:stock_list' %}"><span class="stat-card__label">{% translate "Low-stock variants" %}</span><span class="stat-card__value">{{ low_stock }}</span><span class="stat-card__hint">{% blocktranslate %}{{ low_stock_threshold }} or fewer left{% endblocktranslate %}</span></a></li>
+  <li><a class="stat-card" href="{% url 'dashboard:customer_list' %}"><span class="stat-card__label">{% translate "Customers" %}</span><span class="stat-card__value">{{ customers }}</span></a></li>
+  <li><div class="stat-card"><span class="stat-card__label">{% translate "Sales, last 7 days" %}</span><span class="stat-card__value"><bdi>{{ sales_7_days|money }}</bdi></span><span class="stat-card__hint">{% translate "Confirmed orders onward" %}</span></div></li>
+  <li><div class="stat-card"><span class="stat-card__label">{% translate "Sales, last 30 days" %}</span><span class="stat-card__value"><bdi>{{ sales_30_days|money }}</bdi></span></div></li>
+</ul>
+<section class="dash-card">
+  <div class="dash-card__head"><h2 class="dash-card__title">{% translate "Recent orders" %}</h2><a class="link-more" href="{% url 'dashboard:order_list' %}">{% translate "All orders" %}{% icon "chevron" "icon icon--dir" %}</a></div>
+  {% if recent_orders %}
+    {% include "dashboard/orders/_table.html" with orders=recent_orders %}
+  {% else %}
+    {% translate "No orders yet" as empty_title %}{% translate "New orders will appear here as soon as customers check out." as empty_text %}
+    {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="clipboard" %}
+  {% endif %}
+</section>
+{% endblock %}

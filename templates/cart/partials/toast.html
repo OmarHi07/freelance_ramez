@@ -1,0 +1,7 @@
+{% load i18n rawnaq %}<div class="toast toast--{{ level }}" data-toast>
+  {% if level == "success" %}{% icon "check-badge" %}{% else %}{% icon "alert" %}{% endif %}
+  <p>{{ text }}</p>
+  {% if show_cart_link %}<a class="button button--small" href="{% url 'cart:detail' %}">{% translate "View cart" %}</a>{% endif %}
+  <button class="toast__close" type="button" data-toast-close aria-label="{% translate 'Close' %}">{% icon "x" %}</button>
+</div>
+{% if refresh_badge %}{% include "cart/partials/cart_badge.html" with count=cart_count oob=True %}{% endif %}

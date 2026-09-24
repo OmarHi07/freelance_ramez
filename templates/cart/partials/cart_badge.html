@@ -1,0 +1,1 @@
+<span id="cart-badge" class="cart-badge{% if not count %} is-empty{% endif %}"{% if oob %} hx-swap-oob="true"{% endif %} aria-live="polite">{% if count %}<span class="visually-hidden">: </span>{{ count }}{% endif %}</span>

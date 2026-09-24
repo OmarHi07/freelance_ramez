@@ -1,0 +1,36 @@
+{% load i18n rawnaq %}{% now "Y" as current_year %}
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <p class="footer-brand__name" lang="en" dir="ltr">{{ site_settings.store_name_en }}</p>
+      <p class="footer-brand__tagline">{% translate "Curated girls’ accessories from brands you love." %}</p>
+      {% if site_settings.delivery_notice %}<p class="footer-note">{% icon "truck" %} {{ site_settings.delivery_notice }}</p>{% endif %}
+    </div>
+    <div>
+      <h2 class="footer-heading">{% translate "Contact us" %}</h2>
+      <ul class="footer-links">
+        <li>
+          <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener noreferrer">
+            {% icon "camera" %}<span>{% translate "Instagram" %}</span> <span dir="ltr" class="footer-handle">@rawnaq_accessories1</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank" rel="noopener noreferrer">
+            {% icon "chat" %}<span>{% translate "WhatsApp" %}</span> <span dir="ltr">{{ site_settings.whatsapp_display_number }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="footer-heading">{% translate "Shop" %}</h2>
+      <ul class="footer-links">
+        <li><a href="{% url 'catalog:brand_list' %}">{% translate "All brands" %}</a></li>
+        <li><a href="{% url 'cart:detail' %}">{% translate "Cart" %}</a></li>
+        {% if user.is_authenticated %}<li><a href="{% url 'orders:list' %}">{% translate "My orders" %}</a></li>{% else %}<li><a href="{% url 'accounts:register' %}">{% translate "Create an account" %}</a></li>{% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© {{ current_year }} <span lang="en" dir="ltr">{{ site_settings.store_name_en }}</span>. {% translate "No online payment is collected on this website." %}</p>
+  </div>
+</footer>

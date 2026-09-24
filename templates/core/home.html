@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n static rawnaq %}
+{% block title %}{% translate "Girls’ accessories by brand" %}{% endblock %}
+{% block body_class %}page-home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="eyebrow">{% icon "sparkle" %} <span lang="en" dir="ltr">{{ site_settings.store_name_en }}</span></p>
+      <h1 class="hero__title">{% translate "Little details, lasting glow" %}</h1>
+      <p class="hero__text">{% translate "Curated girls’ accessories from the brands you love. Choose a brand to start exploring." %}</p>
+      <div class="hero__actions">
+        <a class="button button--large" href="#brands">{% translate "Shop by brand" %}{% icon "arrow" "icon icon--dir" %}</a>
+        <a class="button button--ghost button--large" href="#new-arrivals">{% translate "See what’s new" %}</a>
+      </div>
+    </div>
+    <div class="hero__art" aria-hidden="true">
+      <span class="hero__orb hero__orb--1"></span>
+      <span class="hero__orb hero__orb--2"></span>
+      <span class="hero__orb hero__orb--3"></span>
+      <img class="hero__mark" src="{% static 'img/brand/logo-mark.png' %}" alt="" width="160" height="160">
+    </div>
+  </div>
+</section>
+
+{% if site_settings.sale_banner_enabled and site_settings.sale_banner_text %}
+<section class="container" aria-label="{% translate 'Current offer' %}">
+  <div class="sale-banner">
+    <span class="sale-banner__icon">{% icon "tag" %}</span>
+    <p class="sale-banner__text">{{ site_settings.sale_banner_text }}</p>
+    <a class="button button--light" href="{% url 'catalog:brand_list' %}">{% translate "Shop the sale" %}</a>
+  </div>
+</section>
+{% endif %}
+
+<section id="brands" class="section container" aria-labelledby="brands-title">
+  <div class="section__head">
+    <h2 id="brands-title" class="section__title">{% translate "Shop by brand" %}</h2>
+    <a class="link-more" href="{% url 'catalog:brand_list' %}">{% translate "All brands" %}{% icon "chevron" "icon icon--dir" %}</a>
+  </div>
+  {% if brands %}
+    <ul class="brand-grid">
+      {% for brand in brands %}<li>{% include "catalog/partials/brand_card.html" %}</li>{% endfor %}
+    </ul>
+  {% else %}
+    {% translate "Brands are coming soon" as empty_title %}
+    {% include "includes/empty_state.html" with title=empty_title icon_name="layers" %}
+  {% endif %}
+</section>
+
+{% if featured_products %}
+<section class="section container" aria-labelledby="featured-title">
+  <div class="section__head"><h2 id="featured-title" class="section__title">{% translate "Featured picks" %}</h2></div>
+  <ul class="product-grid">
+    {% for product in featured_products %}<li>{% include "includes/product_card.html" %}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section id="new-arrivals" class="section container" aria-labelledby="new-title">
+  <div class="section__head"><h2 id="new-title" class="section__title">{% translate "New arrivals" %}</h2></div>
+  {% if new_arrivals %}
+    <ul class="product-grid">
+      {% for product in new_arrivals %}<li>{% include "includes/product_card.html" %}</li>{% endfor %}
+    </ul>
+  {% else %}
+    {% translate "New pieces are on their way" as empty_title %}
+    {% translate "Follow us on Instagram to be the first to know." as empty_text %}
+    {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="sparkle" %}
+  {% endif %}
+</section>
+
+<section class="section container">
+  <ul class="promise-list">
+    <li class="promise">{% icon "check-badge" %}<div><h3>{% translate "Brand confirmation, clearly shown" %}</h3><p>{% translate "Every product tells you whether the brand confirmed it." %}</p></div></li>
+    <li class="promise">{% icon "chat" %}<div><h3>{% translate "Personal order follow-up" %}</h3><p>{% translate "Place your order here, then message us on WhatsApp to confirm details." %}</p></div></li>
+    <li class="promise">{% icon "truck" %}<div><h3>{% translate "Delivered to your door" %}</h3><p>{% if site_settings.delivery_notice %}{{ site_settings.delivery_notice }}{% else %}{% translate "Delivery details are confirmed with you after you order." %}{% endif %}</p></div></li>
+  </ul>
+</section>
+{% endblock %}

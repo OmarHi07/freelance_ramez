@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Customers" %}{% endblock %}
+{% block content %}
+<div class="dash-head"><h1 class="dash-title">{% translate "Customers" %}</h1></div>
+<form class="dash-card filter-bar" method="get">
+  {% include "includes/form_field.html" with field=filter_form.q %}
+  <div class="filter-bar__actions"><button class="button" type="submit">{% translate "Search" %}</button><a class="button button--ghost" href="{% url 'dashboard:customer_list' %}">{% translate "Reset" %}</a></div>
+</form>
+<section class="dash-card">
+{% if customers %}
+  <table class="table table--stack">
+    <thead><tr><th scope="col">{% translate "Name" %}</th><th scope="col">{% translate "Contact" %}</th><th scope="col">{% translate "Orders" %}</th><th scope="col">{% translate "Spent" %}</th><th scope="col">{% translate "Joined" %}</th></tr></thead>
+    <tbody>
+      {% for customer in customers %}
+        <tr>
+          <td data-label="{% translate 'Name' %}"><a class="table__link" href="{% url 'dashboard:customer_detail' customer.pk %}">{{ customer.full_name|default:customer.email }}</a></td>
+          <td data-label="{% translate 'Contact' %}"><span dir="ltr">{{ customer.email }}</span>{% if customer.phone %}<br><span dir="ltr" class="muted">{{ customer.phone }}</span>{% endif %}</td>
+          <td data-label="{% translate 'Orders' %}">{{ customer.order_count }}</td>
+          <td data-label="{% translate 'Spent' %}"><bdi>{{ customer.total_spent|money }}</bdi></td>
+          <td data-label="{% translate 'Joined' %}">{{ customer.date_joined|date:"j M Y" }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
+{% else %}
+  {% translate "No customers found" as empty_title %}{% translate "Customers appear here after they create an account." as empty_text %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="users" %}
+{% endif %}
+</section>
+{% endblock %}

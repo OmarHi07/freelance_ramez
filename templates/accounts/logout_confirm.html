@@ -1,0 +1,11 @@
+{% extends "accounts/_auth_layout.html" %}
+{% load i18n %}
+{% block title %}{% translate "Log out" %}{% endblock %}
+{% block auth_content %}
+<h1 class="page-title">{% translate "Log out?" %}</h1>
+<form method="post" action="{% url 'accounts:logout' %}">
+  {% csrf_token %}
+  <button class="button button--block" type="submit">{% translate "Log out" %}</button>
+</form>
+<a class="button button--ghost button--block" href="{% url 'accounts:profile' %}">{% translate "Stay logged in" %}</a>
+{% endblock %}

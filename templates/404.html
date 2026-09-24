@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Page not found" %}{% endblock %}
+{% block content %}
+<section class="section container narrow error-page">
+  <p class="error-page__code" aria-hidden="true">404</p>
+  <h1 class="page-title">{% translate "We couldn’t find that page" %}</h1>
+  <p class="page-lead">{% translate "The link may be old, or the piece is no longer available." %}</p>
+  <div class="error-page__actions">
+    <a class="button" href="{% url 'core:home' %}">{% translate "Back to the store" %}</a>
+    <a class="button button--ghost" href="{% url 'catalog:brand_list' %}">{% translate "Browse brands" %}</a>
+  </div>
+</section>
+{% endblock %}

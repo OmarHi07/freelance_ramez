@@ -1,0 +1,123 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="dash-head">
+  <a class="link-more" href="{% url 'dashboard:product_list' %}">{% icon "chevron" "icon icon--flip" %}{% translate "All products" %}</a>
+  <div class="dash-head__row">
+    <h1 class="dash-title">{{ title }}{% if object %} · {{ object.name }}{% endif %}</h1>
+    {% if object and object.is_active %}<a class="button button--ghost button--small" href="{{ object.get_absolute_url }}" target="_blank" rel="noopener">{% icon "external" %}<span>{% translate "View in store" %}</span></a>{% endif %}
+  </div>
+</div>
+<form method="post" enctype="multipart/form-data" novalidate class="product-form">
+  {% csrf_token %}
+  {% include "includes/form_errors.html" %}
+
+  <section class="dash-card">
+    <h2 class="dash-card__title">{% translate "Details" %}</h2>
+    <div class="form-grid">
+      {% include "includes/form_field.html" with field=form.name_ar %}
+      {% include "includes/form_field.html" with field=form.name_en %}
+      {% include "includes/form_field.html" with field=form.brand %}
+      {% include "includes/form_field.html" with field=form.regular_price %}
+      {% include "includes/form_field.html" with field=form.slug %}
+      {% include "includes/form_field.html" with field=form.sku %}
+      {% include "includes/form_field.html" with field=form.description_ar extra_class="form-grid__wide" %}
+      {% include "includes/form_field.html" with field=form.description_en extra_class="form-grid__wide" %}
+      {% include "includes/form_field.html" with field=form.verification_status %}
+      <div class="field form-grid__wide">
+        <fieldset class="checkbox-group"><legend>{{ form.categories.label }}</legend>{{ form.categories }}</fieldset>
+        {% for error in form.categories.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+      </div>
+      {% include "includes/form_field.html" with field=form.is_featured %}
+      {% include "includes/form_field.html" with field=form.is_active %}
+    </div>
+  </section>
+
+  <section class="dash-card">
+    <h2 class="dash-card__title">{% translate "Variants & stock" %}</h2>
+    <p class="muted small">{% translate "Every product needs at least one active variant. Use “Standard” when there is only one option." %}</p>
+    {{ variant_formset.management_form }}
+    {% for error in variant_formset.non_form_errors %}<p class="alert alert--error">{% icon "alert" %}<span>{{ error }}</span></p>{% endfor %}
+    <div class="formset" data-formset="variants">
+      {% for vform in variant_formset %}
+        <fieldset class="formset__item{% if vform.errors %} has-errors{% endif %}">
+          <legend>{% if vform.instance.pk %}{{ vform.instance.name }}{% else %}{% translate "New variant" %}{% endif %}</legend>
+          {{ vform.id }}
+          {% for error in vform.non_field_errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+          <div class="form-grid form-grid--dense">
+            {% include "includes/form_field.html" with field=vform.name_ar %}
+            {% include "includes/form_field.html" with field=vform.name_en %}
+            {% include "includes/form_field.html" with field=vform.sku %}
+            {% include "includes/form_field.html" with field=vform.stock_quantity %}
+            {% include "includes/form_field.html" with field=vform.price_override %}
+            {% include "includes/form_field.html" with field=vform.color_name_ar %}
+            {% include "includes/form_field.html" with field=vform.color_name_en %}
+            {% include "includes/form_field.html" with field=vform.color_hex %}
+            {% include "includes/form_field.html" with field=vform.display_order %}
+            {% include "includes/form_field.html" with field=vform.is_active %}
+            {% if vform.instance.pk %}{% include "includes/form_field.html" with field=vform.DELETE %}{% endif %}
+          </div>
+        </fieldset>
+      {% endfor %}
+      <template data-formset-template="variants">
+        {% with vform=variant_formset.empty_form %}
+        <fieldset class="formset__item">
+          <legend>{% translate "New variant" %}</legend>
+          {{ vform.id }}
+          <div class="form-grid form-grid--dense">
+            {% include "includes/form_field.html" with field=vform.name_ar %}
+            {% include "includes/form_field.html" with field=vform.name_en %}
+            {% include "includes/form_field.html" with field=vform.sku %}
+            {% include "includes/form_field.html" with field=vform.stock_quantity %}
+            {% include "includes/form_field.html" with field=vform.price_override %}
+            {% include "includes/form_field.html" with field=vform.color_name_ar %}
+            {% include "includes/form_field.html" with field=vform.color_name_en %}
+            {% include "includes/form_field.html" with field=vform.color_hex %}
+            {% include "includes/form_field.html" with field=vform.display_order %}
+            {% include "includes/form_field.html" with field=vform.is_active %}
+          </div>
+        </fieldset>
+        {% endwith %}
+      </template>
+    </div>
+    <button class="button button--ghost" type="button" data-formset-add="variants" hidden>{% icon "plus" %}<span>{% translate "Add another variant" %}</span></button>
+  </section>
+
+  <section class="dash-card">
+    <h2 class="dash-card__title">{% translate "Images" %}</h2>
+    {{ image_formset.management_form }}
+    {% for error in image_formset.non_form_errors %}<p class="alert alert--error">{% icon "alert" %}<span>{{ error }}</span></p>{% endfor %}
+    {% if image_formset.forms %}
+      <ul class="image-manager">
+        {% for iform in image_formset %}
+          <li class="image-manager__item{% if iform.instance.is_primary %} is-primary{% endif %}">
+            {{ iform.id }}
+            <img src="{{ iform.instance.thumbnail_url }}" alt="{{ iform.instance.alt_text }}" width="160" height="160" loading="lazy">
+            <div class="image-manager__fields">
+              {% include "includes/form_field.html" with field=iform.alt_text_ar %}
+              {% include "includes/form_field.html" with field=iform.alt_text_en %}
+              {% include "includes/form_field.html" with field=iform.display_order %}
+              {% include "includes/form_field.html" with field=iform.is_primary %}
+              {% include "includes/form_field.html" with field=iform.DELETE %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="muted small">{% translate "Lower display order numbers appear first. The primary image is used on product cards." %}</p>
+    {% else %}
+      <p class="muted">{% translate "No images yet. Products without images show a neutral placeholder." %}</p>
+    {% endif %}
+    <div class="field">
+      {% include "includes/form_field.html" with field=form.new_images %}
+      <ul class="upload-previews" data-preview-list="{{ form.new_images.auto_id }}" aria-live="polite"></ul>
+    </div>
+  </section>
+
+  <div class="form-actions form-actions--sticky">
+    <button class="button" type="submit" name="save">{% translate "Save product" %}</button>
+    <button class="button button--ghost" type="submit" name="save_continue">{% translate "Save and keep editing" %}</button>
+    {% if object %}<a class="button button--ghost button--danger-text" href="{% url 'dashboard:product_delete' object.pk %}">{% translate "Delete" %}</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

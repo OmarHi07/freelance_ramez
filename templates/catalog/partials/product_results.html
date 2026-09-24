@@ -1,0 +1,13 @@
+{% load i18n %}<section id="product-results" class="results" aria-live="polite" aria-label="{% translate 'Products' %}">
+  {% if products %}
+    <ul class="product-grid">
+      {% for product in products %}<li>{% include "includes/product_card.html" with hide_brand=True %}</li>{% endfor %}
+    </ul>
+    {% include "includes/pagination.html" %}
+  {% else %}
+    {% translate "No pieces match these filters" as empty_title %}
+    {% translate "Try removing a filter or widening the price range." as empty_text %}
+    {% translate "Clear filters" as action_label %}
+    {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="filter" action_url=request.path action_label=action_label %}
+  {% endif %}
+</section>

@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: rawnaq
+          POSTGRES_USER: rawnaq
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rawnaq -d rawnaq"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://rawnaq:ci-only-password@localhost:5432/rawnaq
+      DJANGO_SETTINGS_MODULE: config.settings.test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install system packages
+        run: sudo apt-get update && sudo apt-get install -y gettext
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Ruff
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Django checks
+        run: |
+          python manage.py check
+          python manage.py makemigrations --check --dry-run
+          msgfmt --check -o /dev/null locale/ar/LC_MESSAGES/django.po
+          msgfmt --check -o /dev/null locale/en/LC_MESSAGES/django.po
+
+      - name: Tests
+        run: pytest
+
+      - name: Production settings smoke test
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.production
+          DJANGO_SECRET_KEY: ci-only-production-smoke-test-key-0123456789abcdefghijklmnop
+          DJANGO_ALLOWED_HOSTS: localhost
+        run: |
+          python manage.py check --deploy --fail-level ERROR
+          python manage.py collectstatic --noinput
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t rawnaq-accessories:ci .

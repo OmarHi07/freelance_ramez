@@ -1,0 +1,17 @@
+.git
+.github
+.venv
+venv
+env
+__pycache__
+*.py[cod]
+.pytest_cache
+.ruff_cache
+.env
+.env.*
+!.env.example
+media
+staticfiles
+*.sqlite3
+*.log
+design/reference/logo-crop-preview.png

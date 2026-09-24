@@ -1,0 +1,63 @@
+{% load i18n static rawnaq %}<div id="cart-body" class="cart-body">
+{% if cart_view.is_empty %}
+  {% translate "Your cart is empty" as empty_title %}
+  {% translate "Start with a brand you love — we’ll keep your picks here." as empty_text %}
+  {% translate "Browse brands" as action_label %}
+  {% url 'catalog:brand_list' as brands_url %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="bag" action_url=brands_url action_label=action_label %}
+{% else %}
+  <div class="cart-layout">
+    <ul class="cart-lines" aria-label="{% translate 'Items in your cart' %}">
+      {% for item in cart_view.items %}
+      {% with variant=item.variant product=item.variant.product %}
+      <li class="cart-line{% if not item.is_purchasable %} is-unavailable{% endif %}">
+        <a class="cart-line__media" href="{{ product.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+          {% with image=product.primary_image %}{% if image %}<img src="{{ image.thumbnail_url }}" alt="" width="96" height="96" loading="lazy">{% else %}<img src="{% static 'img/placeholder-product.svg' %}" alt="" width="96" height="96">{% endif %}{% endwith %}
+        </a>
+        <div class="cart-line__info">
+          <p class="cart-line__brand">{{ product.brand.name }}</p>
+          <h2 class="cart-line__title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h2>
+          <p class="cart-line__variant">{{ variant.name }}{% if variant.color_name and variant.color_name != variant.name %} · {{ variant.color_name }}{% endif %}</p>
+          {% if item.is_purchasable and item.priced %}
+            {% include "includes/price.html" with quote=item.priced.quote %}
+          {% else %}
+            <p class="cart-line__warning">{% icon "alert" %}{% translate "No longer available — please remove it." %}</p>
+          {% endif %}
+          {% if item.exceeds_stock and item.is_purchasable %}<p class="cart-line__warning">{% icon "alert" %}{% blocktranslate count counter=variant.stock_quantity %}Only {{ counter }} left in stock.{% plural %}Only {{ counter }} left in stock.{% endblocktranslate %}</p>{% endif %}
+        </div>
+        <div class="cart-line__actions">
+          {% if item.is_purchasable %}
+          <form class="qty-stepper" method="post" action="{% url 'cart:update' item.pk %}" hx-post="{% url 'cart:update' item.pk %}" hx-target="#cart-body" hx-swap="outerHTML">
+            {% csrf_token %}
+            <button class="qty-input__btn" type="submit" name="quantity" value="{{ item.quantity|add:'-1' }}" aria-label="{% translate 'Decrease quantity' %}">{% icon "minus" %}</button>
+            <span class="qty-stepper__value" aria-live="polite"><span class="visually-hidden">{% translate "Quantity" %}: </span>{{ item.quantity }}</span>
+            <button class="qty-input__btn" type="submit" name="quantity" value="{{ item.quantity|add:'1' }}" aria-label="{% translate 'Increase quantity' %}" {% if item.quantity >= item.max_quantity %}disabled{% endif %}>{% icon "plus" %}</button>
+          </form>
+          {% endif %}
+          <form method="post" action="{% url 'cart:remove' item.pk %}" hx-post="{% url 'cart:remove' item.pk %}" hx-target="#cart-body" hx-swap="outerHTML">
+            {% csrf_token %}
+            <button class="link-button link-button--danger" type="submit">{% icon "trash" %}<span>{% translate "Remove" %}</span></button>
+          </form>
+          {% if item.priced %}<p class="cart-line__total"><span class="visually-hidden">{% translate "Line total" %}: </span><bdi>{{ item.priced.line_total|money }}</bdi></p>{% endif %}
+        </div>
+      </li>
+      {% endwith %}
+      {% endfor %}
+    </ul>
+
+    <aside class="summary-card" aria-labelledby="summary-title">
+      <h2 id="summary-title" class="summary-card__title">{% translate "Order summary" %}</h2>
+      {% include "cart/partials/totals.html" with totals=cart_view.totals %}
+      {% if cart_view.problems %}
+        <p class="alert alert--warning">{% icon "alert" %}<span>{% translate "Remove unavailable items to continue." %}</span></p>
+        <span class="button button--large button--block is-disabled" aria-disabled="true">{% translate "Proceed to checkout" %}</span>
+      {% else %}
+        <a class="button button--large button--block" href="{% url 'orders:checkout' %}">{% translate "Proceed to checkout" %}{% icon "arrow" "icon icon--dir" %}</a>
+        {% if not user.is_authenticated %}<p class="summary-card__hint">{% translate "You’ll log in or create an account at checkout. Your cart will be kept." %}</p>{% endif %}
+      {% endif %}
+      <p class="summary-card__hint">{% icon "info" %} {% translate "No online payment. We confirm your order with you on WhatsApp." %}</p>
+    </aside>
+  </div>
+{% endif %}
+</div>
+{% if refresh_badge %}{% include "cart/partials/cart_badge.html" with count=cart_count oob=True %}{% endif %}

@@ -1,0 +1,35 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Categories" %}{% endblock %}
+{% block content %}
+<div class="dash-head dash-head__row">
+  <h1 class="dash-title">{% translate "Categories" %}</h1>
+  <a class="button" href="{% url 'dashboard:category_create' %}">{% icon "plus" %}<span>{% translate "New category" %}</span></a>
+</div>
+<section class="dash-card">
+{% if categories %}
+  <table class="table table--stack">
+    <thead><tr><th scope="col">{% translate "Category" %}</th><th scope="col">{% translate "Slug" %}</th><th scope="col">{% translate "Products" %}</th><th scope="col">{% translate "Order" %}</th><th scope="col">{% translate "Status" %}</th><th scope="col"><span class="visually-hidden">{% translate "Actions" %}</span></th></tr></thead>
+    <tbody>
+      {% for category in categories %}
+        <tr>
+          <td data-label="{% translate 'Category' %}"><a class="table__link" href="{% url 'dashboard:category_update' category.pk %}">{{ category.name }}</a></td>
+          <td data-label="{% translate 'Slug' %}" dir="ltr">{{ category.slug }}</td>
+          <td data-label="{% translate 'Products' %}">{{ category.product_count }}</td>
+          <td data-label="{% translate 'Order' %}">{{ category.display_order }}</td>
+          <td data-label="{% translate 'Status' %}">{% if category.is_active %}<span class="chip chip--success">{% translate "Active" %}</span>{% else %}<span class="chip">{% translate "Hidden" %}</span>{% endif %}</td>
+          <td class="table__actions">
+            <a class="icon-button" href="{% url 'dashboard:category_update' category.pk %}" aria-label="{% translate 'Edit' %} {{ category.name }}">{% icon "edit" %}</a>
+            <a class="icon-button icon-button--danger" href="{% url 'dashboard:category_delete' category.pk %}" aria-label="{% translate 'Delete' %} {{ category.name }}">{% icon "trash" %}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
+{% else %}
+  {% translate "No categories yet" as empty_title %}{% translate "Categories help customers filter products inside each brand." as empty_text %}{% translate "New category" as action_label %}{% url 'dashboard:category_create' as add_url %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="grid" action_url=add_url action_label=action_label %}
+{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% blocktranslate with number=order.number %}Order {{ number }}{% endblocktranslate %}{% endblock %}
+{% block content %}
+<section class="section container narrow">
+  <nav class="breadcrumbs breadcrumbs--plain" aria-label="{% translate 'Breadcrumb' %}"><a href="{% url 'orders:list' %}">{% translate "My orders" %}</a><span aria-hidden="true">/</span><span aria-current="page" dir="ltr">{{ order.number }}</span></nav>
+  <div class="page-head page-head--row">
+    <h1 class="page-title">{% translate "Order" %} <span dir="ltr">{{ order.number }}</span></h1>
+    <span class="status status--{{ order.status|lower }}">{{ order.get_status_display }}</span>
+  </div>
+
+  {% if steps %}
+  <ol class="progress" aria-label="{% translate 'Order progress' %}">
+    {% for step in steps %}
+      <li class="progress__step{% if step.done %} is-done{% endif %}{% if step.current %} is-current{% endif %}" {% if step.current %}aria-current="step"{% endif %}>
+        <span class="progress__dot" aria-hidden="true">{% if step.done %}{% icon "check" %}{% endif %}</span>
+        <span class="progress__label">{{ step.label }}</span>
+      </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+    <p class="alert alert--warning">{% icon "info" %}<span>{% translate "This order was cancelled. Contact us on WhatsApp if you have questions." %}</span></p>
+  {% endif %}
+
+  <div class="card">
+    <h2 class="card__title">{% translate "Items" %}</h2>
+    <ul class="summary-lines">
+      {% for item in order.items.all %}
+        <li>
+          <span>{{ item.quantity }} × {{ item.product_name }}{% if item.variant_name %}<small>{{ item.variant_name }}</small>{% endif %}
+            {% if item.unit_discount %}<small class="muted"><s><bdi>{{ item.original_unit_price|money }}</bdi></s> → <bdi>{{ item.final_unit_price|money }}</bdi></small>{% endif %}
+          </span>
+          <bdi>{{ item.line_total|money }}</bdi>
+        </li>
+      {% endfor %}
+    </ul>
+    <dl class="totals">
+      <div><dt>{% translate "Subtotal" %}</dt><dd><bdi>{{ order.subtotal|money }}</bdi></dd></div>
+      {% if order.discount_total %}<div class="totals__discount"><dt>{% translate "Discounts" %}</dt><dd><bdi>−{{ order.discount_total|money }}</bdi></dd></div>{% endif %}
+      <div><dt>{% translate "Delivery" %}</dt><dd>{% if order.delivery_fee %}<bdi>{{ order.delivery_fee|money }}</bdi>{% else %}{% translate "Free" %}{% endif %}</dd></div>
+      <div class="totals__grand"><dt>{% translate "Total" %}</dt><dd><bdi>{{ order.total|money }}</bdi></dd></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h2 class="card__title">{% translate "Delivery" %}</h2>
+    <p>{{ order.address_one_line }}</p>
+    {% if order.landmark %}<p class="muted">{{ order.landmark }}</p>{% endif %}
+    <p class="muted">{% translate "Phone" %}: <span dir="ltr">{{ order.customer_phone }}</span></p>
+    {% if order.has_location %}<p class="muted">{% icon "pin" %} {% translate "You shared your location with this order." %}</p>{% endif %}
+    {% if order.customer_notes %}<p><strong>{% translate "Your notes" %}:</strong> {{ order.customer_notes }}</p>{% endif %}
+  </div>
+
+  {% if order.is_open %}
+  <div class="card">
+    <h2 class="card__title">{% translate "Need to follow up?" %}</h2>
+    <p class="muted">{% translate "Message us on WhatsApp with your order number." %}</p>
+    <a class="button button--whatsapp" href="{% url 'orders:confirmation' order.pk %}">{% icon "chat" %}<span>{% translate "Send order via WhatsApp" %}</span></a>
+  </div>
+  {% endif %}
+  <p class="muted small">{% blocktranslate with date=order.created_at|date:"j M Y, H:i" %}Placed on {{ date }}{% endblocktranslate %}</p>
+</section>
+{% endblock %}

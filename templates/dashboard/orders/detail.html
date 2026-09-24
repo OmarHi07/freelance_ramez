@@ -1,0 +1,104 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{{ order.number }}{% endblock %}
+{% block content %}
+<div class="dash-head">
+  <a class="link-more" href="{% url 'dashboard:order_list' %}">{% icon "chevron" "icon icon--flip" %}{% translate "All orders" %}</a>
+  <div class="dash-head__row">
+    <h1 class="dash-title" dir="ltr">{{ order.number }}</h1>
+    <span class="status status--{{ order.status|lower }}">{{ order.get_status_display }}</span>
+  </div>
+  <p class="muted">{% blocktranslate with date=order.created_at|date:"j M Y, H:i" %}Placed on {{ date }}{% endblocktranslate %}{% if order.whatsapp_opened_at %} · {% blocktranslate with date=order.whatsapp_opened_at|date:"j M, H:i" %}Customer opened WhatsApp on {{ date }}{% endblocktranslate %}{% endif %}</p>
+</div>
+
+<div class="dash-columns">
+  <div class="dash-columns__main">
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Items" %}</h2>
+      <table class="table table--stack">
+        <thead><tr><th scope="col">{% translate "Product" %}</th><th scope="col">{% translate "SKU" %}</th><th scope="col">{% translate "Qty" %}</th><th scope="col">{% translate "Unit price" %}</th><th scope="col">{% translate "Line total" %}</th></tr></thead>
+        <tbody>
+          {% for item in order.items.all %}
+            <tr>
+              <td data-label="{% translate 'Product' %}">{{ item.product_name }}{% if item.variant_name %}<br><small class="muted">{{ item.variant_name }}</small>{% endif %}{% if item.promotion_name %}<br><small class="chip chip--soft">{{ item.promotion_name }}</small>{% endif %}</td>
+              <td data-label="{% translate 'SKU' %}" dir="ltr">{{ item.sku }}</td>
+              <td data-label="{% translate 'Qty' %}">{{ item.quantity }}</td>
+              <td data-label="{% translate 'Unit price' %}">{% if item.unit_discount %}<s class="muted"><bdi>{{ item.original_unit_price|money }}</bdi></s> {% endif %}<bdi>{{ item.final_unit_price|money }}</bdi></td>
+              <td data-label="{% translate 'Line total' %}"><bdi>{{ item.line_total|money }}</bdi></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <dl class="totals">
+        <div><dt>{% translate "Subtotal" %}</dt><dd><bdi>{{ order.subtotal|money }}</bdi></dd></div>
+        <div class="totals__discount"><dt>{% translate "Discounts" %}</dt><dd><bdi>−{{ order.discount_total|money }}</bdi></dd></div>
+        <div><dt>{% translate "Delivery" %}</dt><dd><bdi>{{ order.delivery_fee|money }}</bdi></dd></div>
+        <div class="totals__grand"><dt>{% translate "Total" %}</dt><dd><bdi>{{ order.total|money }}</bdi></dd></div>
+      </dl>
+    </section>
+
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Status history" %}</h2>
+      <ol class="timeline">
+        {% for change in order.status_history.all %}
+          <li>
+            <span class="timeline__dot" aria-hidden="true"></span>
+            <div>
+              <p><strong>{% if change.from_status %}{{ change.get_from_status_display }} → {% endif %}{{ change.get_to_status_display }}</strong>{% if not change.from_status %} · {% translate "Order placed" %}{% endif %}</p>
+              <p class="muted small">{{ change.created_at|date:"j M Y, H:i" }}{% if change.changed_by %} · {{ change.changed_by.full_name|default:change.changed_by.email }}{% endif %}</p>
+              {% if change.note %}<p class="small">{{ change.note }}</p>{% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+  </div>
+
+  <div class="dash-columns__side">
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Update status" %}</h2>
+      {% if status_form.fields.status.choices %}
+        <form method="post" action="{% url 'dashboard:order_status' order.pk %}">
+          {% csrf_token %}
+          {% include "includes/form_field.html" with field=status_form.status %}
+          {% include "includes/form_field.html" with field=status_form.note %}
+          <button class="button button--block" type="submit">{% translate "Save status" %}</button>
+        </form>
+        <p class="muted small">{% translate "Stock is reduced once when you confirm the order, and restored once if a confirmed order is cancelled." %}</p>
+      {% else %}
+        <p class="muted">{% translate "This order is closed. Its status can no longer change." %}</p>
+      {% endif %}
+    </section>
+
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Customer" %}</h2>
+      <p><strong>{{ order.customer_name }}</strong></p>
+      <p><a href="tel:{{ order.customer_phone }}" dir="ltr">{% icon "phone" %} {{ order.customer_phone }}</a></p>
+      <p><a href="mailto:{{ order.customer_email }}" dir="ltr">{{ order.customer_email }}</a></p>
+      {% if customer_whatsapp_url %}<a class="button button--whatsapp button--small" href="{{ customer_whatsapp_url }}" target="_blank" rel="noopener noreferrer">{% icon "chat" %}<span>{% translate "Message on WhatsApp" %}</span></a>{% endif %}
+      {% if order.customer %}<p><a class="link-more" href="{% url 'dashboard:customer_detail' order.customer.pk %}">{% translate "Customer profile" %}{% icon "chevron" "icon icon--dir" %}</a></p>{% endif %}
+    </section>
+
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Delivery address" %}</h2>
+      <p>{{ order.address_one_line }}</p>
+      {% if order.landmark %}<p class="muted">{{ order.landmark }}</p>{% endif %}
+      {% if order.has_location %}
+        <a class="button button--ghost button--small" href="{{ order.google_maps_url }}" target="_blank" rel="noopener noreferrer">{% icon "pin" %}<span>{% translate "Open location in Google Maps" %}</span></a>
+        <p class="muted small">{% blocktranslate with date=order.location_consent_at|date:"j M Y, H:i" %}Location shared with consent on {{ date }}{% endblocktranslate %}{% if order.location_accuracy_m %} · ±{{ order.location_accuracy_m|floatformat:0 }} m{% endif %}</p>
+      {% else %}<p class="muted small">{% translate "No location shared." %}</p>{% endif %}
+      {% if order.customer_notes %}<p><strong>{% translate "Customer notes" %}:</strong> {{ order.customer_notes }}</p>{% endif %}
+    </section>
+
+    <section class="dash-card">
+      <h2 class="dash-card__title">{% translate "Internal notes" %}</h2>
+      <form method="post" action="{% url 'dashboard:order_notes' order.pk %}">
+        {% csrf_token %}
+        {% include "includes/form_field.html" with field=notes_form.internal_notes %}
+        <button class="button button--ghost button--block" type="submit">{% translate "Save notes" %}</button>
+      </form>
+      <p class="muted small">{% translate "Only staff can see these notes." %}</p>
+    </section>
+  </div>
+</div>
+{% endblock %}

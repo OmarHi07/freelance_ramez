@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Your cart" %}{% endblock %}
+{% block content %}
+<section class="section container">
+  <div class="page-head"><h1 class="page-title">{% translate "Your cart" %}</h1></div>
+  {% include "cart/partials/cart_body.html" %}
+</section>
+{% endblock %}

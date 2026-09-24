@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %}
+{% load i18n static rawnaq %}
+{% block title %}{% translate "Products" %}{% endblock %}
+{% block content %}
+<div class="dash-head dash-head__row">
+  <h1 class="dash-title">{% translate "Products" %}</h1>
+  <a class="button" href="{% url 'dashboard:product_create' %}">{% icon "plus" %}<span>{% translate "New product" %}</span></a>
+</div>
+<form class="dash-card filter-bar" method="get">
+  {% include "includes/form_field.html" with field=filter_form.q %}
+  {% include "includes/form_field.html" with field=filter_form.brand %}
+  {% include "includes/form_field.html" with field=filter_form.state %}
+  <div class="filter-bar__actions"><button class="button" type="submit">{% translate "Filter" %}</button><a class="button button--ghost" href="{% url 'dashboard:product_list' %}">{% translate "Reset" %}</a></div>
+</form>
+<section class="dash-card">
+{% if products %}
+  <table class="table table--stack">
+    <thead><tr><th scope="col"><span class="visually-hidden">{% translate "Image" %}</span></th><th scope="col">{% translate "Product" %}</th><th scope="col">{% translate "Brand" %}</th><th scope="col">{% translate "Price" %}</th><th scope="col">{% translate "Stock" %}</th><th scope="col">{% translate "Status" %}</th><th scope="col"><span class="visually-hidden">{% translate "Actions" %}</span></th></tr></thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td class="table__thumb">{% with image=product.primary_image %}{% if image %}<img src="{{ image.thumbnail_url }}" alt="" width="48" height="48" loading="lazy">{% else %}<img src="{% static 'img/placeholder-product.svg' %}" alt="" width="48" height="48">{% endif %}{% endwith %}</td>
+          <td data-label="{% translate 'Product' %}"><a class="table__link" href="{% url 'dashboard:product_update' product.pk %}">{{ product.name }}</a><br><small class="muted" dir="ltr">{{ product.sku }}</small></td>
+          <td data-label="{% translate 'Brand' %}">{{ product.brand.name }}</td>
+          <td data-label="{% translate 'Price' %}"><bdi>{{ product.regular_price|money }}</bdi></td>
+          <td data-label="{% translate 'Stock' %}">{% if product.stock <= low_stock_threshold %}<span class="chip chip--warning">{{ product.stock }}</span>{% else %}{{ product.stock }}{% endif %}</td>
+          <td data-label="{% translate 'Status' %}">{% if product.is_active %}<span class="chip chip--success">{% translate "Active" %}</span>{% else %}<span class="chip">{% translate "Hidden" %}</span>{% endif %}{% if product.is_featured %} <span class="chip chip--soft">{% translate "Featured" %}</span>{% endif %}</td>
+          <td class="table__actions">
+            <a class="icon-button" href="{% url 'dashboard:product_update' product.pk %}" aria-label="{% translate 'Edit' %} {{ product.name }}">{% icon "edit" %}</a>
+            <a class="icon-button icon-button--danger" href="{% url 'dashboard:product_delete' product.pk %}" aria-label="{% translate 'Delete' %} {{ product.name }}">{% icon "trash" %}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
+{% else %}
+  {% translate "No products yet" as empty_title %}{% translate "Add your first product, with its variants and photos." as empty_text %}{% translate "New product" as action_label %}{% url 'dashboard:product_create' as add_url %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="box" action_url=add_url action_label=action_label %}
+{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,10 @@
+# Runtime dependencies (exact versions tested with this release).
+Django==5.2.17
+psycopg[binary]==3.3.6
+pillow==12.3.0
+whitenoise==6.12.0
+gunicorn==26.2.0
+django-environ==0.14.0
+django-axes==8.3.1
+# S3-compatible production media storage (AWS S3, Cloudflare R2, Backblaze B2, DigitalOcean Spaces, MinIO).
+django-storages[s3]==1.14.6

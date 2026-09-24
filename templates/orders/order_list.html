@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "My orders" %}{% endblock %}
+{% block content %}
+<section class="section container narrow">
+  <div class="page-head"><h1 class="page-title">{% translate "My orders" %}</h1></div>
+  {% if orders %}
+    <ul class="order-cards">
+      {% for order in orders %}
+        <li>
+          <a class="card order-card" href="{% url 'orders:detail' order.pk %}">
+            <div class="order-card__top">
+              <span class="order-number" dir="ltr">{{ order.number }}</span>
+              <span class="status status--{{ order.status|lower }}">{{ order.get_status_display }}</span>
+            </div>
+            <div class="order-card__meta">
+              <span>{{ order.created_at|date:"j M Y, H:i" }}</span>
+              <bdi class="order-card__total">{{ order.total|money }}</bdi>
+            </div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% include "includes/pagination.html" %}
+  {% else %}
+    {% translate "No orders yet" as empty_title %}
+    {% translate "When you place an order it will appear here with its status." as empty_text %}
+    {% translate "Browse brands" as action_label %}{% url 'catalog:brand_list' as brands_url %}
+    {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="clipboard" action_url=brands_url action_label=action_label %}
+  {% endif %}
+</section>
+{% endblock %}

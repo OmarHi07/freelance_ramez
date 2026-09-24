@@ -1,0 +1,6 @@
+{% load i18n rawnaq %}<p class="price{% if quote.has_discount %} price--sale{% endif %}{% if large %} price--large{% endif %}" {% if price_id %}id="{{ price_id }}"{% endif %}>
+  {% if from_price %}<span class="price__from">{% translate "From" %}</span>{% endif %}
+  {% if quote.has_discount %}<span class="visually-hidden">{% translate "Sale price:" %}</span>{% endif %}
+  <bdi class="price__final" data-price-final>{{ quote.final|money }}</bdi>
+  <s class="price__original" data-price-original {% if not quote.has_discount %}hidden{% endif %}><span class="visually-hidden">{% translate "Original price:" %}</span> <bdi data-price-original-value>{{ quote.original|money }}</bdi></s>
+</p>

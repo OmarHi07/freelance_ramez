@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Access denied" %}{% endblock %}
+{% block content %}
+<section class="section container narrow error-page">
+  <p class="error-page__code" aria-hidden="true">403</p>
+  <h1 class="page-title">{% translate "You don’t have access to this page" %}</h1>
+  <p class="page-lead">{% translate "If you think this is a mistake, log in with the right account." %}</p>
+  <div class="error-page__actions"><a class="button" href="{% url 'core:home' %}">{% translate "Back to the store" %}</a></div>
+</section>
+{% endblock %}

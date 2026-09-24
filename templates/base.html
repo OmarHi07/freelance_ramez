@@ -1,0 +1,23 @@
+{% load static i18n rawnaq %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+  {% include "includes/head.html" %}
+  <title>{% block title %}{{ site_settings.store_name }}{% endblock %} · {{ site_settings.store_name_en }}</title>
+  <meta name="description" content="{% block meta_description %}{% translate "Curated girls’ accessories from brands you love." %}{% endblock %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a class="skip-link" href="#main">{% translate "Skip to main content" %}</a>
+  {% include "includes/header.html" %}
+  <main id="main" class="site-main" tabindex="-1">
+    {% include "includes/messages.html" %}
+    {% block content %}{% endblock %}
+  </main>
+  {% include "includes/footer.html" %}
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+  <script src="{% static 'vendor/htmx/htmx.min.js' %}" defer></script>
+  <script src="{% static 'js/app.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

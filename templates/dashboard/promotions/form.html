@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="dash-head">
+  <a class="link-more" href="{% url 'dashboard:promotion_list' %}">{% icon "chevron" "icon icon--flip" %}{% translate "All promotions" %}</a>
+  <h1 class="dash-title">{{ title }}</h1>
+</div>
+<form class="dash-card dash-form" method="post" novalidate data-promotion-form>
+  {% csrf_token %}
+  {% include "includes/form_errors.html" %}
+  <div class="form-grid">
+    {% include "includes/form_field.html" with field=form.name_ar %}
+    {% include "includes/form_field.html" with field=form.name_en %}
+    {% include "includes/form_field.html" with field=form.discount_type %}
+    {% include "includes/form_field.html" with field=form.value %}
+    {% include "includes/form_field.html" with field=form.scope %}
+    {% include "includes/form_field.html" with field=form.brand extra_class="scope-target" %}
+    {% include "includes/form_field.html" with field=form.category extra_class="scope-target" %}
+    {% include "includes/form_field.html" with field=form.product extra_class="scope-target" %}
+    {% include "includes/form_field.html" with field=form.starts_at %}
+    {% include "includes/form_field.html" with field=form.ends_at %}
+    {% include "includes/form_field.html" with field=form.priority %}
+    {% include "includes/form_field.html" with field=form.is_enabled %}
+  </div>
+  <p class="muted small">{% translate "Times use the store time zone (Asia/Jerusalem). Fixed discounts can never make a price negative." %}</p>
+  <div class="form-actions">
+    <button class="button" type="submit">{% translate "Save promotion" %}</button>
+    <a class="button button--ghost" href="{% url 'dashboard:promotion_list' %}">{% translate "Cancel" %}</a>
+  </div>
+</form>
+{% endblock %}

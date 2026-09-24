@@ -1,0 +1,7 @@
+{% extends "accounts/_auth_layout.html" %}
+{% load i18n %}
+{% block title %}{% translate "Logged out" %}{% endblock %}
+{% block auth_content %}
+<h1 class="page-title">{% translate "You are logged out" %}</h1>
+<a class="button button--block" href="{% url 'core:home' %}">{% translate "Back to the store" %}</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Orders" %}{% endblock %}
+{% block content %}
+<div class="dash-head"><h1 class="dash-title">{% translate "Orders" %}</h1></div>
+<form class="dash-card filter-bar" method="get" hx-get="{% url 'dashboard:order_list' %}" hx-target="#order-results" hx-select="#order-results" hx-swap="outerHTML" hx-trigger="change, submit, keyup changed delay:400ms from:input[type=search]" hx-push-url="true" hx-indicator="#orders-loading">
+  {% include "includes/form_field.html" with field=filter_form.q %}
+  {% include "includes/form_field.html" with field=filter_form.status %}
+  {% include "includes/form_field.html" with field=filter_form.date_from %}
+  {% include "includes/form_field.html" with field=filter_form.date_to %}
+  <div class="filter-bar__actions"><button class="button" type="submit">{% translate "Filter" %}</button><a class="button button--ghost" href="{% url 'dashboard:order_list' %}">{% translate "Reset" %}</a></div>
+</form>
+<div id="orders-loading" class="loading-bar htmx-indicator" aria-hidden="true"></div>
+{% include "dashboard/orders/_results.html" %}
+{% endblock %}

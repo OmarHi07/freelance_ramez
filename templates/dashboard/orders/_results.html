@@ -1,0 +1,10 @@
+{% load i18n %}<section id="order-results" class="dash-card" aria-live="polite">
+  {% if orders %}
+    <p class="muted small">{% blocktranslate count counter=page_obj.paginator.count %}{{ counter }} order{% plural %}{{ counter }} orders{% endblocktranslate %}</p>
+    {% include "dashboard/orders/_table.html" %}
+    {% include "includes/pagination.html" %}
+  {% else %}
+    {% translate "No orders found" as empty_title %}{% translate "Try a different search or status." as empty_text %}
+    {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="clipboard" %}
+  {% endif %}
+</section>

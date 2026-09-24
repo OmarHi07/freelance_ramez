@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "My account" %}{% endblock %}
+{% block content %}
+<section class="section container account-layout">
+  {% include "accounts/_account_nav.html" with active="profile" %}
+  <div class="account-main">
+    <div class="page-head"><h1 class="page-title">{% blocktranslate with name=user.get_short_name %}Hello, {{ name }}{% endblocktranslate %}</h1></div>
+    <form class="card" method="post" novalidate>
+      {% csrf_token %}
+      <h2 class="card__title">{% translate "Profile" %}</h2>
+      {% include "includes/form_errors.html" %}
+      <p class="muted">{% translate "Email" %}: <span dir="ltr">{{ user.email }}</span></p>
+      {% include "includes/form_field.html" with field=form.full_name %}
+      {% include "includes/form_field.html" with field=form.phone %}
+      <button class="button" type="submit">{% translate "Save changes" %}</button>
+    </form>
+    <div class="card">
+      <div class="card__head"><h2 class="card__title">{% translate "Recent orders" %}</h2><a class="link-more" href="{% url 'orders:list' %}">{% translate "View all" %}{% icon "chevron" "icon icon--dir" %}</a></div>
+      {% if recent_orders %}
+        <ul class="summary-lines">
+          {% for order in recent_orders %}
+            <li><a href="{% url 'orders:detail' order.pk %}" dir="ltr">{{ order.number }}</a><span class="status status--{{ order.status|lower }}">{{ order.get_status_display }}</span></li>
+          {% endfor %}
+        </ul>
+      {% else %}<p class="muted">{% translate "No orders yet." %}</p>{% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

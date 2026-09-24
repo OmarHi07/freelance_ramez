@@ -1,0 +1,7 @@
+{% load rawnaq %}<a class="brand-card" href="{{ brand.get_absolute_url }}" style="--brand-primary: {{ brand.primary_color|safe_hex }}; --brand-secondary: {{ brand.secondary_color|safe_hex:'#9E526F' }}; --brand-on-primary: {{ brand.text_on_primary }};">
+  <span class="brand-card__media">
+    {% if brand.logo %}<img src="{{ brand.logo.url }}" alt="" loading="lazy" decoding="async" width="160" height="160">{% else %}<span class="brand-card__initial" aria-hidden="true">{{ brand.name|slice:":1" }}</span>{% endif %}
+  </span>
+  <span class="brand-card__name">{{ brand.name }}</span>
+  <span class="brand-card__cta" aria-hidden="true">{% icon "arrow" "icon icon--dir" %}</span>
+</a>

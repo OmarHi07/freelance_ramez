@@ -1,0 +1,58 @@
+{% load static i18n rawnaq %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+  {% include "includes/head.html" %}
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}{% translate "Dashboard" %}{% endblock %} · {% translate "Rawnaq owner" %}</title>
+</head>
+<body class="dashboard" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a class="skip-link" href="#main">{% translate "Skip to main content" %}</a>
+  <header class="dash-header">
+    <div class="dash-header__inner">
+      <button class="icon-button dash-menu-toggle" type="button" aria-controls="dash-nav" aria-expanded="false" data-nav-toggle>
+        {% icon "menu" %}<span class="visually-hidden">{% translate "Menu" %}</span>
+      </button>
+      <a class="logo logo--small" href="{% url 'dashboard:overview' %}">
+        <img class="logo__mark" src="{% static 'img/brand/logo-mark.png' %}" alt="" width="36" height="36">
+        <span class="logo__text"><span lang="en" dir="ltr">Rawnaq</span> · {% translate "Owner" %}</span>
+      </a>
+      <div class="header-actions">
+        <form class="lang-switch" action="{% url 'set_language' %}" method="post">
+          {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+          {% if LANGUAGE_CODE == "ar" %}<button class="icon-button" type="submit" name="language" value="en" lang="en" aria-label="Switch to English">{% icon "globe" %}<span class="icon-button__label">EN</span></button>
+          {% else %}<button class="icon-button" type="submit" name="language" value="ar" lang="ar" aria-label="التبديل إلى العربية">{% icon "globe" %}<span class="icon-button__label">ع</span></button>{% endif %}
+        </form>
+        <a class="icon-button" href="{% url 'core:home' %}" target="_blank" rel="noopener">{% icon "external" %}<span class="icon-button__label hide-sm">{% translate "View store" %}</span></a>
+      </div>
+    </div>
+  </header>
+  <div class="dash-shell">
+    {% with name=request.resolver_match.url_name %}
+    <nav id="dash-nav" class="dash-nav" aria-label="{% translate 'Dashboard navigation' %}" data-nav>
+      <ul>
+        <li><a href="{% url 'dashboard:overview' %}" {% if name == "overview" %}aria-current="page"{% endif %}>{% icon "chart" %}{% translate "Overview" %}</a></li>
+        <li><a href="{% url 'dashboard:order_list' %}" {% if name|startswith:"order" %}aria-current="page"{% endif %}>{% icon "clipboard" %}{% translate "Orders" %}</a></li>
+        <li><a href="{% url 'dashboard:product_list' %}" {% if name|startswith:"product" %}aria-current="page"{% endif %}>{% icon "box" %}{% translate "Products" %}</a></li>
+        <li><a href="{% url 'dashboard:stock_list' %}" {% if name|startswith:"stock" %}aria-current="page"{% endif %}>{% icon "layers" %}{% translate "Stock" %}</a></li>
+        <li><a href="{% url 'dashboard:brand_list' %}" {% if name|startswith:"brand" %}aria-current="page"{% endif %}>{% icon "sparkle" %}{% translate "Brands" %}</a></li>
+        <li><a href="{% url 'dashboard:category_list' %}" {% if name|startswith:"category" %}aria-current="page"{% endif %}>{% icon "grid" %}{% translate "Categories" %}</a></li>
+        <li><a href="{% url 'dashboard:promotion_list' %}" {% if name|startswith:"promotion" %}aria-current="page"{% endif %}>{% icon "tag" %}{% translate "Promotions" %}</a></li>
+        <li><a href="{% url 'dashboard:customer_list' %}" {% if name|startswith:"customer" %}aria-current="page"{% endif %}>{% icon "users" %}{% translate "Customers" %}</a></li>
+        <li><a href="{% url 'dashboard:settings' %}" {% if name == "settings" %}aria-current="page"{% endif %}>{% icon "settings" %}{% translate "Store settings" %}</a></li>
+      </ul>
+      <form class="dash-nav__logout" method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="link-button" type="submit">{% icon "logout" %}{% translate "Log out" %}</button></form>
+    </nav>
+    {% endwith %}
+    <main id="main" class="dash-main" tabindex="-1">
+      {% include "includes/messages.html" %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+  <script src="{% static 'vendor/htmx/htmx.min.js' %}" defer></script>
+  <script src="{% static 'js/app.js' %}" defer></script>
+  <script src="{% static 'js/dashboard.js' %}" defer></script>
+</body>
+</html>

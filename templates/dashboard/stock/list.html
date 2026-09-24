@@ -1,0 +1,25 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Stock" %}{% endblock %}
+{% block content %}
+<div class="dash-head"><h1 class="dash-title">{% translate "Stock" %}</h1></div>
+<nav class="segmented" aria-label="{% translate 'Stock filter' %}">
+  <a href="?view=low" {% if stock_view == "low" %}aria-current="page"{% endif %}>{% blocktranslate %}Low ({{ low_stock_threshold }} or fewer){% endblocktranslate %}</a>
+  <a href="?view=out" {% if stock_view == "out" %}aria-current="page"{% endif %}>{% translate "Out of stock" %}</a>
+  <a href="?view=all" {% if stock_view == "all" %}aria-current="page"{% endif %}>{% translate "All variants" %}</a>
+</nav>
+<section class="dash-card">
+{% if variants %}
+  <table class="table table--stack">
+    <thead><tr><th scope="col">{% translate "Product" %}</th><th scope="col">{% translate "Variant" %}</th><th scope="col">{% translate "SKU" %}</th><th scope="col">{% translate "Stock" %}</th></tr></thead>
+    <tbody>
+      {% for variant in variants %}{% include "dashboard/stock/_row.html" %}{% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
+{% else %}
+  {% translate "Nothing to restock" as empty_title %}{% translate "All variants in this view have healthy stock." as empty_text %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="check-badge" %}
+{% endif %}
+</section>
+{% endblock %}

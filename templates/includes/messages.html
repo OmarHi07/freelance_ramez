@@ -1,0 +1,10 @@
+{% load rawnaq %}{% if messages %}
+<div class="container messages" role="status" aria-live="polite">
+  {% for message in messages %}
+    <div class="alert alert--{{ message.tags|default:'info' }}">
+      {% if message.level_tag == "success" %}{% icon "check-badge" %}{% elif message.level_tag == "error" %}{% icon "alert" %}{% else %}{% icon "info" %}{% endif %}
+      <p>{{ message }}</p>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}

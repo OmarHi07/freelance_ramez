@@ -1,0 +1,9 @@
+{% extends "accounts/_auth_layout.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Too many attempts" %}{% endblock %}
+{% block auth_content %}
+<span class="confirmation__icon confirmation__icon--warning">{% icon "alert" %}</span>
+<h1 class="page-title">{% translate "Too many login attempts" %}</h1>
+<p>{% translate "For your security, logging in is paused for a little while. Please try again later or reset your password." %}</p>
+<a class="button button--block" href="{% url 'accounts:password_reset' %}">{% translate "Reset password" %}</a>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% if is_new %}{% translate "Add address" %}{% else %}{% translate "Edit address" %}{% endif %}{% endblock %}
+{% block content %}
+<section class="section container account-layout">
+  {% include "accounts/_account_nav.html" with active="addresses" %}
+  <div class="account-main">
+    <h1 class="page-title">{% if is_new %}{% translate "Add address" %}{% else %}{% translate "Edit address" %}{% endif %}</h1>
+    <form class="card" method="post" novalidate>
+      {% csrf_token %}
+      {% include "includes/form_errors.html" %}
+      <div class="form-grid">
+        {% include "includes/form_field.html" with field=form.label %}
+        {% include "includes/form_field.html" with field=form.city %}
+        {% include "includes/form_field.html" with field=form.street %}
+        {% include "includes/form_field.html" with field=form.building_number %}
+        {% include "includes/form_field.html" with field=form.apartment %}
+        {% include "includes/form_field.html" with field=form.postal_code %}
+        {% include "includes/form_field.html" with field=form.landmark extra_class="form-grid__wide" %}
+      </div>
+      {% include "includes/form_field.html" with field=form.is_default %}
+      <div class="form-actions">
+        <button class="button" type="submit">{% translate "Save address" %}</button>
+        <a class="button button--ghost" href="{% url 'accounts:address_list' %}">{% translate "Cancel" %}</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

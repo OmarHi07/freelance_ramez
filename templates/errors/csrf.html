@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Please try again" %}{% endblock %}
+{% block content %}
+<section class="section container narrow error-page">
+  <p class="error-page__code" aria-hidden="true">403</p>
+  <h1 class="page-title">{% translate "Your session expired" %}</h1>
+  <p class="page-lead">{% translate "For your security, please go back, refresh the page and try again. Make sure cookies are enabled." %}</p>
+  <div class="error-page__actions"><a class="button" href="{% url 'core:home' %}">{% translate "Back to the store" %}</a></div>
+</section>
+{% endblock %}

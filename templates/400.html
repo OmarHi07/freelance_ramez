@@ -1,0 +1,23 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rawnaq Accessories · طلب غير صالح</title>
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="standalone-error">
+  <main class="section container narrow error-page">
+    <img src="{% static 'img/brand/logo-mark.png' %}" alt="" width="72" height="72">
+    <p class="error-page__code" aria-hidden="true">400</p>
+    <h1 class="page-title">تعذّر فهم هذا الطلب</h1>
+    <p class="page-lead">يُرجى الرجوع وإعادة المحاولة.</p>
+    <div lang="en" dir="ltr">
+      <h2 class="page-title page-title--small">We couldn’t understand that request</h2>
+      <p class="page-lead">Please go back and try again.</p>
+    </div>
+    <div class="error-page__actions"><a class="button" href="/">الرئيسية · Home</a></div>
+  </main>
+</body>
+</html>

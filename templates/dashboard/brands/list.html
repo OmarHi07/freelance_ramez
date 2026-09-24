@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Brands" %}{% endblock %}
+{% block content %}
+<div class="dash-head dash-head__row">
+  <h1 class="dash-title">{% translate "Brands" %}</h1>
+  <a class="button" href="{% url 'dashboard:brand_create' %}">{% icon "plus" %}<span>{% translate "New brand" %}</span></a>
+</div>
+<section class="dash-card">
+{% if brands %}
+  <table class="table table--stack">
+    <thead><tr><th scope="col">{% translate "Brand" %}</th><th scope="col">{% translate "Colours" %}</th><th scope="col">{% translate "Products" %}</th><th scope="col">{% translate "Order" %}</th><th scope="col">{% translate "Status" %}</th><th scope="col"><span class="visually-hidden">{% translate "Actions" %}</span></th></tr></thead>
+    <tbody>
+      {% for brand in brands %}
+        <tr>
+          <td data-label="{% translate 'Brand' %}"><a class="table__link" href="{% url 'dashboard:brand_update' brand.pk %}">{{ brand.name }}</a></td>
+          <td data-label="{% translate 'Colours' %}"><span class="swatch swatch--lg" style="--swatch: {{ brand.primary_color|safe_hex }}" title="{{ brand.primary_color }}"></span><span class="swatch swatch--lg" style="--swatch: {{ brand.secondary_color|safe_hex:'#9E526F' }}" title="{{ brand.secondary_color }}"></span></td>
+          <td data-label="{% translate 'Products' %}">{{ brand.product_count }}</td>
+          <td data-label="{% translate 'Order' %}">{{ brand.display_order }}</td>
+          <td data-label="{% translate 'Status' %}">{% if brand.is_active %}<span class="chip chip--success">{% translate "Active" %}</span>{% else %}<span class="chip">{% translate "Hidden" %}</span>{% endif %}</td>
+          <td class="table__actions">
+            <a class="icon-button" href="{{ brand.get_absolute_url }}" target="_blank" rel="noopener" aria-label="{% translate 'View in store' %}">{% icon "external" %}</a>
+            <a class="icon-button" href="{% url 'dashboard:brand_update' brand.pk %}" aria-label="{% translate 'Edit' %} {{ brand.name }}">{% icon "edit" %}</a>
+            <a class="icon-button icon-button--danger" href="{% url 'dashboard:brand_delete' brand.pk %}" aria-label="{% translate 'Delete' %} {{ brand.name }}">{% icon "trash" %}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
+{% else %}
+  {% translate "No brands yet" as empty_title %}{% translate "Brands are the main way customers browse the store. Add the first one." as empty_text %}{% translate "New brand" as action_label %}{% url 'dashboard:brand_create' as add_url %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="sparkle" action_url=add_url action_label=action_label %}
+{% endif %}
+</section>
+{% endblock %}

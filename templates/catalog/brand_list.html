@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Brands" %}{% endblock %}
+{% block content %}
+<section class="section container">
+  <div class="page-head">
+    <h1 class="page-title">{% translate "Brands" %}</h1>
+    <p class="page-lead">{% translate "Pick a brand to see all of its pieces." %}</p>
+  </div>
+  {% if brands %}
+    <ul class="brand-grid brand-grid--large">
+      {% for brand in brands %}<li>{% include "catalog/partials/brand_card.html" %}</li>{% endfor %}
+    </ul>
+  {% else %}
+    {% translate "Brands are coming soon" as empty_title %}
+    {% include "includes/empty_state.html" with title=empty_title icon_name="layers" %}
+  {% endif %}
+</section>
+{% endblock %}

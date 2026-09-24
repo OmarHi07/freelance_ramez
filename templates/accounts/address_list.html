@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "My addresses" %}{% endblock %}
+{% block content %}
+<section class="section container account-layout">
+  {% include "accounts/_account_nav.html" with active="addresses" %}
+  <div class="account-main">
+    <div class="page-head page-head--row">
+      <h1 class="page-title">{% translate "My addresses" %}</h1>
+      <a class="button" href="{% url 'accounts:address_create' %}">{% icon "plus" %}<span>{% translate "Add address" %}</span></a>
+    </div>
+    {% if addresses %}
+      <ul class="address-cards">
+        {% for address in addresses %}
+          <li class="card address-card">
+            <div>
+              <p class="address-card__label">{{ address.label|default:_("Address") }}{% if address.is_default %} <span class="chip chip--soft">{% translate "Default" %}</span>{% endif %}</p>
+              <p>{{ address.one_line }}</p>
+              {% if address.landmark %}<p class="muted">{{ address.landmark }}</p>{% endif %}
+            </div>
+            <div class="address-card__actions">
+              <a class="link-button" href="{% url 'accounts:address_update' address.pk %}">{% icon "edit" %}<span>{% translate "Edit" %}</span></a>
+              <a class="link-button link-button--danger" href="{% url 'accounts:address_delete' address.pk %}">{% icon "trash" %}<span>{% translate "Delete" %}</span></a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      {% translate "No saved addresses" as empty_title %}
+      {% translate "Save an address to make checkout faster." as empty_text %}
+      {% translate "Add address" as action_label %}{% url 'accounts:address_create' as add_url %}
+      {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="pin" action_url=add_url action_label=action_label %}
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

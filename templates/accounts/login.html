@@ -1,0 +1,18 @@
+{% extends "accounts/_auth_layout.html" %}
+{% load i18n %}
+{% block title %}{% translate "Log in" %}{% endblock %}
+{% block auth_content %}
+<h1 class="page-title">{% translate "Welcome back" %}</h1>
+{% if next and "/orders/checkout/" in next %}<p class="alert alert--info">{% translate "Log in or create an account to finish your order. Your cart is saved." %}</p>{% endif %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "includes/form_errors.html" %}
+  {% include "includes/form_field.html" with field=form.username %}
+  {% include "includes/form_field.html" with field=form.password %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="button button--large button--block" type="submit">{% translate "Log in" %}</button>
+</form>
+<p class="auth__links"><a href="{% url 'accounts:password_reset' %}">{% translate "Forgot your password?" %}</a></p>
+<div class="auth__divider"><span>{% translate "New to Rawnaq?" %}</span></div>
+<a class="button button--ghost button--block" href="{% url 'accounts:register' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Create an account" %}</a>
+{% endblock %}

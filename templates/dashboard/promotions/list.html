@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Promotions" %}{% endblock %}
+{% block content %}
+<div class="dash-head dash-head__row">
+  <h1 class="dash-title">{% translate "Promotions" %}</h1>
+  <a class="button" href="{% url 'dashboard:promotion_create' %}">{% icon "plus" %}<span>{% translate "New promotion" %}</span></a>
+</div>
+<p class="muted">{% translate "Only one promotion applies to each item. The highest priority wins; with equal priority, the biggest discount wins. Discounts never stack." %}</p>
+<section class="dash-card">
+{% if promotions %}
+  <table class="table table--stack">
+    <thead><tr><th scope="col">{% translate "Promotion" %}</th><th scope="col">{% translate "Discount" %}</th><th scope="col">{% translate "Applies to" %}</th><th scope="col">{% translate "Dates" %}</th><th scope="col">{% translate "Priority" %}</th><th scope="col">{% translate "Status" %}</th><th scope="col"><span class="visually-hidden">{% translate "Actions" %}</span></th></tr></thead>
+    <tbody>
+      {% for promotion in promotions %}
+        <tr>
+          <td data-label="{% translate 'Promotion' %}"><a class="table__link" href="{% url 'dashboard:promotion_update' promotion.pk %}">{{ promotion.name }}</a></td>
+          <td data-label="{% translate 'Discount' %}"><bdi>{% if promotion.discount_type == "PERCENTAGE" %}{{ promotion.value|floatformat:"-2" }}%{% else %}{{ promotion.value|money }}{% endif %}</bdi></td>
+          <td data-label="{% translate 'Applies to' %}">{{ promotion.get_scope_display }}{% if promotion.brand %}: {{ promotion.brand.name }}{% elif promotion.category %}: {{ promotion.category.name }}{% elif promotion.product %}: {{ promotion.product.name }}{% endif %}</td>
+          <td data-label="{% translate 'Dates' %}">{{ promotion.starts_at|date:"j M Y" }} → {% if promotion.ends_at %}{{ promotion.ends_at|date:"j M Y" }}{% else %}{% translate "no end" %}{% endif %}</td>
+          <td data-label="{% translate 'Priority' %}">{{ promotion.priority }}</td>
+          <td data-label="{% translate 'Status' %}">
+            {% if not promotion.is_enabled %}<span class="chip">{% translate "Disabled" %}</span>
+            {% elif promotion.starts_at > now %}<span class="chip chip--soft">{% translate "Scheduled" %}</span>
+            {% elif promotion.ends_at and promotion.ends_at <= now %}<span class="chip">{% translate "Ended" %}</span>
+            {% else %}<span class="chip chip--success">{% translate "Running" %}</span>{% endif %}
+          </td>
+          <td class="table__actions">
+            <a class="icon-button" href="{% url 'dashboard:promotion_update' promotion.pk %}" aria-label="{% translate 'Edit' %} {{ promotion.name }}">{% icon "edit" %}</a>
+            <a class="icon-button icon-button--danger" href="{% url 'dashboard:promotion_delete' promotion.pk %}" aria-label="{% translate 'Delete' %} {{ promotion.name }}">{% icon "trash" %}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "includes/pagination.html" %}
+{% else %}
+  {% translate "No promotions yet" as empty_title %}{% translate "Create a percentage or fixed discount for the whole store, a brand, a category or one product." as empty_text %}{% translate "New promotion" as action_label %}{% url 'dashboard:promotion_create' as add_url %}
+  {% include "includes/empty_state.html" with title=empty_title text=empty_text icon_name="tag" action_url=add_url action_label=action_label %}
+{% endif %}
+</section>
+{% endblock %}

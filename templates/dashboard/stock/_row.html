@@ -1,0 +1,15 @@
+{% load i18n rawnaq %}<tr id="stock-row-{{ variant.pk }}">
+  <td data-label="{% translate 'Product' %}"><a class="table__link" href="{% url 'dashboard:product_update' variant.product.pk %}">{{ variant.product.name }}</a>{% if not variant.is_active or not variant.product.is_active %}<br><span class="chip">{% translate "Hidden" %}</span>{% endif %}</td>
+  <td data-label="{% translate 'Variant' %}">{{ variant.name }}</td>
+  <td data-label="{% translate 'SKU' %}" dir="ltr">{{ variant.sku }}</td>
+  <td data-label="{% translate 'Stock' %}">
+    <form class="stock-form" method="post" action="{% url 'dashboard:stock_update' variant.pk %}" hx-post="{% url 'dashboard:stock_update' variant.pk %}" hx-target="#stock-row-{{ variant.pk }}" hx-swap="outerHTML">
+      {% csrf_token %}
+      <input type="hidden" name="return_to" value="{{ request.get_full_path }}">
+      <label class="visually-hidden" for="stock-{{ variant.pk }}">{% translate "Stock quantity" %}</label>
+      <input id="stock-{{ variant.pk }}" type="number" name="stock_quantity" min="0" inputmode="numeric" value="{{ variant.stock_quantity }}" required>
+      <button class="button button--small" type="submit">{% translate "Save" %}</button>
+      {% if saved %}<span class="chip chip--success" role="status">{% icon "check" %}{% translate "Saved" %}</span>{% elif saved is False %}<span class="field__error" role="alert">{% translate "Enter 0 or more." %}</span>{% endif %}
+    </form>
+  </td>
+</tr>

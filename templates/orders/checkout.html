@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{% translate "Checkout" %}{% endblock %}
+{% block content %}
+<section class="section container">
+  <div class="page-head">
+    <h1 class="page-title">{% translate "Checkout" %}</h1>
+    <p class="page-lead">{% translate "Tell us where to deliver. There is no online payment — we’ll confirm everything with you on WhatsApp." %}</p>
+  </div>
+  <div class="checkout-layout">
+    <form class="card checkout-form" method="post" novalidate data-checkout-form>
+      {% csrf_token %}
+      {% include "includes/form_errors.html" %}
+
+      <fieldset class="form-section">
+        <legend class="form-section__title">{% icon "pin" %}{% translate "Delivery address" %}</legend>
+        {% if form.has_saved_addresses %}
+          <div class="address-options" role="radiogroup" aria-label="{% translate 'Saved addresses' %}">
+            {% for radio in form.saved_address %}
+              <label class="address-option">
+                {{ radio.tag }}
+                <span>{{ radio.choice_label }}</span>
+              </label>
+            {% endfor %}
+          </div>
+          {% for error in form.saved_address.errors %}<p class="field__error">{{ error }}</p>{% endfor %}
+        {% endif %}
+        <div class="new-address" data-new-address>
+          <div class="form-grid">
+            {% include "includes/form_field.html" with field=form.city %}
+            {% include "includes/form_field.html" with field=form.street %}
+            {% include "includes/form_field.html" with field=form.building_number %}
+            {% include "includes/form_field.html" with field=form.apartment %}
+            {% include "includes/form_field.html" with field=form.postal_code %}
+            {% include "includes/form_field.html" with field=form.landmark extra_class="form-grid__wide" %}
+          </div>
+          {% include "includes/form_field.html" with field=form.save_address %}
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section geo" data-geo hidden>
+        <legend class="form-section__title">{% icon "pin" %}{% translate "Exact location (optional)" %}</legend>
+        <p class="geo__intro">{% translate "You can share your current location to help the courier find you. Your written address is still required and is enough on its own." %}</p>
+        <button class="button button--ghost" type="button" data-geo-start>{% icon "pin" %}<span>{% translate "Use my current location" %}</span></button>
+
+        <div class="geo__consent" data-geo-consent hidden role="dialog" aria-labelledby="geo-consent-title" aria-describedby="geo-consent-text">
+          <h3 id="geo-consent-title" class="geo__consent-title">{% translate "Before we ask your browser" %}</h3>
+          <div id="geo-consent-text" class="geo__consent-text">
+            <p>{% translate "If you continue, your browser will ask for permission to share your location once." %}</p>
+            <ul>
+              <li>{% translate "We only use it to help deliver this order." %}</li>
+              <li>{% translate "It is saved with this order only if you allow it and place the order." %}</li>
+              <li>{% translate "We never track your location in the background." %}</li>
+              <li>{% translate "You can remove it before placing the order." %}</li>
+            </ul>
+          </div>
+          <div class="geo__actions">
+            <button class="button" type="button" data-geo-allow>{% translate "Allow and continue" %}</button>
+            <button class="button button--ghost" type="button" data-geo-cancel>{% translate "Not now" %}</button>
+          </div>
+        </div>
+        <p class="geo__status" data-geo-status role="status" aria-live="polite"
+           data-msg-loading="{% translate 'Getting your location…' %}"
+           data-msg-success="{% translate 'Location added. Accuracy: about %(meters)s m.' %}"
+           data-msg-denied="{% translate 'Location permission was not given. No problem — your written address is enough.' %}"
+           data-msg-unavailable="{% translate 'Your location isn’t available right now. Your written address is enough.' %}"
+           data-msg-removed="{% translate 'Location removed. It will not be saved.' %}"></p>
+        <button class="link-button" type="button" data-geo-remove hidden>{% icon "x" %}<span>{% translate "Remove location" %}</span></button>
+        {{ form.location_consent }}{{ form.latitude }}{{ form.longitude }}{{ form.location_accuracy }}
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend class="form-section__title">{% icon "phone" %}{% translate "Contact" %}</legend>
+        <p class="muted">{% blocktranslate with name=user.full_name email=user.email %}Ordering as {{ name }} ({{ email }}).{% endblocktranslate %}</p>
+        {% include "includes/form_field.html" with field=form.phone %}
+        {% include "includes/form_field.html" with field=form.customer_notes %}
+      </fieldset>
+
+      <button class="button button--large button--block" type="submit">{% translate "Place order" %}</button>
+      <p class="muted small">{% translate "By placing the order you agree that we contact you about this order by phone or WhatsApp." %}</p>
+    </form>
+
+    <aside class="summary-card" aria-labelledby="checkout-summary-title">
+      <h2 id="checkout-summary-title" class="summary-card__title">{% translate "Your order" %}</h2>
+      <ul class="summary-lines">
+        {% for line in cart_view.totals.lines %}
+          <li><span>{{ line.quantity }} × {{ line.variant.product.name }}<small>{{ line.variant.name }}</small></span><bdi>{{ line.line_total|money }}</bdi></li>
+        {% endfor %}
+      </ul>
+      {% include "cart/partials/totals.html" with totals=cart_view.totals %}
+      <p class="summary-card__hint">{% translate "Totals are calculated by our system when you place the order." %}</p>
+      <a class="link-more" href="{% url 'cart:detail' %}">{% icon "chevron" "icon icon--flip" %}{% translate "Edit cart" %}</a>
+    </aside>
+  </div>
+</section>
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/checkout.js' %}" defer></script>{% endblock %}

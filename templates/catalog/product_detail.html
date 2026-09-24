@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load i18n static rawnaq %}
+{% block title %}{{ product.name }} · {{ brand.name }}{% endblock %}
+{% block meta_description %}{{ product.description|truncatechars:150 }}{% endblock %}
+{% block body_class %}page-product{% endblock %}
+{% block content %}
+<div class="brand-theme" style="--brand-primary: {{ brand.primary_color|safe_hex }}; --brand-secondary: {{ brand.secondary_color|safe_hex:'#9E526F' }}; --brand-on-primary: {{ brand.text_on_primary }}; --brand-on-secondary: {{ brand.text_on_secondary }};">
+<div class="container">
+  <nav class="breadcrumbs breadcrumbs--plain" aria-label="{% translate 'Breadcrumb' %}">
+    <a href="{% url 'core:home' %}">{% translate "Home" %}</a><span aria-hidden="true">/</span>
+    <a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a><span aria-hidden="true">/</span>
+    <span aria-current="page">{{ product.name }}</span>
+  </nav>
+
+  <div class="product-layout">
+    <section class="gallery" aria-label="{% translate 'Product images' %}" data-gallery>
+      <div class="gallery__main">
+        {% if images %}
+          {% with first=images.0 %}<img data-gallery-main src="{{ first.display_url }}" alt="{{ first.alt_text }}" width="{{ first.width|default:1200 }}" height="{{ first.height|default:1200 }}" decoding="async" fetchpriority="high">{% endwith %}
+        {% else %}
+          <img src="{% static 'img/placeholder-product.svg' %}" alt="" width="600" height="600">
+        {% endif %}
+        {% if product.quote.has_discount %}<span class="flag flag--sale gallery__flag"><bdi>-{{ product.quote.percent_off }}%</bdi></span>{% endif %}
+      </div>
+      {% if images|length > 1 %}
+      <ul class="gallery__thumbs">
+        {% for image in images %}
+          <li>
+            <a class="gallery__thumb" href="{{ image.display_url }}" data-gallery-thumb data-full="{{ image.display_url }}" data-alt="{{ image.alt_text }}" {% if forloop.first %}aria-current="true"{% endif %}>
+              <img src="{{ image.thumbnail_url }}" alt="{% blocktranslate with number=forloop.counter %}Show image {{ number }}{% endblocktranslate %}" loading="lazy" width="120" height="120">
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+
+    <section class="product-info" aria-labelledby="product-title">
+      <a class="product-info__brand" href="{{ brand.get_absolute_url }}">{{ brand.name }}</a>
+      <h1 id="product-title" class="product-info__title">{{ product.name }}</h1>
+      {% include "includes/verification_badge.html" with status=product.verification_status %}
+      <div class="product-info__price" data-price-block>
+        {% with quote=selected_variant.quote|default:product.quote %}
+          {% include "includes/price.html" with quote=quote large=True %}
+          <p class="price-note" data-price-note {% if not quote.has_discount %}hidden{% endif %}>{% translate "Sale price applied automatically." %}</p>
+        {% endwith %}
+      </div>
+
+      {% if variants %}
+      <form class="buy-box" method="post" action="{% url 'cart:add' %}"
+            hx-post="{% url 'cart:add' %}" hx-target="#toast-region" hx-swap="innerHTML" hx-indicator="#add-button" data-buy-box>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        {% if variants|length > 1 %}
+          <fieldset class="variant-picker">
+            <legend>{% translate "Choose an option" %}</legend>
+            <div class="variant-picker__options">
+              {% for variant in variants %}
+                <label class="variant-chip{% if not variant.is_available %} is-unavailable{% endif %}">
+                  <input type="radio" name="variant" value="{{ variant.pk }}" {% if variant == selected_variant %}checked{% endif %} {% if not variant.is_available %}disabled{% endif %}
+                         data-final="{{ variant.quote.final|money }}" data-original="{{ variant.quote.original|money }}" data-discounted="{% if variant.quote.has_discount %}1{% else %}0{% endif %}"
+                         data-max="{{ variant.stock_quantity }}" data-stock-label="{% if not variant.is_available %}{% translate 'Out of stock' %}{% elif variant.is_low_stock %}{% blocktranslate count counter=variant.stock_quantity %}Only {{ counter }} left{% plural %}Only {{ counter }} left{% endblocktranslate %}{% else %}{% translate 'In stock' %}{% endif %}">
+                  {% if variant.color_hex %}<span class="swatch" style="--swatch: {{ variant.color_hex|safe_hex:'#FFFFFF' }}" aria-hidden="true"></span>{% endif %}
+                  <span>{{ variant.name }}{% if variant.color_name and variant.color_name != variant.name %} · {{ variant.color_name }}{% endif %}</span>
+                  {% if not variant.is_available %}<span class="variant-chip__note">{% translate "Sold out" %}</span>{% endif %}
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% else %}
+          <input type="hidden" name="variant" value="{{ selected_variant.pk }}">
+          {% if selected_variant.color_name %}<p class="variant-single">{% if selected_variant.color_hex %}<span class="swatch" style="--swatch: {{ selected_variant.color_hex|safe_hex:'#FFFFFF' }}" aria-hidden="true"></span>{% endif %}{{ selected_variant.color_name }}</p>{% endif %}
+        {% endif %}
+
+        <p class="stock-state" data-stock-state>
+          {% if selected_variant and selected_variant.is_available %}
+            {% if selected_variant.is_low_stock %}{% blocktranslate count counter=selected_variant.stock_quantity %}Only {{ counter }} left{% plural %}Only {{ counter }} left{% endblocktranslate %}{% else %}{% translate "In stock" %}{% endif %}
+          {% else %}{% translate "Out of stock" %}{% endif %}
+        </p>
+
+        <div class="buy-box__row">
+          <div class="qty-input" data-qty>
+            <label class="visually-hidden" for="quantity">{% translate "Quantity" %}</label>
+            <button class="qty-input__btn" type="button" data-qty-step="-1" aria-label="{% translate 'Decrease quantity' %}">{% icon "minus" %}</button>
+            <input id="quantity" name="quantity" type="number" inputmode="numeric" min="1" max="{{ max_quantity }}" value="1" required>
+            <button class="qty-input__btn" type="button" data-qty-step="1" aria-label="{% translate 'Increase quantity' %}">{% icon "plus" %}</button>
+          </div>
+          <button id="add-button" class="button button--large button--brand buy-box__submit" type="submit" {% if not selected_variant or not selected_variant.is_available %}disabled{% endif %}>
+            {% icon "bag" %}<span>{% translate "Add to cart" %}</span><span class="spinner htmx-indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+      {% else %}
+        <p class="alert alert--info">{% icon "info" %}<span>{% translate "This piece is currently unavailable." %}</span></p>
+      {% endif %}
+
+      {% if product.description %}
+      <div class="product-info__section">
+        <h2 class="product-info__subtitle">{% translate "Description" %}</h2>
+        <div class="prose">{{ product.description|linebreaks }}</div>
+      </div>
+      {% endif %}
+      <dl class="product-meta">
+        <div><dt>{% translate "Brand" %}</dt><dd><a href="{{ brand.get_absolute_url }}">{{ brand.name }}</a></dd></div>
+        {% if product.visible_categories %}<div><dt>{% translate "Categories" %}</dt><dd><ul class="chip-list">{% for category in product.visible_categories %}<li><a class="chip" href="{{ brand.get_absolute_url }}?category={{ category.slug }}">{{ category.name }}</a></li>{% endfor %}</ul></dd></div>{% endif %}
+        <div><dt>{% translate "Product code" %}</dt><dd dir="ltr">{{ product.sku }}</dd></div>
+      </dl>
+      {% if site_settings.delivery_notice %}<p class="delivery-note">{% icon "truck" %}<span>{{ site_settings.delivery_notice }}</span></p>{% endif %}
+    </section>
+  </div>
+
+  {% if related_products %}
+  <section class="section" aria-labelledby="related-title">
+    <div class="section__head">
+      <h2 id="related-title" class="section__title">{% blocktranslate with brand=brand.name %}More from {{ brand }}{% endblocktranslate %}</h2>
+      <a class="link-more" href="{{ brand.get_absolute_url }}">{% translate "View all" %}{% icon "chevron" "icon icon--dir" %}</a>
+    </div>
+    <ul class="product-grid product-grid--compact">
+      {% for product in related_products %}<li>{% include "includes/product_card.html" with hide_brand=True %}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

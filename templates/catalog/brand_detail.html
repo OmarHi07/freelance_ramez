@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n rawnaq %}
+{% block title %}{{ brand.name }}{% endblock %}
+{% block body_class %}page-brand{% endblock %}
+{% block content %}
+<div class="brand-theme" style="--brand-primary: {{ brand.primary_color|safe_hex }}; --brand-secondary: {{ brand.secondary_color|safe_hex:'#9E526F' }}; --brand-on-primary: {{ brand.text_on_primary }}; --brand-on-secondary: {{ brand.text_on_secondary }};">
+  <section class="brand-hero{% if brand.banner_image %} brand-hero--image{% endif %}">
+    {% if brand.banner_image %}<img class="brand-hero__banner" src="{{ brand.banner_image.url }}" alt="" decoding="async">{% endif %}
+    <div class="container brand-hero__inner">
+      <nav class="breadcrumbs" aria-label="{% translate 'Breadcrumb' %}">
+        <a href="{% url 'core:home' %}">{% translate "Home" %}</a><span aria-hidden="true">/</span><a href="{% url 'catalog:brand_list' %}">{% translate "Brands" %}</a>
+      </nav>
+      <div class="brand-hero__identity">
+        {% if brand.logo %}<img class="brand-hero__logo" src="{{ brand.logo.url }}" alt="" width="96" height="96">{% endif %}
+        <h1 class="brand-hero__title">{{ brand.name }}</h1>
+      </div>
+      <p class="brand-hero__count">{% blocktranslate count counter=result_count %}{{ counter }} piece{% plural %}{{ counter }} pieces{% endblocktranslate %}</p>
+    </div>
+  </section>
+
+  <div class="container brand-layout">
+    <details class="filters" {% if form.active_filter_count %}open{% endif %}>
+      <summary class="filters__toggle button button--ghost">{% icon "filter" %}<span>{% translate "Filter & sort" %}</span>{% if form.active_filter_count %}<span class="count-pill">{{ form.active_filter_count }}</span>{% endif %}</summary>
+      <form class="filters__form" method="get" action="{{ request.path }}"
+            hx-get="{{ request.path }}" hx-target="#product-results" hx-select="#product-results" hx-swap="outerHTML"
+            hx-trigger="change, submit" hx-push-url="true" hx-indicator="#results-loading">
+        <div class="filters__grid">
+          {% include "includes/form_field.html" with field=form.sort %}
+          {% include "includes/form_field.html" with field=form.category %}
+          {% include "includes/form_field.html" with field=form.availability %}
+          {% include "includes/form_field.html" with field=form.verification %}
+          <div class="filters__price">
+            {% include "includes/form_field.html" with field=form.min_price %}
+            {% include "includes/form_field.html" with field=form.max_price %}
+          </div>
+        </div>
+        <div class="filters__actions">
+          <button class="button" type="submit">{% translate "Apply" %}</button>
+          <a class="button button--ghost" href="{{ request.path }}">{% translate "Clear filters" %}</a>
+        </div>
+      </form>
+    </details>
+    <div id="results-loading" class="loading-bar htmx-indicator" aria-hidden="true"></div>
+    {% include "catalog/partials/product_results.html" %}
+  </div>
+</div>
+{% endblock %}
