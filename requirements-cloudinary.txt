@@ -1,4 +1,4 @@
 # Optional: install only when MEDIA_STORAGE_BACKEND=cloudinary (see README, "Production image storage").
 -r requirements.txt
 django-cloudinary-storage==0.3.0
-cloudinary>=1.40,<2
+cloudinary>=1.46.2,<2
