@@ -18,8 +18,8 @@ from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import gettext as _
 
-from core.constants import BUSINESS_NAME
-from core.formatting import format_money
+from core.constants import BUSINESS_NAME, CURRENCY_SYMBOL
+from core.formatting import format_money, quantize_money
 from orders.models import Order
 
 WA_BASE_URL = "https://wa.me/"
@@ -103,7 +103,9 @@ def customer_message(order: Order) -> str:
     contains no dashboard URL and no internal notes.
     """
     language = order.language or settings.LANGUAGE_CODE
-    with translation.override("en" if language.startswith("en") else "ar"):
+    if not language.startswith("en"):
+        return _arabic_customer_message(order)
+    with translation.override("en"):
         lines = [
             _("Hello %(name)s 🌸") % {"name": order.customer_name},
             "",
@@ -119,6 +121,35 @@ def customer_message(order: Order) -> str:
             _("• Bank transfer"),
             "",
             _("We will also confirm the delivery cost and delivery time with you here."),
+        ]
+    return "\n".join(lines)
+
+
+def _whole_money(value) -> str:
+    """``format_money`` without a trailing ``.00``: ``₪40`` but still ``₪40.50``.
+
+    Display only; the stored amount is untouched.
+    """
+    amount = quantize_money(value)
+    if amount == amount.to_integral_value():
+        return f"{CURRENCY_SYMBOL}{amount:,.0f}"
+    return format_money(amount)
+
+
+def _arabic_customer_message(order: Order) -> str:
+    """The shorter Arabic draft, which has its own layout rather than the English lines.
+
+    The amount is the products total after discounts, never including delivery.
+    """
+    with translation.override("ar"):
+        lines = [
+            _("Hello %(name)s 🌸") % {"name": order.customer_name},
+            _("Thank you for your order from %(store)s 💗") % {"store": BUSINESS_NAME},
+            "",
+            _("Order number: %(number)s") % {"number": order.number},
+            _("Amount: %(total)s, delivery not included") % {"total": _whole_money(order.items_total)},
+            "",
+            _("Payment method: cash on delivery / Bit / bank transfer?"),
         ]
     return "\n".join(lines)
 

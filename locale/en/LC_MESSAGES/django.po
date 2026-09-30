@@ -1442,6 +1442,20 @@ msgstr ""
 msgid "We will also confirm the delivery cost and delivery time with you here."
 msgstr ""
 
+#: .\orders\services\whatsapp.py:147
+#, python-format
+msgid "Thank you for your order from %(store)s 💗"
+msgstr ""
+
+#: .\orders\services\whatsapp.py:150
+#, python-format
+msgid "Amount: %(total)s, delivery not included"
+msgstr ""
+
+#: .\orders\services\whatsapp.py:152
+msgid "Payment method: cash on delivery / Bit / bank transfer?"
+msgstr ""
+
 #: .\orders\views.py:24
 #, python-format
 msgid "Some items are no longer available: %(names)s. Please review your cart."

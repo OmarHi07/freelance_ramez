@@ -1460,6 +1460,20 @@ msgid ""
 "We will also confirm the delivery cost and delivery time with you here."
 msgstr "سنؤكد معك أيضاً رسوم التوصيل وموعده عبر هذه المحادثة."
 
+#: .\orders\services\whatsapp.py:147
+#, python-format
+msgid "Thank you for your order from %(store)s 💗"
+msgstr "شكراً لطلبك من %(store)s 💗"
+
+#: .\orders\services\whatsapp.py:150
+#, python-format
+msgid "Amount: %(total)s, delivery not included"
+msgstr "المبلغ: %(total)s ، بدون التوصيل"
+
+#: .\orders\services\whatsapp.py:152
+msgid "Payment method: cash on delivery / Bit / bank transfer?"
+msgstr "طريقة الدفع: موزمان عند الاستلام/ Bit / تحويل بنكي؟"
+
 #: .\orders\views.py:24
 #, python-format
 msgid ""

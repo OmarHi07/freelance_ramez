@@ -317,13 +317,119 @@ def test_english_message_asks_about_payment_and_delivery():
     assert "delivery cost and delivery time" in text
 
 
+ENGLISH_MESSAGE = """Hello Lina 🌸
+
+Thank you for your order from rawnaq_accessories1.
+
+Order number: RNQ-20260921-AB12
+Products total: ₪100.00
+Delivery is not included yet.
+
+Which payment method do you prefer?
+• Cash
+• Bit
+• Bank transfer
+
+We will also confirm the delivery cost and delivery time with you here."""
+
+ARABIC_MESSAGE = """مرحباً עומר חגאב 🌸
+شكراً لطلبك من rawnaq_accessories1 💗
+
+رقم الطلب: RNQ-20260924-ADVZ
+المبلغ: ₪40 ، بدون التوصيل
+
+طريقة الدفع: موزمان عند الاستلام/ Bit / تحويل بنكي؟"""
+
+
+def make_arabic_order(**kwargs) -> Order:
+    defaults = {
+        "language": "ar",
+        "customer_name": "עומר חגאב",
+        "number": "RNQ-20260924-ADVZ",
+        "subtotal": Decimal("40.00"),
+        "discount_total": Decimal("0.00"),
+        "total": Decimal("40.00"),
+    }
+    defaults.update(kwargs)
+    return make_order(**defaults)
+
+
+def test_english_message_is_unchanged():
+    assert customer_message(make_order(language="en")) == ENGLISH_MESSAGE
+
+
+def test_arabic_message_matches_the_owners_wording_exactly():
+    assert customer_message(make_arabic_order()) == ARABIC_MESSAGE
+
+
 def test_arabic_message_is_generated_from_the_order_language():
     text = customer_message(make_order(language="ar"))
-    assert "مرحباً Lina" in text
-    assert BUSINESS_NAME in text
-    assert "نقداً" in text and "Bit" in text and "تحويل بنكي" in text
-    assert "رسوم التوصيل غير مشمولة بعد." in text
-    assert "Cash" not in text
+    assert text.startswith("مرحباً Lina 🌸\n")
+    assert f"{BUSINESS_NAME} 💗" in text
+    assert "المبلغ: ₪100 ، بدون التوصيل" in text  # products total, after discounts
+    assert "Cash" not in text and "Hello" not in text
+
+
+def test_arabic_message_drops_the_old_bullets_and_closing_paragraph():
+    text = customer_message(make_arabic_order())
+    for old in (
+        "قيمة المنتجات",
+        "رسوم التوصيل غير مشمولة بعد.",
+        "ما طريقة الدفع المناسبة لك؟",
+        "•",
+        "نقداً",
+        "سنؤكد معك أيضاً رسوم التوصيل وموعده عبر هذه المحادثة.",
+    ):
+        assert old not in text
+    assert "�" not in text
+
+
+@pytest.mark.parametrize(
+    ("subtotal", "discount", "shown"),
+    [
+        ("40.00", "0.00", "₪40"),
+        ("40.50", "0.00", "₪40.50"),
+        ("40.05", "0.00", "₪40.05"),
+        ("99.99", "0.00", "₪99.99"),
+        ("1250.00", "0.00", "₪1,250"),
+        ("120.00", "20.10", "₪99.90"),
+    ],
+)
+def test_arabic_amount_drops_only_a_zero_fraction(subtotal, discount, shown):
+    text = customer_message(make_arabic_order(subtotal=Decimal(subtotal), discount_total=Decimal(discount)))
+    assert f"المبلغ: {shown} ، بدون التوصيل" in text.splitlines()
+
+
+def test_arabic_amount_excludes_delivery():
+    order = make_arabic_order(delivery_fee=Decimal("25.00"), total=Decimal("65.00"))
+    text = customer_message(order)
+    assert "المبلغ: ₪40 ، بدون التوصيل" in text
+    assert "65" not in text and "25" not in text
+    assert order.items_total == Decimal("40.00")  # the stored amounts are untouched
+
+
+def test_arabic_wa_me_link_decodes_to_the_exact_message():
+    link = customer_order_whatsapp_url(make_arabic_order(customer_phone="050-123 4567"))
+    parsed = urlparse(link)
+    assert parsed.path == "/972501234567"
+    assert " " not in parsed.query and "\n" not in parsed.query and "%25" not in parsed.query  # encoded once
+    assert parse_qs(parsed.query)["text"] == [ARABIC_MESSAGE]
+
+
+def test_owner_email_button_opens_the_arabic_draft_for_the_customer(
+    customer_client, customer, site_settings, place_order
+):
+    order = place_order(customer_client, customer, price="40.00")
+    Order.objects.filter(pk=order.pk).update(language="ar", customer_name="עומר חגאב")
+    order.refresh_from_db()
+    mail.outbox.clear()
+
+    send_new_order_email(order)
+    html = html_part(mail.outbox[0])
+    link = re.search(r'href="(https://wa\.me/[^"]+)"', html).group(1)
+    parsed = urlparse(link)
+    assert parsed.path == "/972501234567"
+    assert parse_qs(parsed.query)["text"] == [ARABIC_MESSAGE.replace("RNQ-20260924-ADVZ", order.number)]
 
 
 def test_the_message_never_carries_an_owner_or_admin_url_or_internal_notes():
