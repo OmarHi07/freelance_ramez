@@ -20,7 +20,24 @@
         <tbody>
           {% for item in order.items.all %}
             <tr>
-              <td data-label="{% translate 'Product' %}">{{ item.product_name }}{% if item.variant_name %}<br><small class="muted">{{ item.variant_name }}</small>{% endif %}{% if item.promotion_name %}<br><small class="chip chip--soft">{{ item.promotion_name }}</small>{% endif %}</td>
+              <td data-label="{% translate 'Product' %}">
+                {% with image=item.display_image %}
+                <div class="order-item">
+                  {% if image %}
+                    <a class="order-item__thumb" href="{{ image.display_url }}" target="_blank" rel="noopener noreferrer" title="{% translate 'Open the full picture in a new tab' %}">
+                      {% include "includes/product_thumb.html" with alt=item.product_name %}
+                    </a>
+                  {% else %}
+                    <span class="order-item__thumb">{% include "includes/product_thumb.html" with alt=item.product_name %}</span>
+                  {% endif %}
+                  <div class="order-item__text">
+                    <span class="order-item__name">{{ item.product_name }}</span>
+                    {% if item.variant_name %}<small class="muted">{{ item.variant_name }}</small>{% endif %}
+                    {% if item.promotion_name %}<small class="chip chip--soft">{{ item.promotion_name }}</small>{% endif %}
+                  </div>
+                </div>
+                {% endwith %}
+              </td>
               <td data-label="{% translate 'SKU' %}" dir="ltr">{{ item.sku }}</td>
               <td data-label="{% translate 'Qty' %}">{{ item.quantity }}</td>
               <td data-label="{% translate 'Unit price' %}">{% if item.unit_discount %}<s class="muted"><bdi>{{ item.original_unit_price|money }}</bdi></s> {% endif %}<bdi>{{ item.final_unit_price|money }}</bdi></td>

@@ -1,0 +1,11 @@
+{% load i18n static %}{% comment %}
+Square product thumbnail with the project's neutral placeholder fallback.
+
+Context:
+  image  a catalog.ProductImage, or anything falsy for the placeholder
+  alt    meaningful alt text (the localized product name)
+  size   pixel size for the width/height attributes (default 96)
+
+The stored thumbnail is used rather than the full picture, and the explicit
+width/height keep the row from shifting while it loads.
+{% endcomment %}{% if image %}<img src="{{ image.thumbnail_url }}" alt="{{ alt }}" width="{{ size|default:96 }}" height="{{ size|default:96 }}" loading="lazy" decoding="async">{% else %}<img src="{% static 'img/placeholder-product.svg' %}" alt="{% translate 'No image' %}" width="{{ size|default:96 }}" height="{{ size|default:96 }}" loading="lazy" decoding="async">{% endif %}

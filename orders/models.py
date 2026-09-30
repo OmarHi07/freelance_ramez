@@ -229,6 +229,27 @@ class OrderItem(LocalizedFieldsMixin, models.Model):
     def variant_name(self) -> str:
         return self.localized("variant_name")
 
+    @property
+    def display_image(self):
+        """Best available picture for this line, or ``None`` to show the placeholder.
+
+        Order items snapshot names and prices but not images, and variants have
+        no picture of their own in this catalogue, so the product's primary
+        image (which already falls back to its first image) is the best source.
+        ``product`` is ``SET_NULL``, so a deleted product simply yields ``None``.
+
+        Rows whose file reference was lost are treated as missing rather than
+        raising while a template renders. Only ``name`` is inspected, never
+        ``path``, so this works the same on local disk and on S3.
+        """
+        product = self.product
+        if product is None:
+            return None
+        image = product.primary_image
+        if image is None or not image.image.name:
+            return None
+        return image
+
 
 class OrderStatusHistory(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="status_history", verbose_name=_("order"))

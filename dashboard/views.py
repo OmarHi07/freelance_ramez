@@ -7,7 +7,7 @@ from datetime import datetime, time, timedelta
 from django.conf import settings
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Count, DecimalField, Max, ProtectedError, Q, Sum, Value
+from django.db.models import Count, DecimalField, Max, Prefetch, ProtectedError, Q, Sum, Value
 from django.db.models.functions import Coalesce
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -38,7 +38,7 @@ from dashboard.forms import (
     VariantFormSet,
 )
 from dashboard.permissions import StaffRequiredMixin
-from orders.models import Order, OrderStatus
+from orders.models import Order, OrderItem, OrderStatus
 from orders.services.notifications import owner_notification_address, send_new_order_email
 from orders.services.status import InsufficientStock, InvalidTransition, transition_order
 from orders.services.whatsapp import customer_order_whatsapp_url, customer_whatsapp_url
@@ -131,7 +131,12 @@ class OrderDetailView(StaffRequiredMixin, DetailView):
     context_object_name = "order"
 
     def get_queryset(self):
-        return Order.objects.select_related("customer").prefetch_related("items", "status_history__changed_by")
+        # Each line shows a thumbnail, so pull the products and their images in
+        # two extra queries rather than one pair per item.
+        items = OrderItem.objects.select_related("product", "variant").prefetch_related("product__images")
+        return Order.objects.select_related("customer").prefetch_related(
+            Prefetch("items", queryset=items), "status_history__changed_by"
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
