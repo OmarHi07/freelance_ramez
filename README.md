@@ -260,7 +260,10 @@ Copy `.env.example` to `.env` for local work. **Never commit `.env`.** In produc
 | `DATABASE_URL` | PostgreSQL connection | `postgres://…` |
 | `TRUSTED_PROXY_COUNT` | Reverse proxies in front of the app (Render/Railway: `1`) | `1` |
 | `DJANGO_SECURE_SSL_REDIRECT`, `DJANGO_SECURE_HSTS_*` | HTTPS settings (production) | see file |
-| `EMAIL_URL`, `DEFAULT_FROM_EMAIL`, `EMAIL_TIMEOUT` | Password-reset **and new-order owner email** (SMTP) | `smtp+tls://user:pass@smtp.example.com:587` |
+| `RESEND_API_KEY` | **Production only, required.** Sends password-reset **and new-order owner email** through Resend's HTTPS API (see [Email delivery](#email-delivery-resend)) | `re_…` from the Resend dashboard |
+| `DEFAULT_FROM_EMAIL` | Sender of every email. **Required in production** and must be an address Resend accepts | `rawnaq_accessories1 <onboarding@resend.dev>` |
+| `EMAIL_TIMEOUT` | Seconds to wait for the email service before giving up | `10` |
+| `EMAIL_URL` | **Local development only** (production ignores it). `consolemail://` prints emails to the terminal | `consolemail://` |
 | `MEDIA_STORAGE_BACKEND` | `local`, `s3` or `cloudinary` | `s3` |
 | `S3_*` | S3-compatible storage settings | see below |
 | `CLOUDINARY_URL` | Cloudinary credentials | `cloudinary://…` |
@@ -268,7 +271,7 @@ Copy `.env.example` to `.env` for local work. **Never commit `.env`.** In produc
 | `AXES_FAILURE_LIMIT`, `AXES_COOLOFF_MINUTES` | Login throttling | `5`, `15` |
 | `LOW_STOCK_THRESHOLD` | Low-stock warning level | `3` |
 
-Settings modules: `config.settings.development` (default for `manage.py`), `config.settings.production` (default for `wsgi.py` and the Docker image), and `config.settings.test` (used by pytest). Production refuses to start without a strong secret key, `DJANGO_ALLOWED_HOSTS` and `DATABASE_URL`.
+Settings modules: `config.settings.development` (default for `manage.py`), `config.settings.production` (default for `wsgi.py` and the Docker image), and `config.settings.test` (used by pytest). Production refuses to start without a strong secret key, `DJANGO_ALLOWED_HOSTS`, `DATABASE_URL`, `RESEND_API_KEY` and `DEFAULT_FROM_EMAIL`.
 
 ---
 
@@ -304,7 +307,7 @@ python manage.py runserver           # http://127.0.0.1:8000/
 pytest                    # full suite (needs PostgreSQL; uses config.settings.test)
 pytest orders -k stock    # a subset
 ```
-The suite covers: browsing, the anonymous cart and merging it on login, checkout authentication, per-user order isolation, staff-only dashboard routes (every URL is checked automatically), catalog CRUD permissions, discount dates, scopes and best-discount selection, server-side totals, price snapshots, deducting stock once and restoring it once, invalid status transitions, the international WhatsApp number, the owner notification email (sent once, only after commit, never resent by a refresh, and harmless when it fails), the prepared owner-to-customer WhatsApp draft, the staff-only resend action, zero delivery on new orders with historical orders untouched, Arabic and English pages, optional location, upload validation, security headers and the seed command.
+The suite covers: browsing, the anonymous cart and merging it on login, checkout authentication, per-user order isolation, staff-only dashboard routes (every URL is checked automatically), catalog CRUD permissions, discount dates, scopes and best-discount selection, server-side totals, price snapshots, deducting stock once and restoring it once, invalid status transitions, the international WhatsApp number, the owner notification email (sent once, only after commit, never resent by a refresh, and harmless when it fails), production email settings (Resend backend, required key and sender) with a faked Resend API call, the prepared owner-to-customer WhatsApp draft, the staff-only resend action, zero delivery on new orders with historical orders untouched, Arabic and English pages, optional location, upload validation, security headers and the seed command.
 
 ### Ruff
 ```bash
@@ -451,10 +454,42 @@ DJANGO_CSRF_TRUSTED_ORIGINS=https://<your-app-host>,https://rawnaq.example,https
 SITE_URL=https://rawnaq.example
 DATABASE_URL=<from the platform>
 TRUSTED_PROXY_COUNT=1
-EMAIL_URL=smtp+tls://…
-DEFAULT_FROM_EMAIL=rawnaq_accessories1 <no-reply@rawnaq.example>
+RESEND_API_KEY=<from the Resend dashboard>
+DEFAULT_FROM_EMAIL=rawnaq_accessories1 <onboarding@resend.dev>   (testing only, see below)
 MEDIA_STORAGE_BACKEND=s3   (+ S3_* variables)
 ```
+
+Do not set `EMAIL_URL` in production: it is for local development only and production ignores it.
+
+### Email delivery (Resend)
+
+Railway's Hobby plan (like Free and Trial) blocks outbound SMTP, so production does not use SMTP at all.
+`config.settings.production` sends the password-reset and new-order owner emails through **Resend's HTTPS
+API**, using [django-anymail](https://anymail.dev/) (`anymail.backends.resend.EmailBackend`). This applies on
+Render too. No Resend webhooks are used.
+
+1. Create a Resend account, then an API key under **API Keys** (a *Sending access* key is enough).
+2. Add `RESEND_API_KEY` and `DEFAULT_FROM_EMAIL` to the web service variables. The app refuses to start
+   without either of them. The key lives only in the hosting dashboard: never commit it, and never put it in
+   `.env.example`.
+3. Remove any old `EMAIL_URL` (for example a Gmail SMTP URL) from the production variables.
+
+**`onboarding@resend.dev` is temporary.** `DEFAULT_FROM_EMAIL=rawnaq_accessories1 <onboarding@resend.dev>`
+works without a domain, but only for limited testing: Resend delivers it **only to the email address of the
+Resend account itself** and rejects every other recipient. While it is the sender:
+
+- set the notification address in `/owner/settings/` to the Resend account's own address, or every owner email
+  fails (the order is still saved, and the dashboard shows *Not sent* with a resend button);
+- password-reset emails to customers are not delivered.
+
+**Before public launch**, verify the business domain in Resend (**Domains → Add domain**, then create the DNS
+records it shows at your DNS provider) and change the sender to an address on that domain, for example:
+
+```
+DEFAULT_FROM_EMAIL=rawnaq_accessories1 <orders@the-real-domain>
+```
+
+Then redeploy, place a test order, and test a password reset to an address that is not the Resend account's.
 
 ### Render
 1. **New → PostgreSQL**. Choose a region close to Israel (e.g. Frankfurt). Copy the *Internal Database URL*.
@@ -468,7 +503,7 @@ MEDIA_STORAGE_BACKEND=s3   (+ S3_* variables)
 ### Railway
 1. **New Project → Deploy from GitHub repo**. Railway detects the Dockerfile.
 2. **Add → Database → PostgreSQL**. In the web service variables, set `DATABASE_URL=${{Postgres.DATABASE_URL}}`.
-3. Add the common variables. Railway sets `PORT` automatically; Gunicorn uses it.
+3. Add the common variables, including `RESEND_API_KEY` and `DEFAULT_FROM_EMAIL` (the Hobby plan blocks SMTP; see [Email delivery](#email-delivery-resend)). Railway sets `PORT` automatically; Gunicorn uses it.
 4. Service **Settings → Deploy**: set the *Pre-deploy command* to `python manage.py migrate --noinput`, and the *Healthcheck path* to `/healthz/`.
 5. **Networking → Generate Domain** (or add your custom domain), then update `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS` and `SITE_URL`.
 6. Create the owner with `railway run python manage.py createsuperuser`, or from the service shell.
@@ -486,7 +521,7 @@ MEDIA_STORAGE_BACKEND=s3   (+ S3_* variables)
 - [ ] Run `python manage.py check --deploy` with production variables. Only the HSTS preload/subdomain warnings you chose to accept should remain.
 - [ ] Test: set the notification address in `/owner/settings/`, place a test order, confirm exactly one owner email arrives, and open its dashboard link while logged out (it must ask you to log in).
 - [ ] Choose one canonical domain and redirect the other (for example `www` → apex) at the platform/DNS level.
-- [ ] Set up email sending (SPF/DKIM for the sending domain) and test the password reset.
+- [ ] Verify the sending domain in Resend (add the DNS records it shows), change `DEFAULT_FROM_EMAIL` from `onboarding@resend.dev` to an address on that domain, and test the password reset.
 
 ## Database backup checklist
 
@@ -545,17 +580,19 @@ PENDING ──► RECEIVED ──► CONFIRMED ──► PREPARING ──► OUT
 6. The owner presses the WhatsApp button, reads the prepared draft, and presses **Send** inside WhatsApp.
 
 There is no WhatsApp Business API and no queue: this is an owner-clicked `wa.me` link and Django's own email
-framework, with `EMAIL_TIMEOUT` bounding a slow SMTP server.
+framework (sent through Resend's HTTPS API in production), with `EMAIL_TIMEOUT` bounding a slow email service.
 
 ### Configuring the notification email
 
 * The **destination address** is set by the owner in **`/owner/settings/`** (`order_notification_email`). It is
   never guessed from a superuser and never hardcoded. While it is empty, the dashboard shows a staff-only
   warning and checkout still succeeds — orders are simply not emailed.
-* **SMTP credentials** come only from `EMAIL_URL` in the environment. `EMAIL_URL=consolemail://` prints emails
-  to the development terminal; production needs a real SMTP URL. Never commit credentials, app passwords or
+* **Sending credentials** come only from the environment. Production sends through Resend's HTTPS API with
+  `RESEND_API_KEY` (see [Email delivery](#email-delivery-resend)). Locally, `EMAIL_URL=consolemail://` prints
+  emails to the development terminal and no Resend key is needed. Never commit API keys, credentials or
   tokens, and never commit `.env` — only `.env.example`, which holds placeholders.
-* `DEFAULT_FROM_EMAIL` should use the exact display name `rawnaq_accessories1`.
+* `DEFAULT_FROM_EMAIL` should use the exact display name `rawnaq_accessories1`. While it is still
+  `onboarding@resend.dev`, Resend only delivers to the Resend account's own address.
 * `SITE_URL` must be the real HTTPS domain, because the email builds its dashboard link from it.
 * The address is never shown to customers.
 
@@ -637,8 +674,8 @@ To have the server deliver the message itself later:
 - [ ] Replace or delete the demo brands, products, images and promotions (all created by `seed_demo`). Turn off the demo sale banner.
 - [ ] Confirm the brand-verification status of every product with the owner.
 - [ ] Create the owner account with `createsuperuser`, using a strong unique password.
-- [ ] **Owner notification email:** set a real `EMAIL_URL` (SMTP) in the environment, set `DEFAULT_FROM_EMAIL` to `rawnaq_accessories1 <…>`, set `SITE_URL` to the real HTTPS domain, and enter the owner's address in **Owner → Store settings**. Place one test order and check the email arrives, its WhatsApp button opens the right chat, and its dashboard button asks for a staff login.
-- [ ] Confirm SMTP credentials live only in the environment and that `.env` was never committed.
+- [ ] **Owner notification email:** set `RESEND_API_KEY` in the environment, verify the business domain in Resend and set `DEFAULT_FROM_EMAIL` to `rawnaq_accessories1 <…@that-domain>` (not `onboarding@resend.dev`), set `SITE_URL` to the real HTTPS domain, and enter the owner's address in **Owner → Store settings**. Place one test order and check the email arrives, its WhatsApp button opens the right chat, and its dashboard button asks for a staff login.
+- [ ] Confirm `RESEND_API_KEY` lives only in the hosting dashboard, that no old SMTP `EMAIL_URL` is left in production, and that `.env` was never committed.
 - [ ] Configure production media storage, and complete the HTTPS and backup checklists above.
 - [ ] Place a real test order end-to-end on the production domain, then cancel it.
 

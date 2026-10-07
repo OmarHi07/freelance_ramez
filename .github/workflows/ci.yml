@@ -63,6 +63,8 @@ jobs:
           DJANGO_SETTINGS_MODULE: config.settings.production
           DJANGO_SECRET_KEY: ci-only-production-smoke-test-key-0123456789abcdefghijklmnop
           DJANGO_ALLOWED_HOSTS: localhost
+          RESEND_API_KEY: ci-only-placeholder-not-a-real-key
+          DEFAULT_FROM_EMAIL: "rawnaq_accessories1 <ci-only@example.invalid>"
         run: |
           python manage.py check --deploy --fail-level ERROR
           python manage.py collectstatic --noinput

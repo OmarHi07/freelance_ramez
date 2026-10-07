@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "axes",
+    "anymail",
     # Project apps
     "core",
     "accounts",
@@ -212,13 +213,14 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 2_621_440
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 # ---------------------------------------------------------------------------
-# Email (password reset). Configure a real SMTP URL in production.
+# Email (password reset + owner order notifications). Each environment picks
+# its own backend: development reads EMAIL_URL, tests use locmem, and
+# production sends through Resend's HTTPS API (see production.py).
 # ---------------------------------------------------------------------------
-vars().update(env.email_url("EMAIL_URL", default="consolemail://"))
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=f"{BUSINESS_NAME} <no-reply@localhost>")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-# Bounds a slow or unreachable SMTP server so the owner notification, which is
-# sent inline after the checkout transaction commits, cannot hang a worker.
+# Bounds a slow or unreachable email service so the owner notification, which
+# is sent inline after the checkout transaction commits, cannot hang a worker.
 EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=10)
 
 # ---------------------------------------------------------------------------

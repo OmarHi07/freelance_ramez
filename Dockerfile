@@ -25,6 +25,8 @@ COPY . .
 RUN DJANGO_SECRET_KEY=build-only-placeholder-not-used-at-runtime-0123456789abcdef \
     DJANGO_ALLOWED_HOSTS=localhost \
     DATABASE_URL=postgres://build:build@localhost:5432/build \
+    RESEND_API_KEY=build-only-placeholder-not-a-real-key \
+    DEFAULT_FROM_EMAIL=build-only@example.invalid \
     python manage.py collectstatic --noinput
 
 RUN useradd --create-home --uid 1000 app \

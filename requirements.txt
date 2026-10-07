@@ -8,3 +8,5 @@ django-environ==0.14.0
 django-axes==8.3.1
 # S3-compatible production media storage (AWS S3, Cloudflare R2, Backblaze B2, DigitalOcean Spaces, MinIO).
 django-storages[s3]==1.14.6
+# Production email through Resend's HTTPS API (Railway Hobby blocks outbound SMTP). No webhooks, so no [resend] extra.
+django-anymail==15.2

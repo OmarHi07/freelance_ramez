@@ -1,10 +1,12 @@
 """The owner is emailed after an order commits, and starts the WhatsApp chat."""
 
+import json
 import re
 from decimal import Decimal
 from urllib.parse import parse_qs, urlparse
 
 import pytest
+import requests
 from django.core import mail
 from django.db import transaction
 from django.urls import reverse
@@ -285,6 +287,53 @@ def test_owner_email_shows_a_warning_instead_of_a_broken_whatsapp_button(
     assert "WhatsApp could not be opened" in html
     assert "https://wa.me/" not in html
     assert Order.objects.filter(pk=order.pk).exists()  # the order stays valid
+
+
+# ---------------------------------------------------------------------------
+# Production delivery: the same email, through Resend's HTTPS API
+# ---------------------------------------------------------------------------
+@pytest.fixture
+def resend_requests(monkeypatch):
+    """Record the HTTPS calls Anymail's Resend backend makes, instead of making them."""
+    calls = []
+
+    def fake_request(session, method, url, **kwargs):
+        calls.append({"method": method, "url": url, **kwargs})
+        response = requests.Response()
+        response.status_code = 200
+        response.encoding = "utf-8"
+        response._content = b'{"id": "test-message-id"}'
+        return response
+
+    monkeypatch.setattr(requests.Session, "request", fake_request)
+    return calls
+
+
+def test_owner_email_reaches_resend_exactly_as_rendered(
+    customer_client, customer, site_settings, place_order, settings, resend_requests
+):
+    mail.outbox.clear()
+    order = place_order(customer_client, customer)
+    rendered = mail.outbox[0]  # the email the tests above check
+
+    settings.EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+    settings.ANYMAIL = {"RESEND_API_KEY": "test-resend-key-not-real"}
+    mail.outbox.clear()
+    assert send_new_order_email(order).sent
+    assert mail.outbox == []
+
+    assert len(resend_requests) == 1
+    call = resend_requests[0]
+    assert (call["method"], call["url"]) == ("POST", "https://api.resend.com/emails")
+    assert call["headers"]["Authorization"] == "Bearer test-resend-key-not-real"
+    assert call["timeout"] == settings.EMAIL_TIMEOUT
+    payload = json.loads(call["data"])
+    assert payload["from"] == settings.DEFAULT_FROM_EMAIL
+    assert payload["to"] == [site_settings.order_notification_email]
+    assert payload["subject"] == rendered.subject
+    assert payload["text"] == rendered.body
+    assert payload["html"] == html_part(rendered)
+    assert "https://wa.me/972501234567?text=" in payload["html"]
 
 
 # ---------------------------------------------------------------------------
